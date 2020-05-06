@@ -3,7 +3,8 @@ import {
   StyleSheet,
   View,
   Text,
-  TouchableOpacity
+  TouchableOpacity,
+  ScrollView
 } from 'react-native';
 import Logo from '../../components/authentication/Logo';
 import Form from '../../components/authentication/Form';
@@ -12,6 +13,7 @@ class Login extends Component<{}> {
   render() {
     return (
       <>
+      <ScrollView contentContainerStyle={{flexGrow: 1}} style={{ alignSelf: 'stretch'}}>
       <View style={styles.container}>
         <Logo logo={{ text: "[ Ds ]" }} />
         <Form />
@@ -24,6 +26,7 @@ class Login extends Component<{}> {
           </TouchableOpacity>
         </View>
       </View>
+      </ScrollView>
       <View style={styles.tabBar}>
           <Text style={styles.signupText}>
             Don't have an account?
@@ -46,10 +49,9 @@ const styles = StyleSheet.create({
     marginHorizontal: 25
   },
   signupTextCont: {
-    flex: 1,
+    flexGrow: 1,
     justifyContent: 'flex-start',
     flexDirection: 'row',
-    marginVertical: 10,
   },
   signupText: {
     color: 'rgba(100,100,100,1)',
