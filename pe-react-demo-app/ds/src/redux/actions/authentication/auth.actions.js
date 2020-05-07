@@ -4,9 +4,7 @@ import {
     AUTHENTICATE_USER_REQUEST,
     SAVE_USER_LOGIN_CREDS
 } from "../../types/authentication/auth.types.js";
-import axios from 'axios'
 import base64 from 'react-native-base64'
-import { Header } from "react-native/Libraries/NewAppScreen";
 
 export const saveUserCreds = () => {
     return {
@@ -36,7 +34,6 @@ export const authenticateFailure = error => {
 
 export const authenticateUser = (username, password) => {
     return (dispatch) => {
-        dispatch(authenticateUserRequest)
         var headers = {
             "Content-Type":  "application/json",
             "Authorization": `Basic ${base64.encode(username + ':' + password)}`
@@ -51,10 +48,14 @@ export const authenticateUser = (username, password) => {
             requestOptions)
             .then(response => response.text())
             .then(result => {
+                console.log(result);
+                
                 result = JSON.parse(result);
                 dispatch(authenticateSuccess(result))
             })
             .catch(error => {
+                console.log(error);
+                
                 dispatch(authenticateFailure(error.message))
             })
     }

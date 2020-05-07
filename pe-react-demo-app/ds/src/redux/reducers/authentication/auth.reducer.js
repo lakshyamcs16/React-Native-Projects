@@ -24,6 +24,7 @@ export const authenticationReducer = (state = initialState, action) => {
         case AUTHENTICATE_USER_REQUEST:
             return {
                 ...state,
+                loggedin: false,
                 loading: true
             }
            
@@ -39,6 +40,10 @@ export const authenticationReducer = (state = initialState, action) => {
         case AUTHENTICATE_FAILURE:
             return {
                 ...state,
+                loggedin: false,
+                loading: false,
+                username: '',
+                user_details: {},
                 error: action.payload
             }    
         default:
