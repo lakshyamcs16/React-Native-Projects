@@ -13,29 +13,29 @@ class Login extends Component<{}> {
   render() {
     return (
       <>
-      <ScrollView contentContainerStyle={{flexGrow: 1}} style={{ alignSelf: 'stretch'}}>
-      <View style={styles.container}>
-        <Logo logo={{ text: "[ Ds ]" }} />
-        <Form />
-        <View style={styles.signupTextCont}>
-          <Text style={styles.signupText}>
-            Don't remember the login details?
+        <ScrollView contentContainerStyle={{ flexGrow: 1 }} style={{ alignSelf: 'stretch' }}>
+          <View style={styles.container}>
+            <Logo logo={{ text: "[ Ds ]" }} />
+            <Form />
+            <View style={styles.signupTextCont}>
+              <Text style={styles.signupText}>
+                Don't remember the login details?
           </Text>
-          <TouchableOpacity  style={{alignSelf: 'flex-start'}}>
-            <Text style={styles.helpText}> Get help.</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-      </ScrollView>
-      <View style={styles.tabBar}>
+              <TouchableOpacity style={{ alignSelf: 'flex-start' }}>
+                <Text style={styles.helpText}> Get help.</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </ScrollView>
+        <View style={styles.tabBar}>
           <Text style={styles.signupText}>
             Don't have an account?
           </Text>
           <TouchableOpacity>
             <Text style={styles.helpText}> Sign up.</Text>
           </TouchableOpacity>
-      </View>
-    </>
+        </View>
+      </>
     );
   }
 };
