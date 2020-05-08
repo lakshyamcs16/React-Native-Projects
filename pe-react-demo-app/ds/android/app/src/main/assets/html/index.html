@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Chromelink Solutions">
+    <meta name="Chromelink Solutions" content="">
+    <title>chartjs vault
+</title>
+
+<div id="container" style="height: 400px; min-width: 310px"></div>
+
+<script src="https://code.highcharts.com/stock/highstock.js"></script>
+<script src="https://code.highcharts.com/stock/modules/data.js"></script>
+<script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/stock/modules/export-data.js"></script>
+<style>
+    body{
+        background-color: rgba(250,250,250,1);
+    }
+</style>
+<body>
+<div id="container" style="margin: 0px auto; width: 100%; height: 300px;"></div>
+
+<script>
+
+ window.addEventListener("error", handleWindowError); function handleWindowError(e) {alert(e.error)}
+ 
+function Drawchart(){
+    Highcharts.getJSON('https://cdn.jsdelivr.net/gh/highcharts/highcharts@v7.0.0/samples/data/new-intraday.json', function (data) {
+
+// create the chart
+Highcharts.stockChart('container', {
+
+    chart:{
+        backgroundColor: 'rgb(250,250,250)'
+    },
+    title: {
+        text: 'AAPL stock price by minute'
+    },
+
+    subtitle: {
+        text: 'Using explicit breaks for nights and weekends'
+    },
+
+    xAxis: {
+        breaks: [{ // Nights
+            from: Date.UTC(2011, 9, 6, 16),
+            to: Date.UTC(2011, 9, 7, 8),
+            repeat: 24 * 36e5
+        }, { // Weekends
+            from: Date.UTC(2011, 9, 7, 16),
+            to: Date.UTC(2011, 9, 10, 8),
+            repeat: 7 * 24 * 36e5
+        }]
+    },
+
+    rangeSelector: {
+        buttons: [{
+            type: 'hour',
+            count: 1,
+            text: '1h'
+        }, {
+            type: 'day',
+            count: 1,
+            text: '1D'
+        }, {
+            type: 'all',
+            count: 1,
+            text: 'All'
+        }],
+        selected: 1,
+        inputEnabled: false
+    },
+
+    series: [{
+        name: 'AAPL',
+        type: 'area',
+        data: data,
+        gapSize: 5,
+        tooltip: {
+            valueDecimals: 2
+        },
+        fillColor: {
+            linearGradient: {
+                x1: 0,
+                y1: 0,
+                x2: 0,
+                y2: 1
+            },
+            stops: [
+                [0, Highcharts.getOptions().colors[0]],
+                [1, Highcharts.color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+            ]
+        },
+        threshold: null
+    }]
+});
+});
+
+}
+</script>
+
+
+
+
+  </body>
+
+</html>

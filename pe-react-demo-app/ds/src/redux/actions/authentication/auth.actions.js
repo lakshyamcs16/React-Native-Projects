@@ -5,6 +5,7 @@ import {
     SAVE_USER_LOGIN_CREDS
 } from "../../types/authentication/auth.types.js";
 import base64 from 'react-native-base64'
+import { Actions } from 'react-native-router-flux';
 
 export const saveUserCreds = () => {
     return {
@@ -54,8 +55,9 @@ export const authenticateUser = (username, password) => {
                 return response.json()
             })
             .then(result => {
-                console.log(result);
+                console.log("Some result");
                 dispatch(authenticateSuccess(result))
+                Actions["home"].call();
             })
             .catch(error => {
                 

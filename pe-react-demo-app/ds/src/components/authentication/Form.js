@@ -10,6 +10,7 @@ import {
 import { connect } from 'react-redux';
 import { authenticateUser, authenticateUserRequest } from '../../redux/actions/authentication/auth.actions'
 
+
 class Form extends Component<{}> {
     constructor(props) {
         super(props);
@@ -29,6 +30,7 @@ class Form extends Component<{}> {
 
         this.props.authenticateUserRequest();
         this.props.authenticateUserDetails(this.state.username, this.state.password)
+        
     }
 
     render() {
@@ -62,13 +64,7 @@ class Form extends Component<{}> {
                             size={21}
                             color="#fff">
                         </ActivityIndicator>
-                        ) : this.props.userAuth.loggedin ?
-                            (
-                                <Text style={styles.buttonText}>
-                                    Logged In
-                                </Text>
-                            )
-                            : this.props.userAuth.error.length < 1
+                        ) : this.props.userAuth.error.length < 1
                              ?
                                 (
                                     <Text style={styles.buttonText}>
@@ -81,10 +77,6 @@ class Form extends Component<{}> {
                                         Error in login!
                                     </Text>
                                 )
-                                }
-                                {
-                                    console.log(`Error -- ${this.props.userAuth.error}`)
-                                    
                                 }
                 </TouchableOpacity>
             </View>
