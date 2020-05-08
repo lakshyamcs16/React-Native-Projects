@@ -25,15 +25,14 @@ class Form extends Component<{}> {
     }
 
     authenticate = () => {
-        console.log(`${this.state.username} and ${this.state.password}`);
+        console.log(`Auth: ${this.state.username} and ${this.state.password}`);
 
         this.props.authenticateUserRequest();
         this.props.authenticateUserDetails(this.state.username, this.state.password)
     }
 
     render() {
-        console.log(this.props.userAuth.loading);
-        
+
         return (
             <View style={styles.container}>
                 <TextInput
@@ -53,6 +52,7 @@ class Form extends Component<{}> {
                     onChangeText={e => this.handleChange(e, "password")}
                     value={this.state.password}
                     ref={(input) => this.password = input}
+                    onSubmitEditing={this.authenticate}
                 />
                 <TouchableOpacity style={styles.button} onPressOut={this.authenticate}>
                     {this.props.userAuth.loading ?
@@ -68,17 +68,24 @@ class Form extends Component<{}> {
                                     Logged In
                                 </Text>
                             )
-                            :
-                            (
-                                <Text style={styles.buttonText}>
-                                    Log In
-                                </Text>
-                        
-                            )}
-                    {
-                        console.log(this.props.userAuth)
+                            : this.props.userAuth.error.length < 1
+                             ?
+                                (
+                                    <Text style={styles.buttonText}>
+                                        Log In
+                                    </Text>
 
-                    }
+                                ):
+                                (
+                                    <Text style={styles.buttonText}>
+                                        Error in login!
+                                    </Text>
+                                )
+                                }
+                                {
+                                    console.log(`Error -- ${this.props.userAuth.error}`)
+                                    
+                                }
                 </TouchableOpacity>
             </View>
         );

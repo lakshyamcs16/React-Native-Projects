@@ -46,17 +46,19 @@ export const authenticateUser = (username, password) => {
         };
         fetch('https://ivpcloud.com:8421/auth?access_token=IU3E1613AGbTHG872iBkkO0xDmjblFkW',
             requestOptions)
-            .then(response => response.text())
+            .then(response => {
+                if(response.status != 200) {
+                    dispatch(authenticateFailure(response.status))
+                    throw new Error(response.status)
+                }
+                return response.json()
+            })
             .then(result => {
                 console.log(result);
-                
-                result = JSON.parse(result);
                 dispatch(authenticateSuccess(result))
             })
             .catch(error => {
-                console.log(error);
                 
-                dispatch(authenticateFailure(error.message))
             })
     }
 }
