@@ -8,14 +8,8 @@ import {
 } from 'react-native';
 import Logo from '../../components/authentication/Logo';
 import Form from '../../components/authentication/Form';
-import { Actions } from 'react-native-router-flux';
 
-
-class Login extends Component<{}> {
-  moveToSignUp = () => {
-    console.log("Sign up page")
-    Actions.signup();
-  }
+class SignUp extends Component<{}> {
   render() {
     return (
       <>
@@ -37,8 +31,8 @@ class Login extends Component<{}> {
           <Text style={styles.signupText}>
             Don't have an account?
           </Text>
-          <TouchableOpacity onPress={this.moveToSignUp}>
-            <Text style={styles.helpText}> Sign up.</Text>
+          <TouchableOpacity>
+            <Text style={styles.helpText}> Sign In.</Text>
           </TouchableOpacity>
         </View>
       </>
@@ -77,4 +71,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Login;
+export default SignUp;

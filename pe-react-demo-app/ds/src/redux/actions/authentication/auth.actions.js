@@ -47,7 +47,7 @@ export const authenticateUser = (username, password) => {
         fetch('https://ivpcloud.com:8421/auth?access_token=IU3E1613AGbTHG872iBkkO0xDmjblFkW',
             requestOptions)
             .then(response => {
-                if(response.status != 200) {
+                if(!(response.status >= 200 && response.status < 300)) {
                     dispatch(authenticateFailure(response.status))
                     throw new Error(response.status)
                 }

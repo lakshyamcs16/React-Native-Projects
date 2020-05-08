@@ -5,12 +5,12 @@ import {
   View,
   Text
 } from 'react-native';
-import Login from './pages/authentication/Login';
+import Routes from '../src/pages/Routes';
 
 class Main extends Component<{}> {
   render() {
     return (
-      <Login />
+      <Routes />
     );
   }
 };
