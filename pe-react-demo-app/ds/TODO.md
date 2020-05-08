@@ -9,6 +9,5 @@
     6. Log analytics **
     7. Network issues
 
-> powerbi.apiuser@aequim.com
-> U#hs$w31s
+
 
