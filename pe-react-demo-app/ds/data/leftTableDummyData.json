@@ -1,0 +1,88 @@
+[
+    {
+      "timestamp": {
+        "value": "15:59:57"
+      },
+      "price":{
+        "value": "568.80",
+        "color": "rgba(188,112,97,1)"
+      },
+      "quantity":{
+        "value": "50",
+        "color": "rgba(188,112,97,1)"
+      }
+    },
+    {
+        "timestamp": {
+          "value": "15:59:57"
+        },
+        "price":{
+          "value": "568.80",
+          "color": "rgba(188,112,97,1)"
+        },
+        "quantity":{
+          "value": "50",
+          "color": "rgba(188,112,97,1)"
+        }
+      },{
+        "timestamp": {
+          "value": "15:59:57"
+        },
+        "price":{
+          "value": "568.80",
+          "color": "rgba(188,112,97,1)"
+        },
+        "quantity":{
+          "value": "50",
+          "color": "rgba(188,112,97,1)"
+        }
+      },{
+        "timestamp": {
+          "value": "15:59:57"
+        },
+        "price":{
+          "value": "568.80",
+          "color": "rgba(188,112,97,1)"
+        },
+        "quantity":{
+          "value": "50",
+          "color": "rgba(188,112,97,1)"
+        }
+      },{
+        "timestamp": {
+          "value": "15:59:57"
+        },
+        "price":{
+          "value": "568.80",
+          "color": "rgba(188,112,97,1)"
+        },
+        "quantity":{
+          "value": "50",
+          "color": "rgba(188,112,97,1)"
+        }
+      },{
+        "timestamp": {
+          "value": "15:59:57"
+        },
+        "price":{
+          "value": "568.80",
+          "color": "rgba(188,112,97,1)"
+        },
+        "quantity":{
+          "value": "50",
+          "color": "rgba(188,112,97,1)"
+        }
+      },{
+        "timestamp": {
+          "value": "15:59:57"
+        },
+        "price":{
+          "value": "568.80",
+          "color": "rgba(188,112,97,1)"
+        },
+        "quantity":{
+          "value": "50",
+          "color": "rgba(188,112,97,1)"
+        }
+      }
+  ]

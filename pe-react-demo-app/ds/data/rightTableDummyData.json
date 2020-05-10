@@ -1,0 +1,116 @@
+[
+    {
+      "timestamp": {
+        "value": "461.80",
+        "color": "rgba(188,112,97,1)"
+      },
+      "price":{
+        "value": "568.80",
+        "hasBar": true,
+        "barWidths": {
+            "greenBarWidth": 30,
+            "redBarWidth": 50
+        }
+      },
+      "quantity":{
+        "value": "3.90%"
+      }
+    },
+    {
+        "timestamp": {
+          "value": "555.00",
+          "color": "rgba(31,202,128, 1)"
+        },
+        "price":{
+          "value": "568.80",
+          "hasBar": true,
+          "barWidths": {
+              "greenBarWidth": 10,
+              "redBarWidth": 20
+          }
+        },
+        "quantity":{
+          "value": "1.07%"
+        }
+      },{
+        "timestamp": {
+          "value": "490.00",
+          "color": "rgba(188,112,97,1)"
+        },
+        "price":{
+          "value": "568.80",
+          "hasBar": true,
+          "barWidths": {
+              "greenBarWidth": 0,
+              "redBarWidth": 28
+          }
+        },
+        "quantity":{
+          "value": "1.02%"
+        }
+      },{
+        "timestamp": {
+          "value": "470.50",
+          "color": "rgba(188,112,97,1)"
+        },
+        "price":{
+          "value": "568.80",
+          "hasBar": true,
+          "barWidths": {
+              "greenBarWidth": 25,
+              "redBarWidth": 0
+          }
+        },
+        "quantity":{
+          "value": "0.86%"
+        }
+      },{
+        "timestamp": {
+          "value": "553.00",
+          "color": "rgba(31,202,128, 1)"
+        },
+        "price":{
+          "value": "568.80",
+          "hasBar": true,
+          "barWidths": {
+              "greenBarWidth": 5,
+              "redBarWidth": 23
+          }
+        },
+        "quantity":{
+          "value": "0.77%"
+        }
+      },{
+        "timestamp": {
+          "value": "552.00",
+          "color": "rgba(31,202,128, 1)"
+        },
+        "price":{
+          "value": "568.80",
+          "hasBar": true,
+          "barWidths": {
+              "greenBarWidth": 10,
+              "redBarWidth": 15
+          }
+        },
+        "quantity":{
+          "value": "0.64%"
+        }
+      },{
+        "timestamp": {
+          "value": "555.05",
+          "color": "rgba(31,202,128, 1)"
+        },
+        "price":{
+          "value": "568.80",
+          "hasBar": true,
+          "barWidths": {
+              "greenBarWidth": 15,
+              "redBarWidth": 5
+          }
+        },
+        "quantity":{
+          "value": "0.44%"
+        }
+      }
+  ]
