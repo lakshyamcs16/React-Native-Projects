@@ -5,8 +5,10 @@ import {
     View,
     TextInput,
     TouchableOpacity,
-    ActivityIndicator
+    ActivityIndicator,
+    Alert
 } from 'react-native';
+import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
 import { authenticateUser, authenticateUserRequest } from '../../redux/actions/authentication/auth.actions'
 
@@ -16,21 +18,64 @@ class Form extends Component<{}> {
         super(props);
         this.state = {
             username: '',
-            password: ''
+            password: '',
+            buttonOpacity: 0.2
         },
             this.handleChange = this.handleChange.bind(this);
     }
 
+    validateInput = () => {
+        if(this.state.username.length>0 && this.state.password.length>0) {
+            this.setState({
+                buttonOpacity: 0.7
+            })
+            return true;
+        }else{
+            this.setState({
+                buttonOpacity: 0.2
+            })
+            return false;
+        }
+    }
     handleChange(value, name) {
-        this.setState({ [name]: value });
+        this.setState({ [name]: value }, this.validateInput);
+        
     }
 
-    authenticate = () => {
+    authenticate = async () => {
         console.log(`Auth: ${this.state.username} and ${this.state.password}`);
 
+        if(!this.validateInput()) return;
         this.props.authenticateUserRequest();
-        this.props.authenticateUserDetails(this.state.username, this.state.password)
-        
+        var params = {
+            username: this.state.username,
+            password: this.state.password
+        }
+        const response = await this.props.authenticateUserDetails(params)
+                
+        try {
+            console.log(response);
+            if (response.success) {
+                console.log(this.props.userAuth.user_details);
+                Actions["home"].call();
+            }else{
+                throw response;
+            }
+        } catch (error) {
+            console.log("Alert error " + JSON.stringify(this.props.userAuth));
+            
+            Alert.alert(
+                'Login error',
+                (this.props.userAuth.error),
+                [
+                    {
+                        text: 'Cancel',
+                        onPress: () => console.log('Cancel Pressed'),
+                        style: 'cancel',
+                    },
+                ]
+            );
+        }
     }
 
     render() {
@@ -56,7 +101,11 @@ class Form extends Component<{}> {
                     ref={(input) => this.password = input}
                     onSubmitEditing={this.authenticate}
                 />
-                <TouchableOpacity style={styles.button} onPressOut={this.authenticate}>
+                <TouchableOpacity 
+                    style={[styles.button, { backgroundColor: `rgba(14, 110, 173, ${this.state.buttonOpacity})`}]} 
+                    onPressOut={this.authenticate}
+                    disabled={this.state.username.length < 1 || this.state.password.length < 1}
+                    >
                     {this.props.userAuth.loading ?
                         (<ActivityIndicator
                             animating={true}
@@ -64,20 +113,14 @@ class Form extends Component<{}> {
                             size={21}
                             color="#fff">
                         </ActivityIndicator>
-                        ) : this.props.userAuth.error.length < 1
-                             ?
-                                (
-                                    <Text style={styles.buttonText}>
-                                        Log In
-                                    </Text>
+                        ) : 
+                            (
+                                <Text style={styles.buttonText}>
+                                    Log In
+                                </Text>
 
-                                ):
-                                (
-                                    <Text style={styles.buttonText}>
-                                        Error in login!
-                                    </Text>
-                                )
-                                }
+                            )
+                    }
                 </TouchableOpacity>
             </View>
         );
@@ -126,7 +169,7 @@ const mapStateToProps = (state) => {
 
 const dispatchStateToProps = (dispatch) => {
     return {
-        authenticateUserDetails: (username, password) => dispatch(authenticateUser(username, password)),
+        authenticateUserDetails: (params) => dispatch(authenticateUser(params)),
         authenticateUserRequest: () => dispatch(authenticateUserRequest())
     }
 }

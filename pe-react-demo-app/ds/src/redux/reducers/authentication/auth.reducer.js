@@ -39,7 +39,6 @@ export const authenticationReducer = (state = initialState, action) => {
         
         case AUTHENTICATE_FAILURE:
             return {
-                ...state,
                 loggedin: false,
                 loading: false,
                 username: '',
