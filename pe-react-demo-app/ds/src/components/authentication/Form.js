@@ -8,7 +8,6 @@ import {
     ActivityIndicator,
     Alert
 } from 'react-native';
-import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
 import { authenticateUser, authenticateUserRequest } from '../../redux/actions/authentication/auth.actions'
 
@@ -57,19 +56,17 @@ class Form extends Component<{}> {
             console.log(response);
             if (response.success) {
                 console.log(this.props.userAuth.user_details);
-                Actions["home"].call();
             }else{
                 throw response;
             }
         } catch (error) {
             console.log("Alert error " + JSON.stringify(this.props.userAuth));
-            
             Alert.alert(
                 'Login error',
-                (this.props.userAuth.error),
+                ((error && error.body && error.body.message) || this.props.userAuth.error),
                 [
                     {
-                        text: 'Cancel',
+                        text: 'Okay',
                         onPress: () => console.log('Cancel Pressed'),
                         style: 'cancel',
                     },

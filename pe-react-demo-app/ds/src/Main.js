@@ -1,23 +1,18 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {
-  StyleSheet,
-  View,
-  Text
-} from 'react-native';
 import Routes from '../src/pages/Routes';
 
 class Main extends Component<{}> {
-  render() {
+  render() {    
+    const { authData: { loggedin } } = this.props;
     return (
-      <Routes />
-    );
+      <Routes isLoggedIn={loggedin} />
+    )
   }
 };
 
-const styles = StyleSheet.create({
+mapStateToProps = state => ({
+  authData: state.authenticationDetails
+})
 
-});
-
-
-export default connect(null, null)(Main);
+export default connect(mapStateToProps, null)(Main);
