@@ -6,19 +6,29 @@ import {
   Text,
   TouchableOpacity,
 } from 'react-native';
-
 import TableView from '../assets/TableView'
 import WebView from 'react-native-webview'
+import NavigationBar from '../dashboards/NavigationBar';
+import { connect } from 'react-redux';
+import { fetchAppConfig } from '../../redux/actions/dashboard/navigation.actions'
 
 const leftDummyData = require('../../../data/leftTableDummyData.json')
 const rightDummyData = require('../../../data/rightTableDummyData.json')
 
-export default class Demo extends Component {
+class Demo extends Component {
   state = {
     data: {
       items: leftDummyData,
       rightItem: rightDummyData
-    }
+    },
+    appConfig: {}
+  }
+
+  async componentDidMount() {
+    const response = await this.props.fetchAppConfig()
+    this.setState({
+      appConfig: response.body
+    })
   }
 
   render() {
@@ -26,7 +36,7 @@ export default class Demo extends Component {
       <>
         <ScrollView>
           <View style={styles.container}>
-            <View style={styles.keyStats}> 
+            <View style={styles.keyStats}>
               <Text style={styles.keyHeading}>568.80</Text>
               <Text style={styles.keySubHeading}>Closed, 15:59 03/13 IST</Text>
             </View>
@@ -69,12 +79,7 @@ export default class Demo extends Component {
             </View>
           </View>
         </ScrollView>
-        <View style={styles.navBar}>
-          <Text style={styles.navBarItem}>Analytics</Text>
-          <Text style={styles.navBarItem} style={{ fontWeight: 'bold' }}>Blotter</Text>
-          <Text style={styles.navBarItem}>Search</Text>
-          <Text style={styles.navBarItem}>CRM</Text>
-        </View>
+        <NavigationBar config={this.state.appConfig.menubar}/>
       </>
     );
   }
@@ -135,20 +140,20 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     textAlign: 'right'
-  },
-  navBar: {
-    flexDirection: 'row',
-    height: 50,
-    paddingTop: 10,
-    justifyContent: 'space-around',
-    borderTopColor: '#999999',
-    borderTopWidth: 0.5
-  },
-  navBarItem: {
-    fontSize: 15
-  },
-  chartConfig: {
-    marginLeft: -4
   }
 
 });
+
+const mapStateToProps = (state) => {
+  return {
+    config: state.navigationDetails
+  }
+}
+
+const dispatchStateToProps = (dispatch) => {
+  return {
+    fetchAppConfig: () => dispatch(fetchAppConfig()),
+  }
+}
+
+export default connect(mapStateToProps, dispatchStateToProps)(Demo);

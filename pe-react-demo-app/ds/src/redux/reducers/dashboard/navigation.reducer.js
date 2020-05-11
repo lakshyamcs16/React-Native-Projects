@@ -1,11 +1,15 @@
 import {
     UPDATE_NAVIGATION_BAR_TITLE,
-    TOGGLE_DRAWER
+    TOGGLE_DRAWER,
+    SET_APP_CONFIG_ERROR,
+    SET_APP_CONFIG
 } from "../../types/dashboard/navigation.types.js";
 
 const initialState = {
     title: '',
-    isDrawerOpen: false
+    isDrawerOpen: false,
+    error: '',
+    appConfig: {}
 };
 
 export const navigationReducer = (state = initialState, action) => {
@@ -19,6 +23,18 @@ export const navigationReducer = (state = initialState, action) => {
             return {
                 ...state,
                 isDrawerOpen: action.payload
+            }
+        case SET_APP_CONFIG_ERROR:
+            return {
+                ...state,
+                appConfig: {},
+                error: action.payload
+            }
+        case SET_APP_CONFIG: 
+            return {
+                ...state,
+                error: '',
+                appConfig: action.payload
             }
         default:
             return state;

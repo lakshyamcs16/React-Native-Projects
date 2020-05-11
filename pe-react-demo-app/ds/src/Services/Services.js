@@ -1,11 +1,15 @@
 const BASE_URL = "https://ivpcloud.com:8421";
 
-export const api = async (url, method, body = null, headers = {}) => {
+export const api = async (url, method, body = null, headers = {}, isBaseUrlAbsent = true) => {
 
     console.log("inside api");
     
     try {
-        const endPoint = BASE_URL.concat(url);
+        let endPoint = url;
+
+        if(isBaseUrlAbsent)
+            endPoint = BASE_URL.concat(url);
+
         const reqBody = body ? JSON.stringify(body) : null;
 
         const fetchParams = { method, headers };
@@ -18,8 +22,6 @@ export const api = async (url, method, body = null, headers = {}) => {
             fetchParams.headers["Content-type"] = "application/json";
             fetchParams.body = reqBody;
         }
-
-        console.log(`${endPoint} : ${fetchParams.headers.Authorization}`);
         
         const fetchPromise = fetch(endPoint, fetchParams);
         const timeOutPromise = new Promise((resolve, reject) => {
@@ -29,7 +31,7 @@ export const api = async (url, method, body = null, headers = {}) => {
         });
 
         const response = await Promise.race([fetchPromise, timeOutPromise]);
-
+        
         return response;
     } catch (e) {
         return e;

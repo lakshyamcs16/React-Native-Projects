@@ -50,7 +50,7 @@ export const authenticateUser = (params) => {
                 success: false
             };
 
-            if (response.status > 200 && response.status < 300) {                
+            if (response.status >= 200 && response.status < 300) {                
                 const responseJson = await response.json();
 
                 result.success = true;
