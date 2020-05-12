@@ -11,6 +11,7 @@ import WebView from 'react-native-webview'
 import NavigationBar from '../dashboards/NavigationBar';
 import { connect } from 'react-redux';
 import { fetchAppConfig } from '../../redux/actions/dashboard/navigation.actions'
+import NavBar from '../assets/NavBar';
 
 const leftDummyData = require('../../../data/leftTableDummyData.json')
 const rightDummyData = require('../../../data/rightTableDummyData.json')
@@ -35,6 +36,7 @@ class Demo extends Component {
   render() {
     return (
       <>
+        <NavBar />
         <ScrollView>
           <View style={styles.container}>
             <View style={styles.keyStats}>

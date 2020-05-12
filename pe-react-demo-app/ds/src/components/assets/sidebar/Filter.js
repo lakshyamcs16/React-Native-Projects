@@ -11,7 +11,7 @@ class Filter extends Component{
         console.log(JSON.stringify(this.props));
         
         return (
-            <View>
+            <View style={{backgroundColor: 'white', flex: 1, shadowColor: '#000000', shadowOffset: { width: 100}}}>
                 <Text>{this.props.sidebar.filters && this.props.sidebar.filters.config.title}</Text>
             </View>
         );

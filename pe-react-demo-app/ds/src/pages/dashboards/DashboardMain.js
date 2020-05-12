@@ -7,15 +7,31 @@ import {
     Text,
 } from 'react-native';
 import Filter from '../../components/assets/sidebar/Filter'
+import { openNavigationDrawer, closeNavigationDrawer } from '../../redux/actions/dashboard/navigation.actions';
+
+const drawerStyles = {
+    drawer: { shadowColor: '#000000', shadowOpacity: 0.8, shadowRadius: 3 },
+    main: { paddingLeft: 3 },
+}
 
 class DashboardMain extends Component<{}> {
-    render() {        
-        return ( 
+    render() {
+        return (
             <Drawer
+                type="overlay"
                 open={this.props.isDrawerOpen}
                 openDrawerOffset={117}
-                tweenHandler={Drawer.tweenPresets.parallax}
-                styles={drawerStyles}
+                onCloseStart={() => this.props.closeNavigationDrawer()}
+                tweenDuration={300}
+                acceptTap={this.props.isDrawerOpen}
+                panOpenMask={0.80}
+                captureGestures="open"
+                tweenHandler={(ratio) => {
+                    return {
+                        mainOverlay: { opacity: ratio / 1.5, backgroundColor: '#888888' }
+                    }
+                }}
+                styles={{ shadowColor: '#000000', shadowOpacity: 1, shadowRadius: 300 }}
                 content={<Filter />}
             >
                 <Demo />
@@ -25,14 +41,18 @@ class DashboardMain extends Component<{}> {
     }
 };
 
-const drawerStyles = {
-    drawer: { shadowColor: '#000000', shadowOpacity: 0.8, shadowRadius: 3 },
-    main: { paddingLeft: 3 },
-}
+
 
 const mapStateToProps = (state) => {
     return {
         isDrawerOpen: state.navigationDetails.isDrawerOpen,
     }
 }
-export default connect(mapStateToProps, null)(DashboardMain);
+
+const dispatchStateToProps = (dispatch) => {
+    return {
+        openNavigationDrawer: () => dispatch(openNavigationDrawer()),
+        closeNavigationDrawer: () => dispatch(closeNavigationDrawer())
+    }
+}
+export default connect(mapStateToProps, dispatchStateToProps)(DashboardMain);

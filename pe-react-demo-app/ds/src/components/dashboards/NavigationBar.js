@@ -7,18 +7,23 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { getIcon } from '../../utilities/Utilities';
+import { themes  } from '../../themes/theme';
 
 class NavigationBar extends PureComponent {
 
     constructor(props) {
         super(props);
+        console.log(themes.light.primary);
+        
         this.state = {
             items: []
         }
     }
 
     UNSAFE_componentWillUpdate(nextProps, nextState) {
-        if (nextProps.config.appConfig.menubar.items != this.state.items) {
+        if (nextProps.config.appConfig
+            && nextProps.config.appConfig.menubar &&
+            nextProps.config.appConfig.menubar.items != this.state.items) {
             this.setState({
                 items: nextProps.config.appConfig.menubar.items
             })
@@ -36,8 +41,7 @@ class NavigationBar extends PureComponent {
                         style={styles.navBarItemContainer}>
                         {getIcon(item)}
                         <Text
-                            style={styles.navBarItem}
-                            style={item.active ? { fontWeight: 'bold' } : { fontWeight: 'normal' }}>
+                            style={styles.navBarItem}>
                             {item.title}</Text>
                     </TouchableOpacity>);
             } else if (item.type === "module") {
@@ -46,8 +50,7 @@ class NavigationBar extends PureComponent {
                         style={styles.navBarItemContainer}>
                         {getIcon(item)}
                         <Text
-                            style={styles.navBarItem}
-                            style={item.active ? { fontWeight: 'bold' } : { fontWeight: 'normal' }}>
+                            style={[styles.navBarItem]}>
                             {item.title}</Text>
                     </TouchableOpacity>);
             }
@@ -71,8 +74,8 @@ const styles = StyleSheet.create({
         height: 60,
         paddingTop: 5,
         justifyContent: 'space-around',
-        borderTopColor: '#999999',
-        borderTopWidth: 0.5
+        borderTopColor: themes.light.primary,
+        borderTopWidth: 1
     },
     navBarItemContainer: {
         justifyContent: 'center',
@@ -81,7 +84,8 @@ const styles = StyleSheet.create({
     },
     navBarItem: {
         fontSize: 15,
-        paddingVertical: 5
+        paddingVertical: 5,
+        color: themes.light.primDark
     },
     chartConfig: {
         marginLeft: -4
