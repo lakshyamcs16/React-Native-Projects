@@ -18,6 +18,8 @@ const leftDummyData = require('../../../data/leftTableDummyData.json')
 const rightDummyData = require('../../../data/rightTableDummyData.json')
 const isAndroid= Platform.OS==='android';
 
+let uri = '';
+
 class Demo extends Component {
   state = {
     data: {
@@ -38,8 +40,6 @@ class Demo extends Component {
   render() {
     if(isAndroid) {
       uri = 'file:///android_asset/html/index.html';
-    }else{
-      
     }
 
     return (
@@ -80,7 +80,7 @@ class Demo extends Component {
             </View>
             <View style={styles.chartConfig}>
               <WebView
-                source={HTML_FILE}
+                source={isAndroid? {uri: uri} : HTML_FILE}
                 injectedJavaScript={'Drawchart()'}
                 style={{ flex: null, height: 395 }}
                 originWhitelist={['*']}
