@@ -12,7 +12,7 @@ import { openNavigationDrawer, closeNavigationDrawer } from '../../redux/actions
 class NavBar extends Component<{}> {
 
     toggleDrawer = () => {
-        const { isDrawerOpen } = this.props.sidebar;
+        const isDrawerOpen = this.props.isDrawerOpen;
         if(isDrawerOpen) {
             this.props.closeNavigationDrawer();
         }else{
@@ -63,7 +63,8 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
     return {
-        sidebar: state.navigationDetails
+        isDrawerOpen: state.navigationDetails.isDrawerOpen,
+        title: state.navigationDetails.title,
     }
 }
 

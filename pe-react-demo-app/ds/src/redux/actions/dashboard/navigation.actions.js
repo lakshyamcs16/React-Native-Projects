@@ -1,11 +1,19 @@
 import { 
     UPDATE_NAVIGATION_BAR_TITLE,
+    IS_NAVIGATION_BAR_TITLE_ENABLED,
     TOGGLE_DRAWER,
     SET_APP_CONFIG,
     SET_APP_CONFIG_ERROR
 } from "../../types/dashboard/navigation.types.js";
 import { ERROR_MESSAGE_401, GENERIC_APP_CONFIG_ERROR } from '../../../utilities/Constants';
 import { api } from '../../../services/Services';
+
+export const isNavigationBarTitleEnabled = enabled => {
+    return {
+        type: IS_NAVIGATION_BAR_TITLE_ENABLED,
+        payload: enabled
+    }
+}
 
 export const updateNavigationBarTitle = title => {
     return {
@@ -55,6 +63,7 @@ export const fetchAppConfig = () => {
                 const responseJson = await response.json();                
                 result.success = true;
                 dispatch(setAppConfig(responseJson));
+                dispatch(isNavigationBarTitleEnabled(responseJson.title.enabled));
                 result.body = responseJson;
                 return result;
             } else {

@@ -15,8 +15,8 @@ export default class Routes extends Component<{}> {
                         <Scene key="login" component={Login} initial={true} />
                         <Scene key="signup" component={SignUp} title="Register" />
                     </Scene>
-                    <Scene key="app" initial={this.props.isLoggedIn} title="Summary" navBar={NavBar}>
-                        <Scene key="home" component={DashboardMain} initial={true}/>
+                    <Scene key="app" initial={this.props.isLoggedIn} navBar={NavBar}>
+                        <Scene key="home" component={DashboardMain}/>
                     </Scene>
                 </Scene>
             </Router>

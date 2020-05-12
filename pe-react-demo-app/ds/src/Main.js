@@ -4,7 +4,8 @@ import Routes from '../src/pages/Routes';
 
 class Main extends Component<{}> {
   render() {    
-    const { authData: { loggedin } } = this.props;
+    const loggedin  = this.props.loginDetail;
+    
     return (
       <Routes isLoggedIn={loggedin} />
     )
@@ -12,7 +13,7 @@ class Main extends Component<{}> {
 };
 
 mapStateToProps = state => ({
-  authData: state.authenticationDetails
+  loginDetail: state.authenticationDetails.loggedin,
 })
 
 export default connect(mapStateToProps, null)(Main);

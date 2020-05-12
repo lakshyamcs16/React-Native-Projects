@@ -1,9 +1,6 @@
 const BASE_URL = "https://ivpcloud.com:8421";
 
-export const api = async (url, method, body = null, headers = {}, isBaseUrlAbsent = true) => {
-
-    console.log("inside api");
-    
+export const api = async (url, method, body = null, headers = {}, isBaseUrlAbsent = true) => {    
     try {
         let endPoint = url;
 

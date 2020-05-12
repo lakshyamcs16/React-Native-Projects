@@ -37,9 +37,6 @@ export const authenticateFailure = error => {
 
 export const authenticateUser = (params) => {
     return async (dispatch) => {
-
-        console.log('Password ' + params.password);
-
         var headers = {
             "Authorization": `Basic ${base64.encode(params.username + ':' + params.password)}`
         };
@@ -53,8 +50,8 @@ export const authenticateUser = (params) => {
             if (response.status >= 200 && response.status < 300) {                
                 const responseJson = await response.json();
 
-                result.success = true;
-                dispatch(authenticateSuccess(responseJson));
+                result.success = true;                
+                dispatch(authenticateSuccess(responseJson));                
                 result.body = responseJson;
                 return result;
             } else {
@@ -71,9 +68,7 @@ export const authenticateUser = (params) => {
                 }
                 
                 try {
-                    dispatch(authenticateFailure(body.message));
-                    console.log(body.message);
-                    
+                    dispatch(authenticateFailure(body.message));                    
                 } catch (e) {
                     
                 }

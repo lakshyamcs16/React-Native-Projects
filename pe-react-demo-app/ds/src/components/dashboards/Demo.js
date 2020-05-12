@@ -26,6 +26,7 @@ class Demo extends Component {
 
   async componentDidMount() {
     const response = await this.props.fetchAppConfig()
+    
     this.setState({
       appConfig: response.body
     })

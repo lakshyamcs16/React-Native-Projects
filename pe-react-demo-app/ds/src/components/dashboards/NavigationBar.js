@@ -6,10 +6,7 @@ import {
     TouchableOpacity,
 } from 'react-native';
 import { connect } from 'react-redux';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { getIcon } from '../../utilities/Utilities';
 
 class NavigationBar extends PureComponent {
 
@@ -28,47 +25,16 @@ class NavigationBar extends PureComponent {
         }
     }
 
-    getIcon = (item) => {
-        switch (item.iconSource) {
-            case "Ionicons": return (
-                <Ionicons
-                    name={item.icon}
-                    size={25}
-                    style={styles.navBarIcon}></Ionicons>
-            )
-            case "AntDesign": return (
-                <AntDesign
-                    name={item.icon}
-                    size={25}
-                    style={styles.navBarIcon}></AntDesign>
-            )
-            case "MaterialIcons": return (
-                <MaterialIcons
-                    name={item.icon}
-                    size={25}
-                    style={styles.navBarIcon}></MaterialIcons>
-            )
-            case "MaterialCommunityIcons": return (
-                <MaterialCommunityIcons
-                    name={item.icon}
-                    size={25}
-                    style={styles.navBarIcon}></MaterialCommunityIcons>
-            )
-        }
-    }
-
     renderNavBar = () => {
 
         let { items } = this.state;
 
         items = items.map((item, key) => {
             if (item.type === "dashboard") {
-                console.log(item);
-
                 return (
                     <TouchableOpacity key={key}
                         style={styles.navBarItemContainer}>
-                        {this.getIcon(item)}
+                        {getIcon(item)}
                         <Text
                             style={styles.navBarItem}
                             style={item.active ? { fontWeight: 'bold' } : { fontWeight: 'normal' }}>
@@ -78,7 +44,7 @@ class NavigationBar extends PureComponent {
                 return (
                     <TouchableOpacity key={key}
                         style={styles.navBarItemContainer}>
-                        {this.getIcon(item)}
+                        {getIcon(item)}
                         <Text
                             style={styles.navBarItem}
                             style={item.active ? { fontWeight: 'bold' } : { fontWeight: 'normal' }}>
@@ -119,10 +85,6 @@ const styles = StyleSheet.create({
     },
     chartConfig: {
         marginLeft: -4
-    },
-    navBarIcon: {
-        justifyContent: 'center',
-        alignItems: 'center'
     }
 });
 const mapStateToProps = (state) => {

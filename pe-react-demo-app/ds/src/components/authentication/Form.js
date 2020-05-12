@@ -12,15 +12,16 @@ import { connect } from 'react-redux';
 import { authenticateUser, authenticateUserRequest } from '../../redux/actions/authentication/auth.actions'
 
 
-class Form extends Component<{}> {
+class Form extends Component {
     constructor(props) {
-        super(props);
+        super(props);        
         this.state = {
             username: '',
             password: '',
             buttonOpacity: 0.2
         },
-            this.handleChange = this.handleChange.bind(this);
+
+        this.handleChange = this.handleChange.bind(this);
     }
 
     validateInput = () => {
@@ -36,14 +37,12 @@ class Form extends Component<{}> {
             return false;
         }
     }
+
     handleChange(value, name) {
         this.setState({ [name]: value }, this.validateInput);
-        
     }
 
     authenticate = async () => {
-        console.log(`Auth: ${this.state.username} and ${this.state.password}`);
-
         if(!this.validateInput()) return;
         this.props.authenticateUserRequest();
         var params = {
@@ -53,14 +52,10 @@ class Form extends Component<{}> {
         const response = await this.props.authenticateUserDetails(params)
                 
         try {
-            console.log(response);
-            if (response.success) {
-                console.log(this.props.userAuth.user_details);
-            }else{
+            if (!response.success) {
                 throw response;
             }
         } catch (error) {
-            console.log("Alert error " + JSON.stringify(this.props.userAuth));
             Alert.alert(
                 'Login error',
                 ((error && error.body && error.body.message) || this.props.userAuth.error),
