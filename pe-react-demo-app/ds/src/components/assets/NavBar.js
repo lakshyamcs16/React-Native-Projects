@@ -13,22 +13,25 @@ class NavBar extends Component<{}> {
 
     toggleDrawer = () => {
         const isDrawerOpen = this.props.isDrawerOpen;
-        if(isDrawerOpen) {
+        if (isDrawerOpen) {
             this.props.closeNavigationDrawer();
-        }else{
+        } else {
             this.props.openNavigationDrawer();
         }
     }
 
     render() {
         return (
-            <View style={styles.navBarContainer}>
-                <Icon
-                    name="menu"
-                    size={30}
-                    onPress={this.toggleDrawer} 
-                    style={styles.navBarLeftIcon}/>
-                <Text style={styles.navBarTitle}>{this.props.title}</Text>
+            <View style={this.props.isFilterEnabled ? styles.navBarContainer
+                : styles.navBarContainerWithoutFilter}>
+                {this.props.isFilterEnabled && 
+                    <Icon
+                        name="menu"
+                        size={30}
+                        onPress={this.toggleDrawer}
+                        style={styles.navBarLeftIcon} />}
+                <Text style={this.props.isFilterEnabled ? styles.navBarTitle
+                    : styles.navBarTitleWithoutFilter}>{this.props.title}</Text>
             </View>
 
         );
@@ -43,7 +46,14 @@ const styles = StyleSheet.create({
         borderBottomColor: '#EEEEEE',
         paddingTop: 5
     },
-    navBarLeftIcon:{
+    navBarContainerWithoutFilter: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        borderBottomWidth: 1,
+        borderBottomColor: '#EEEEEE',
+        paddingVertical: 5
+    },
+    navBarLeftIcon: {
         flex: 1,
         alignSelf: 'flex-start',
         justifyContent: 'flex-start',
@@ -51,8 +61,15 @@ const styles = StyleSheet.create({
         alignItems: 'flex-start',
         padding: 10
     },
-    navBarTitle:{
+    navBarTitle: {
         flex: 2,
+        fontSize: 30,
+        color: '#333333',
+        fontWeight: 'bold',
+        alignSelf: 'flex-start',
+        justifyContent: 'flex-start',
+    },
+    navBarTitleWithoutFilter: {
         fontSize: 30,
         color: '#333333',
         fontWeight: 'bold',
@@ -65,6 +82,7 @@ const mapStateToProps = (state) => {
     return {
         isDrawerOpen: state.navigationDetails.isDrawerOpen,
         title: state.navigationDetails.title,
+        isFilterEnabled: state.navigationDetails.isFilterEnabled
     }
 }
 

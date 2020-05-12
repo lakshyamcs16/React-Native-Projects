@@ -9,10 +9,10 @@ import {
 import Filter from '../../components/assets/sidebar/Filter'
 
 class DashboardMain extends Component<{}> {
-    render() {
-        return (
+    render() {        
+        return ( 
             <Drawer
-                open={this.props.sidebar.isDrawerOpen}
+                open={this.props.isDrawerOpen}
                 openDrawerOffset={117}
                 tweenHandler={Drawer.tweenPresets.parallax}
                 styles={drawerStyles}
@@ -32,7 +32,7 @@ const drawerStyles = {
 
 const mapStateToProps = (state) => {
     return {
-        sidebar: state.navigationDetails
+        isDrawerOpen: state.navigationDetails.isDrawerOpen,
     }
 }
 export default connect(mapStateToProps, null)(DashboardMain);

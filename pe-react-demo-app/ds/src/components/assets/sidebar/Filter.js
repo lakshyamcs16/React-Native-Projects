@@ -4,18 +4,27 @@ import {
   View,
   Text
 } from 'react-native'
+import { connect } from 'react-redux';
 
-export default class Filter extends Component{
+class Filter extends Component{
     render() {
+        console.log(JSON.stringify(this.props));
+        
         return (
             <View>
-                <Text>This is a drawer panel</Text>
+                <Text>{this.props.sidebar.filters && this.props.sidebar.filters.config.title}</Text>
             </View>
         );
     }
     
 }
 
+const mapStateToProps = (state) => {
+    return {
+        sidebar: state.navigationDetails.appConfig,
+    }
+}
 const styles = StyleSheet.create({
 
 });
+export default connect(mapStateToProps, null)(Filter);

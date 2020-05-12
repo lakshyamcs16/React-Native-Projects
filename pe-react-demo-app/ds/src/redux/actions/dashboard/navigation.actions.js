@@ -1,6 +1,7 @@
 import { 
     UPDATE_NAVIGATION_BAR_TITLE,
     IS_NAVIGATION_BAR_TITLE_ENABLED,
+    IS_NAVIGATION_BAR_FILTERS_ENABLED,
     TOGGLE_DRAWER,
     SET_APP_CONFIG,
     SET_APP_CONFIG_ERROR
@@ -11,6 +12,13 @@ import { api } from '../../../services/Services';
 export const isNavigationBarTitleEnabled = enabled => {
     return {
         type: IS_NAVIGATION_BAR_TITLE_ENABLED,
+        payload: enabled
+    }
+}
+
+export const isNavigationBarFiltersEnabled = enabled => {
+    return {
+        type: IS_NAVIGATION_BAR_FILTERS_ENABLED,
         payload: enabled
     }
 }
@@ -64,6 +72,7 @@ export const fetchAppConfig = () => {
                 result.success = true;
                 dispatch(setAppConfig(responseJson));
                 dispatch(isNavigationBarTitleEnabled(responseJson.title.enabled));
+                dispatch(isNavigationBarFiltersEnabled(responseJson.filters.enabled));
                 result.body = responseJson;
                 return result;
             } else {
