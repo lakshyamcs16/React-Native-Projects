@@ -131,8 +131,9 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(232, 232, 232, 0.4)',
         borderRadius: 6,
         paddingHorizontal: 16,
+        paddingVertical: 15,
         fontSize: 16,
-        fontFamily: 'Roboto',
+        fontFamily: 'System',
         marginVertical: 8,
         borderColor: 'rgba(232, 232, 232, 1)',
         borderWidth: 1

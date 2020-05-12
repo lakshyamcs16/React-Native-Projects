@@ -5,16 +5,18 @@ import {
   View,
   Text,
   TouchableOpacity,
+  Platform
 } from 'react-native';
+import HTML_FILE from '../../../resources/html/index.html';
 import TableView from '../assets/TableView'
 import WebView from 'react-native-webview'
 import NavigationBar from '../dashboards/NavigationBar';
 import { connect } from 'react-redux';
 import { fetchAppConfig } from '../../redux/actions/dashboard/navigation.actions'
 import NavBar from '../assets/NavBar';
-
 const leftDummyData = require('../../../data/leftTableDummyData.json')
 const rightDummyData = require('../../../data/rightTableDummyData.json')
+const isAndroid= Platform.OS==='android';
 
 class Demo extends Component {
   state = {
@@ -34,6 +36,12 @@ class Demo extends Component {
   }
 
   render() {
+    if(isAndroid) {
+      uri = 'file:///android_asset/html/index.html';
+    }else{
+      
+    }
+
     return (
       <>
         <NavBar />
@@ -72,9 +80,13 @@ class Demo extends Component {
             </View>
             <View style={styles.chartConfig}>
               <WebView
-                source={{ uri: 'file:///android_asset/html/index.html' }}
-                injectedJavaScript="Drawchart();"
+                source={HTML_FILE}
+                injectedJavaScript={'Drawchart()'}
                 style={{ flex: null, height: 395 }}
+                originWhitelist={['*']}
+                domStorageEnabled={true}
+                javaScriptEnabled={true}
+                mixedContentMode={'compatibility'}
               />
             </View>
             <View>
@@ -143,6 +155,9 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     textAlign: 'right'
+  },
+  chartConfig: {
+      marginLeft: -4
   }
 
 });

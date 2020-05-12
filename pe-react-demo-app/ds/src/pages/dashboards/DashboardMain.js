@@ -24,8 +24,6 @@ class DashboardMain extends Component<{}> {
                 onCloseStart={() => this.props.closeNavigationDrawer()}
                 tweenDuration={300}
                 acceptTap={this.props.isDrawerOpen}
-                panOpenMask={0.80}
-                captureGestures="open"
                 tweenHandler={(ratio) => {
                     return {
                         mainOverlay: { opacity: ratio / 1.5, backgroundColor: '#888888' }

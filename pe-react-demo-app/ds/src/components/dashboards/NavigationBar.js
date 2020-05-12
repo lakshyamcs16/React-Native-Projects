@@ -86,9 +86,6 @@ const styles = StyleSheet.create({
         fontSize: 15,
         paddingVertical: 5,
         color: themes.light.primDark
-    },
-    chartConfig: {
-        marginLeft: -4
     }
 });
 const mapStateToProps = (state) => {

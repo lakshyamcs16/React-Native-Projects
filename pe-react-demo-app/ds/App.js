@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {
   StyleSheet,
   View,
+  SafeAreaView,
 } from 'react-native';
 
 import { Provider } from "react-redux";
@@ -12,9 +13,9 @@ export default class App extends Component<{}> {
   render() {
     return (
       <Provider store={store}>
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
           <Main />
-        </View>
+        </SafeAreaView>
       </Provider>
     );
   }
