@@ -3,34 +3,34 @@ import {
     StyleSheet,
     Text,
     View,
-    TextInput,
     TouchableOpacity,
     ActivityIndicator,
     Alert
 } from 'react-native';
 import { connect } from 'react-redux';
+import {ThemeProvider} from "styled-components";
 import { authenticateUser, authenticateUserRequest } from '../../redux/actions/authentication/auth.actions'
-
+import {LoginTextInput} from '../../themes/styling';
 
 class Form extends Component {
     constructor(props) {
-        super(props);        
+        super(props);
         this.state = {
             username: '',
             password: '',
             buttonOpacity: 0.2
         },
 
-        this.handleChange = this.handleChange.bind(this);
+            this.handleChange = this.handleChange.bind(this);
     }
 
     validateInput = () => {
-        if(this.state.username.length>0 && this.state.password.length>0) {
+        if (this.state.username.length > 0 && this.state.password.length > 0) {
             this.setState({
                 buttonOpacity: 0.7
             })
             return true;
-        }else{
+        } else {
             this.setState({
                 buttonOpacity: 0.2
             })
@@ -43,14 +43,14 @@ class Form extends Component {
     }
 
     authenticate = async () => {
-        if(!this.validateInput()) return;
+        if (!this.validateInput()) return;
         this.props.authenticateUserRequest();
         var params = {
             username: this.state.username,
             password: this.state.password
         }
         const response = await this.props.authenticateUserDetails(params)
-                
+
         try {
             if (!response.success) {
                 throw response;
@@ -71,50 +71,50 @@ class Form extends Component {
     }
 
     render() {
-
+        
         return (
-            <View style={styles.container}>
-                <TextInput
-                    underlineColorAndroid='rgba(0,0,0,0)'
-                    placeholder="Username or email id"
-                    style={styles.inputBox}
-                    onChangeText={e => this.handleChange(e, "username")}
-                    value={this.state.username}
-                    keyboardType="email-address"
-                    onSubmitEditing={() => this.password.focus()}
-                />
-                <TextInput
-                    underlineColorAndroid='rgba(0,0,0,0)'
-                    placeholder="Password"
-                    secureTextEntry={true}
-                    style={styles.inputBox}
-                    onChangeText={e => this.handleChange(e, "password")}
-                    value={this.state.password}
-                    ref={(input) => this.password = input}
-                    onSubmitEditing={this.authenticate}
-                />
-                <TouchableOpacity 
-                    style={[styles.button, { backgroundColor: `rgba(14, 110, 173, ${this.state.buttonOpacity})`}]} 
-                    onPressOut={this.authenticate}
-                    disabled={this.state.username.length < 1 || this.state.password.length < 1}
+            <ThemeProvider theme={this.props.theme}>
+                <View style={styles.container}>
+                    <LoginTextInput
+                        underlineColorAndroid='rgba(0,0,0,0)'
+                        placeholder="Username or email id"
+                        onChangeText={e => this.handleChange(e, "username")}
+                        value={this.state.username}
+                        keyboardType="email-address"
+                        onSubmitEditing={() => this.password.focus()}
+                    />
+                    <LoginTextInput
+                        underlineColorAndroid='rgba(0,0,0,0)'
+                        placeholder="Password"
+                        secureTextEntry={true}
+                        onChangeText={e => this.handleChange(e, "password")}
+                        value={this.state.password}
+                        ref={(input) => this.password = input}
+                        onSubmitEditing={this.authenticate}
+                    />
+                    <TouchableOpacity
+                        style={[styles.button, { backgroundColor: `rgba(14, 110, 173, ${this.state.buttonOpacity})` }]}
+                        onPressOut={this.authenticate}
+                        disabled={this.state.username.length < 1 || this.state.password.length < 1}
                     >
-                    {this.props.userAuth.loading ?
-                        (<ActivityIndicator
-                            animating={true}
-                            style={styles.buttonText}
-                            size={21}
-                            color="#fff">
-                        </ActivityIndicator>
-                        ) : 
+                        {this.props.userAuth.loading ?
+                            (<ActivityIndicator
+                                animating={true}
+                                style={styles.buttonText}
+                                size={21}
+                                color="#fff">
+                            </ActivityIndicator>
+                            ) :
                             (
                                 <Text style={styles.buttonText}>
                                     Log In
                                 </Text>
 
                             )
-                    }
-                </TouchableOpacity>
-            </View>
+                        }
+                    </TouchableOpacity>
+                </View>
+            </ThemeProvider>
         );
     }
 };
@@ -125,18 +125,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         alignSelf: 'stretch',
         marginTop: 20
-    },
-    inputBox: {
-        alignSelf: 'stretch',
-        backgroundColor: 'rgba(232, 232, 232, 0.4)',
-        borderRadius: 6,
-        paddingHorizontal: 16,
-        paddingVertical: 15,
-        fontSize: 16,
-        fontFamily: 'System',
-        marginVertical: 8,
-        borderColor: 'rgba(232, 232, 232, 1)',
-        borderWidth: 1
     },
     buttonText: {
         fontSize: 16,
@@ -156,7 +144,8 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
     return {
-        userAuth: state.authenticationDetails
+        userAuth: state.authenticationDetails,
+        theme: state.themeDetails
     }
 }
 

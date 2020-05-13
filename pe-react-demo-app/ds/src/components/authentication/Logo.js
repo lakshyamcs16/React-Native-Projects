@@ -8,6 +8,8 @@ import {
     Keyboard,
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
+import { ThemeProvider } from "styled-components";
+import { NormalText } from '../../themes/styling';
 
 class Logo extends Component<{}> {
     constructor(props) {
@@ -40,20 +42,21 @@ class Logo extends Component<{}> {
     };
     render() {
         return (
+            <ThemeProvider theme={this.props.theme.theme}>
             <View style={styles.container}>
                 {
                     this.props.logo.text ?
-                        <Animatable.Text 
+                        <NormalText 
                             style={{
                             fontSize: 100, 
                             fontWeight: 'bold',
-                            color: '#555555'
-                        }}>{this.props.logo.text}</Animatable.Text>
+                        }}>{this.props.logo.text}</NormalText>
 
                         :
                         <Image />
                 }
             </View>
+            </ThemeProvider>
         );
     }
 };

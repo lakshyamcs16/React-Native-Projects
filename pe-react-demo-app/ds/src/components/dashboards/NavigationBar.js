@@ -7,7 +7,6 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { getIcon } from '../../utilities/Utilities';
-import { themes  } from '../../themes/theme';
 
 class NavigationBar extends PureComponent {
 
@@ -74,7 +73,7 @@ const styles = StyleSheet.create({
         height: 60,
         paddingTop: 5,
         justifyContent: 'space-around',
-        borderTopColor: themes.light.primary,
+        borderTopColor: '#999999',
         borderTopWidth: 1
     },
     navBarItemContainer: {
@@ -85,7 +84,7 @@ const styles = StyleSheet.create({
     navBarItem: {
         fontSize: 15,
         paddingVertical: 5,
-        color: themes.light.primDark
+        color: '#555555'
     }
 });
 const mapStateToProps = (state) => {

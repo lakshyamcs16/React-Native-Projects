@@ -6,7 +6,6 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { themes  } from '../themes/theme';
 
 export function isJson(str) {
     try {        
@@ -50,6 +49,6 @@ const styles = StyleSheet.create({
     navBarIcon: {
         justifyContent: 'center',
         alignItems: 'center',
-        color: themes.light.primDark
+        color: '#555555'
     }
 });
