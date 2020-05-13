@@ -1,0 +1,59 @@
+{
+    "parser": "2.0.0",
+    "showAppVersion": false,
+  
+    "build": {
+        "version": "2.0.0", // app version 
+        "mode": "debug" // normal, debug, presentation
+    },
+  
+    "network": {
+       "showConnectivityStatus": true
+    },
+  
+    "menubar": {
+      "enabled": true,
+      "position": "bottom",
+      "items": [
+        {
+          "type": "dashboard",
+          "icon": "",
+          "title": "",
+          "params": {
+            "dashboardId": "id here"
+          },
+          "active": true
+        },
+        {
+          "type": "module",
+          "icon": "",
+          "title": "",
+          "params": {
+            "name": "search"
+          }
+        }
+      ]
+    },
+    "notificaion": {
+      "enabled": true,
+      "openFrom": "right"
+    },
+    "login": {
+      "autoLogoutOnAppClose": false,
+      "type": "manual" // OKTA, Google, OpenID..
+    },
+    "title": {
+      "enabled": true
+    },
+    "home": {
+      "type": "dashboard",
+      "icon": "",
+      "title": "",
+      "dashboardId": "id here"
+    },
+    "filters": {
+       "enabled": true,
+       "config": {}
+    }
+  }
+  
