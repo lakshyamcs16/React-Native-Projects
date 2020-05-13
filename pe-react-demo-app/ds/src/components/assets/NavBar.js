@@ -7,7 +7,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { openNavigationDrawer, closeNavigationDrawer } from '../../redux/actions/dashboard/navigation.actions'
-
+import { TopBar, NormalText, StyledMaterialIcon } from  '../../themes/styling';
 
 class NavBar extends Component<{}> {
 
@@ -22,17 +22,17 @@ class NavBar extends Component<{}> {
 
     render() {
         return (
-            <View style={this.props.isFilterEnabled ? styles.navBarContainer
+            <TopBar style={this.props.isFilterEnabled ? styles.navBarContainer
                 : styles.navBarContainerWithoutFilter}>
                 {this.props.isFilterEnabled && 
-                    <Icon
+                    <StyledMaterialIcon
                         name="menu"
                         size={30}
                         onPress={this.toggleDrawer}
                         style={styles.navBarLeftIcon} />}
-                <Text style={this.props.isFilterEnabled ? styles.navBarTitle
-                    : styles.navBarTitleWithoutFilter}>{this.props.title}</Text>
-            </View>
+                <NormalText style={this.props.isFilterEnabled ? styles.navBarTitle
+                    : styles.navBarTitleWithoutFilter}>{this.props.title}</NormalText>
+            </TopBar>
 
         );
     }
@@ -43,35 +43,30 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'flex-start',
         borderBottomWidth: 1,
-        borderBottomColor: '#EEEEEE',
         paddingTop: 5
     },
     navBarContainerWithoutFilter: {
         flexDirection: 'row',
         justifyContent: 'center',
         borderBottomWidth: 1,
-        borderBottomColor: '#EEEEEE',
         paddingVertical: 5
     },
     navBarLeftIcon: {
         flex: 1,
         alignSelf: 'flex-start',
         justifyContent: 'flex-start',
-        color: '#333333',
         alignItems: 'flex-start',
         padding: 10
     },
     navBarTitle: {
         flex: 2,
         fontSize: 30,
-        color: '#333333',
         fontWeight: 'bold',
         alignSelf: 'flex-start',
         justifyContent: 'flex-start',
     },
     navBarTitleWithoutFilter: {
         fontSize: 30,
-        color: '#333333',
         fontWeight: 'bold',
         alignSelf: 'flex-start',
         justifyContent: 'flex-start',

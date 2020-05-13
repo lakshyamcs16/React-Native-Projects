@@ -6,8 +6,22 @@ const initialState = {
 
 export const themeReducer = (state = initialState, action) => {
   switch (action.type) {
-    case "ACTION_TYPE":
-      return;
+    case "DARK":
+      return{
+        theme: {
+          ...base,
+          ...darkTheme,
+          ...colorOptions.teal
+        }
+      }
+    case "LIGHT":
+      return {
+        theme: {
+          ...base,
+          ...lightTheme,
+          ...colorOptions.gray
+        }
+      }
     default:
       return state;
   }

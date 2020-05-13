@@ -26,7 +26,7 @@ class DashboardMain extends Component<{}> {
                 acceptTap={this.props.isDrawerOpen}
                 tweenHandler={(ratio) => {
                     return {
-                        mainOverlay: { opacity: ratio / 1.5, backgroundColor: '#888888' }
+                        mainOverlay: { opacity: ratio / 1.5, backgroundColor: '#000' }
                     }
                 }}
                 styles={{ shadowColor: '#000000', shadowOpacity: 1, shadowRadius: 300 }}

@@ -2,10 +2,13 @@ import React from 'react';
 import {
     StyleSheet,
 } from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {
+    StyledMaterialIcon,
+    StyledAntDesign,
+    StyledMaterialCommunityIcons,
+    StyledIonicons
+} from '../themes/styling';
+import { ThemeProvider } from 'styled-components';
 
 export function isJson(str) {
     try {        
@@ -16,39 +19,45 @@ export function isJson(str) {
     return true;
 }
 
-export var getIcon = (item) => {
+export var getIcon = (item, props) => {    
+    let icon;
     switch (item.iconSource) {
-        case "Ionicons": return (
-            <Ionicons
+        case "Ionicons": icon = (
+            <StyledIonicons
                 name={item.icon}
                 size={25}
-                style={styles.navBarIcon}></Ionicons>
-        )
-        case "AntDesign": return (
-            <AntDesign
+                style={styles.navBarIcon}></StyledIonicons>
+        ); break;
+        case "AntDesign": icon = (
+            <StyledAntDesign
                 name={item.icon}
                 size={25}
-                style={styles.navBarIcon}></AntDesign>
-        )
-        case "MaterialIcons": return (
-            <MaterialIcons
+                style={styles.navBarIcon}></StyledAntDesign>
+        ); break;
+        case "MaterialIcons": icon = (
+            <StyledMaterialIcon
                 name={item.icon}
                 size={25}
-                style={styles.navBarIcon}></MaterialIcons>
-        )
-        case "MaterialCommunityIcons": return (
-            <MaterialCommunityIcons
+                style={styles.navBarIcon}></StyledMaterialIcon>
+        ); break;
+        case "MaterialCommunityIcons": icon = (
+            <StyledMaterialCommunityIcons
                 name={item.icon}
                 size={25}
-                style={styles.navBarIcon}></MaterialCommunityIcons>
-        )
+                style={styles.navBarIcon}></StyledMaterialCommunityIcons>
+        );
     }
+
+    return (
+        <ThemeProvider theme={props.theme}>
+            {icon}
+        </ThemeProvider>
+    )
 }
 
 const styles = StyleSheet.create({
     navBarIcon: {
         justifyContent: 'center',
         alignItems: 'center',
-        color: '#555555'
     }
 });

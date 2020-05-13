@@ -7,13 +7,13 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { getIcon } from '../../utilities/Utilities';
+import { NormalText, BottomBar } from '../../themes/styling';
+import { ThemeProvider } from 'styled-components';
 
 class NavigationBar extends PureComponent {
 
     constructor(props) {
         super(props);
-        console.log(themes.light.primary);
-        
         this.state = {
             items: []
         }
@@ -38,19 +38,19 @@ class NavigationBar extends PureComponent {
                 return (
                     <TouchableOpacity key={key}
                         style={styles.navBarItemContainer}>
-                        {getIcon(item)}
-                        <Text
+                        {getIcon(item, this.props.theme)}
+                        <NormalText
                             style={styles.navBarItem}>
-                            {item.title}</Text>
+                            {item.title}</NormalText>
                     </TouchableOpacity>);
             } else if (item.type === "module") {
                 return (
                     <TouchableOpacity key={key}
                         style={styles.navBarItemContainer}>
-                        {getIcon(item)}
-                        <Text
+                        {getIcon(item, this.props.theme)}
+                        <NormalText
                             style={[styles.navBarItem]}>
-                            {item.title}</Text>
+                            {item.title}</NormalText>
                     </TouchableOpacity>);
             }
         })
@@ -58,11 +58,13 @@ class NavigationBar extends PureComponent {
         return items;
     }
 
-    render() {
+    render() {        
         return (
-            <View style={styles.navBar}>
-                {this.state.items.length > 1 && this.renderNavBar()}
-            </View>
+            <ThemeProvider theme={this.props.theme.theme}>
+                <BottomBar style={styles.navBar}>
+                    {this.state.items.length > 1 && this.renderNavBar()}
+                </BottomBar>
+            </ThemeProvider>
         );
     }
 };
@@ -73,8 +75,7 @@ const styles = StyleSheet.create({
         height: 60,
         paddingTop: 5,
         justifyContent: 'space-around',
-        borderTopColor: '#999999',
-        borderTopWidth: 1
+        borderTopWidth: 1,
     },
     navBarItemContainer: {
         justifyContent: 'center',
@@ -84,7 +85,6 @@ const styles = StyleSheet.create({
     navBarItem: {
         fontSize: 15,
         paddingVertical: 5,
-        color: '#555555'
     }
 });
 const mapStateToProps = (state) => {

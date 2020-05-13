@@ -1,4 +1,24 @@
 import styled from "styled-components";
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+
+export const StyledMaterialIcon = styled(MaterialIcon)`
+  color: ${props => props.theme.theme.PRIMARY_TEXT_COLOR}
+`;
+
+export const StyledIonicons = styled(Ionicons)`
+  color: ${props => props.theme.theme.PRIMARY_TEXT_COLOR}
+`;
+
+export const StyledAntDesign = styled(AntDesign)`
+  color: ${props => props.theme.theme.PRIMARY_TEXT_COLOR}
+`;
+
+export const StyledMaterialCommunityIcons = styled(MaterialCommunityIcons)`
+  color: ${props => props.theme.theme.PRIMARY_TEXT_COLOR}
+`;
 
 export const SafeAreaView = styled.SafeAreaView`
   backgroundColor: ${props => props.theme.theme.PRIMARY_BACKGROUND_COLOR};
@@ -8,18 +28,18 @@ export const LoginBackground = styled.ScrollView`
   backgroundColor: ${props => props.theme.theme.PRIMARY_BACKGROUND_COLOR};
 `;
 
+export const TopBar = styled.View`
+  backgroundColor: ${props => props.theme.theme.PRIMARY_BACKGROUND_COLOR};
+  borderBottomColor: ${props => props.theme.theme.PRIMARY_BORDER_COLOR};
+`; 
 export const BottomBar = styled.View`
   backgroundColor: ${props => props.theme.theme.PRIMARY_BACKGROUND_COLOR};
   borderTopColor: ${props => props.theme.theme.PRIMARY_BORDER_COLOR};
 
 `;
 
-export const Header = styled.View`
-  padding-top: 10;
-  padding-bottom: 10;
-  padding-left: 10;
-  padding-right: 10;
-  background-color: ${props => props.theme.PRIMARY_COLOR};
+export const Background = styled.View`
+  backgroundColor: ${props => props.theme.theme.PRIMARY_BACKGROUND_COLOR};
 `;
 
 export const HeaderText = styled.Text`
@@ -47,10 +67,6 @@ export const Segment = styled.View`
   align-items: stretch;
 `;
 
-export const Icon = styled.Image`
-  height: 60;
-  width: 60;
-`;
 
 export const NormalText = styled.Text`
   color: ${props => props.theme.theme.PRIMARY_TEXT_COLOR};
