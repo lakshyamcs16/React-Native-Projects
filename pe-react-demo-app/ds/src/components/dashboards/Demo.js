@@ -46,7 +46,7 @@ class Demo extends Component {
     return (
       <>
         <ThemeProvider theme={this.props.theme}>
-          <NavBar theme={this.props.theme}/>
+          <NavBar theme={this.props.theme} />
           <ScrollView>
             <View style={styles.container}>
               <View style={styles.keyStats}>
@@ -96,7 +96,8 @@ class Demo extends Component {
               </View>
             </View>
           </ScrollView>
-          <NavigationBar config={this.state.appConfig.menubar} theme={this.props.theme}/>
+
+          <NavigationBar config={this.state.appConfig.menubar} theme={this.props.theme} />
         </ThemeProvider>
       </>
     );
@@ -167,7 +168,6 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
   return {
-    config: state.navigationDetails,
     theme: state.themeDetails
   }
 }

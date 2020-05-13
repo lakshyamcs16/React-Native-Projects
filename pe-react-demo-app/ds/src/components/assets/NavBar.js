@@ -6,8 +6,8 @@ import {
     View
 } from 'react-native';
 import { connect } from 'react-redux';
-import { openNavigationDrawer, closeNavigationDrawer } from '../../redux/actions/dashboard/navigation.actions'
-import { TopBar, NormalText, StyledMaterialIcon } from  '../../themes/styling';
+import { openNavigationDrawer, closeNavigationDrawer, openNotificationDrawer, closeNotificationDrawer } from '../../redux/actions/dashboard/navigation.actions'
+import { TopBar, NormalText, StyledMaterialIcon, StyledIonicons } from '../../themes/styling';
 
 class NavBar extends Component<{}> {
 
@@ -20,11 +20,20 @@ class NavBar extends Component<{}> {
         }
     }
 
+    toggleNotificationDrawer = () => {
+        const isNotificationDrawerOpen = this.props.isNotificationDrawerOpen;
+        if (isNotificationDrawerOpen) {
+            this.props.closeNotificationDrawer();
+        } else {
+            this.props.openNotificationDrawer();
+        }
+    }
+
     render() {
         return (
             <TopBar style={this.props.isFilterEnabled ? styles.navBarContainer
                 : styles.navBarContainerWithoutFilter}>
-                {this.props.isFilterEnabled && 
+                {this.props.isFilterEnabled &&
                     <StyledMaterialIcon
                         name="menu"
                         size={30}
@@ -32,6 +41,13 @@ class NavBar extends Component<{}> {
                         style={styles.navBarLeftIcon} />}
                 <NormalText style={this.props.isFilterEnabled ? styles.navBarTitle
                     : styles.navBarTitleWithoutFilter}>{this.props.title}</NormalText>
+                <TopBar style={{flex: 1, alignItems: 'flex-end', justifyContent: 'flex-end'}}>
+                    <StyledMaterialIcon
+                        name="notifications-none"
+                        size={30}
+                        onPress={this.toggleNotificationDrawer}
+                        style={styles.navBarRightIcon} />
+                </TopBar>
             </TopBar>
 
         );
@@ -43,7 +59,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'flex-start',
         borderBottomWidth: 1,
-        paddingTop: 5
+        paddingTop: 5,
+        paddingBottom: 10
     },
     navBarContainerWithoutFilter: {
         flexDirection: 'row',
@@ -53,17 +70,24 @@ const styles = StyleSheet.create({
     },
     navBarLeftIcon: {
         flex: 1,
-        alignSelf: 'flex-start',
-        justifyContent: 'flex-start',
-        alignItems: 'flex-start',
-        padding: 10
+        alignSelf: 'flex-end',
+        justifyContent: 'flex-end',
+        alignItems: 'flex-end',
+        paddingLeft: 10,
+    },
+    navBarRightIcon: {
+        alignSelf: 'flex-end',
+        justifyContent: 'flex-end',
+        alignItems: 'flex-end',
+        paddingRight: 10
     },
     navBarTitle: {
-        flex: 2,
+        flex: 1,
         fontSize: 30,
         fontWeight: 'bold',
-        alignSelf: 'flex-start',
-        justifyContent: 'flex-start',
+        alignSelf: 'center',
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     navBarTitleWithoutFilter: {
         fontSize: 30,
@@ -77,14 +101,17 @@ const mapStateToProps = (state) => {
     return {
         isDrawerOpen: state.navigationDetails.isDrawerOpen,
         title: state.navigationDetails.title,
-        isFilterEnabled: state.navigationDetails.isFilterEnabled
+        isFilterEnabled: state.navigationDetails.isFilterEnabled,
+        isNotificationDrawerOpen: state.navigationDetails.isNotificationDrawerOpen
     }
 }
 
 const dispatchStateToProps = (dispatch) => {
     return {
         openNavigationDrawer: () => dispatch(openNavigationDrawer()),
-        closeNavigationDrawer: () => dispatch(closeNavigationDrawer())
+        closeNavigationDrawer: () => dispatch(closeNavigationDrawer()),
+        openNotificationDrawer: () => dispatch(openNotificationDrawer()),
+        closeNotificationDrawer: () => dispatch(closeNotificationDrawer())
     }
 }
 
