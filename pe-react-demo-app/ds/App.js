@@ -5,6 +5,7 @@ import {
 } from 'react-native';
 
 import { Provider } from "react-redux";
+import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 import store from "./src/redux/config/store";
 import Main from './src/Main';
 
@@ -12,9 +13,11 @@ export default class App extends Component<{}> {
   render() {
     return (
       <Provider store={store}>
-        <View style={styles.container}>
-          <Main />
-        </View>
+        <PaperProvider>
+          <View style={styles.container}>
+            <Main />
+          </View>
+        </PaperProvider>
       </Provider>
     );
   }

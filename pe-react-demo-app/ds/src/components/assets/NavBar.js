@@ -8,6 +8,7 @@ import {
 import { connect } from 'react-redux';
 import { openNavigationDrawer, closeNavigationDrawer, openNotificationDrawer, closeNotificationDrawer } from '../../redux/actions/dashboard/navigation.actions'
 import { TopBar, NormalText, StyledMaterialIcon, StyledIonicons } from '../../themes/styling';
+import { Badge } from 'react-native-paper';
 
 class NavBar extends Component<{}> {
 
@@ -41,7 +42,8 @@ class NavBar extends Component<{}> {
                         style={styles.navBarLeftIcon} />}
                 <NormalText style={this.props.isFilterEnabled ? styles.navBarTitle
                     : styles.navBarTitleWithoutFilter}>{this.props.title}</NormalText>
-                <TopBar style={{flex: 1, alignItems: 'flex-end', justifyContent: 'flex-end'}}>
+                <TopBar style={{ flex: 1, alignItems: 'flex-end', justifyContent: 'flex-end' }}>
+                    <Badge style={{zIndex: 2}}>5</Badge>
                     <StyledMaterialIcon
                         name="notifications-none"
                         size={30}
@@ -79,10 +81,10 @@ const styles = StyleSheet.create({
         alignSelf: 'flex-end',
         justifyContent: 'flex-end',
         alignItems: 'flex-end',
-        paddingRight: 10
+        paddingRight: 3,
+        marginTop: -15
     },
     navBarTitle: {
-        flex: 1,
         fontSize: 30,
         fontWeight: 'bold',
         alignSelf: 'center',
@@ -100,7 +102,6 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => {
     return {
         isDrawerOpen: state.navigationDetails.isDrawerOpen,
-        title: state.navigationDetails.title,
         isFilterEnabled: state.navigationDetails.isFilterEnabled,
         isNotificationDrawerOpen: state.navigationDetails.isNotificationDrawerOpen
     }

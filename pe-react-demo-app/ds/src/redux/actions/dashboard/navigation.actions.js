@@ -105,7 +105,6 @@ export const fetchAppConfig = () => {
                 
                 try {
                     dispatch(appConfigFailure(body.message));
-                    console.log(body.message);
                     
                 } catch (e) {
                     

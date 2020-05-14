@@ -15,6 +15,7 @@ import { connect } from 'react-redux';
 import { ThemeProvider } from 'styled-components';
 import { fetchAppConfig } from '../../redux/actions/dashboard/navigation.actions'
 import NavBar from '../assets/NavBar';
+import { Actions } from 'react-native-router-flux';
 const leftDummyData = require('../../../data/leftTableDummyData.json')
 const rightDummyData = require('../../../data/rightTableDummyData.json')
 const isAndroid = Platform.OS === 'android';
@@ -46,7 +47,7 @@ class Demo extends Component {
     return (
       <>
         <ThemeProvider theme={this.props.theme}>
-          <NavBar theme={this.props.theme} />
+          <NavBar theme={this.props.theme} title={"Summary"}/>
           <ScrollView>
             <View style={styles.container}>
               <View style={styles.keyStats}>
@@ -55,7 +56,7 @@ class Demo extends Component {
               </View>
               <View style={styles.statsContainer}>
                 <View style={styles.statDetails}>
-                  <TouchableOpacity>
+                  <TouchableOpacity onPress={() => Actions["open"].call()}>
                     <Text style={styles.statHeading}>OPEN</Text>
                     <Text style={styles.statSubHeading}>516.95</Text>
                   </TouchableOpacity>
@@ -114,7 +115,6 @@ const styles = StyleSheet.create({
   },
   keyHeading: {
     fontSize: 52,
-    color: '#05ad6a',
     fontWeight: 'bold'
   },
   keySubHeading: {

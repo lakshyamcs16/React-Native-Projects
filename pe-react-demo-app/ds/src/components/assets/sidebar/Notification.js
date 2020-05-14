@@ -10,8 +10,6 @@ import { Background, NormalText } from '../../../themes/styling';
 
 class Notification extends Component {
     render() {
-        console.log(JSON.stringify(this.props));
-
         return (
             <ThemeProvider theme={this.props.theme}>
                 <Background style={{ flex: 1, shadowColor: '#000000', shadowOffset: { width: 100 } }}>
