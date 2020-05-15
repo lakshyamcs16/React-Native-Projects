@@ -6,15 +6,15 @@ import {
 } from 'react-native'
 import { connect } from 'react-redux';
 import { ThemeProvider } from 'styled-components';
-import { Background, NormalText } from '../../../themes/styling';
+import { FilterBackground, NormalText } from '../../../themes/styling';
 
 class Notification extends Component {
     render() {
         return (
             <ThemeProvider theme={this.props.theme}>
-                <Background style={{ flex: 1, shadowColor: '#000000', shadowOffset: { width: 100 } }}>
+                <FilterBackground style={{ flex: 1, shadowColor: '#000000', shadowOffset: { width: 100 } }}>
                     <NormalText>Notifications!</NormalText>
-                </Background>
+                </FilterBackground>
             </ThemeProvider>
         );
     }

@@ -24,7 +24,7 @@ export const api = async (url, method, body = null, headers = {}, isBaseUrlAbsen
         const timeOutPromise = new Promise((resolve, reject) => {
             setTimeout(() => {
                 reject(`{ "statusCode": "408", "message" : "Please check your internet connection" }`);
-            }, 10000);
+            }, 100000);
         });
 
         const response = await Promise.race([fetchPromise, timeOutPromise]);

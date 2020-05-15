@@ -9,6 +9,7 @@ import { connect } from 'react-redux';
 import { openNavigationDrawer, closeNavigationDrawer, openNotificationDrawer, closeNotificationDrawer } from '../../redux/actions/dashboard/navigation.actions'
 import { TopBar, NormalText, StyledMaterialIcon, StyledIonicons } from '../../themes/styling';
 import { Badge } from 'react-native-paper';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 class NavBar extends Component<{}> {
 
@@ -43,12 +44,15 @@ class NavBar extends Component<{}> {
                 <NormalText style={this.props.isFilterEnabled ? styles.navBarTitle
                     : styles.navBarTitleWithoutFilter}>{this.props.title}</NormalText>
                 <TopBar style={{ flex: 1, alignItems: 'flex-end', justifyContent: 'flex-end' }}>
-                    <Badge style={{zIndex: 2}}>5</Badge>
-                    <StyledMaterialIcon
-                        name="notifications-none"
-                        size={30}
+                    <TouchableOpacity
                         onPress={this.toggleNotificationDrawer}
-                        style={styles.navBarRightIcon} />
+                    >
+                        <Badge size={20} style={{ zIndex: 2, marginRight: 5, marginBottom: 7 }}>5</Badge>
+                        <StyledMaterialIcon
+                            name="notifications-none"
+                            size={27}
+                            style={styles.navBarRightIcon} />
+                    </TouchableOpacity>
                 </TopBar>
             </TopBar>
 
@@ -82,14 +86,15 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end',
         alignItems: 'flex-end',
         paddingRight: 3,
-        marginTop: -15
+        marginRight: 5,
+        marginTop: -20
     },
     navBarTitle: {
-        fontSize: 30,
+        fontSize: 25,
         fontWeight: 'bold',
         alignSelf: 'center',
         justifyContent: 'center',
-        alignItems: 'center',
+        alignItems: 'baseline',
     },
     navBarTitleWithoutFilter: {
         fontSize: 30,

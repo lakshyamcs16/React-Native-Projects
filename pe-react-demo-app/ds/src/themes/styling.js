@@ -31,7 +31,7 @@ export const LoginBackground = styled.ScrollView`
 export const TopBar = styled.View`
   backgroundColor: ${props => props.theme.theme.PRIMARY_BACKGROUND_COLOR};
   borderBottomColor: ${props => props.theme.theme.PRIMARY_BORDER_COLOR};
-`; 
+`;
 export const BottomBar = styled.View`
   backgroundColor: ${props => props.theme.theme.PRIMARY_BACKGROUND_COLOR};
   borderTopColor: ${props => props.theme.theme.PRIMARY_BORDER_COLOR};
@@ -42,6 +42,9 @@ export const Background = styled.View`
   backgroundColor: ${props => props.theme.theme.PRIMARY_BACKGROUND_COLOR};
 `;
 
+export const FilterBackground = styled.View`
+  backgroundColor: ${props => props.theme.theme.SECONDARY_BACKGROUND_COLOR};
+`;
 export const HeaderText = styled.Text`
   font-size: 24;
   color: ${props => props.theme.PRIMARY_FOREGROUND_COLOR};
@@ -85,7 +88,7 @@ export const TextInputContainer = styled.View`
 `;
 
 export const LoginTextInput = styled.TextInput.attrs(
-    props => ({placeholderTextColor: props.theme.theme.PRIMARY_TEXT_COLOR})
+  props => ({ placeholderTextColor: props.theme.theme.PRIMARY_TEXT_COLOR })
 )`
         alignSelf: stretch;
         backgroundColor: ${props => props.theme.theme.PRIMARY_TEXT_BACKGROUND_COLOR};

@@ -6,7 +6,7 @@ import {
 } from 'react-native'
 import { connect } from 'react-redux';
 import { ThemeProvider } from 'styled-components';
-import { Background, NormalText } from '../../../themes/styling';
+import { FilterBackground, NormalText } from '../../../themes/styling';
 import { Divider, List } from 'react-native-paper';
 import { StyledMaterialIcon } from '../../../themes/styling';
 
@@ -92,7 +92,7 @@ class Filter extends Component {
     render() {
         return (
             <ThemeProvider theme={this.props.theme}>
-                <Background style={{ flex: 1, shadowColor: '#000000', shadowOffset: { width: 100 } }}>
+                <FilterBackground style={{ flex: 1, shadowColor: '#000000', shadowOffset: { width: 100 } }}>
 
                     <List.AccordionGroup>
                         <List.Section>
@@ -135,7 +135,7 @@ class Filter extends Component {
                             </List.Accordion>
                         </List.Section>
                     </List.AccordionGroup>
-                </Background>
+                </FilterBackground>
             </ThemeProvider>
         );
     }

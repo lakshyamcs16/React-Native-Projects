@@ -1,5 +1,3 @@
-import React, { Component } from 'react';
-
 export const base = {
     FONT_SIZE_TINY: 8,
     FONT_SIZE_SMALL: 12,
@@ -7,7 +5,9 @@ export const base = {
     FONT_SIZE_LARGE: 18,
     FONT_SIZE_EXTRA_LARGE: 24,
     FONT_SIZE_MASSIVE: 34,
-  
+    FONT_SIZE_SUPER: 44,
+    FONT_SIZE_GIANT: 54,
+
     FONT_WEIGHT_LIGHT: "200",
     FONT_WEIGHT_MEDIUM: "600",
     FONT_WEIGHT_BOLD: "900",
@@ -29,6 +29,8 @@ export const base = {
     PRIMARY_BORDER_COLOR: "rgba(31, 31, 31, 1)",
     PRIMARY_BORDER_COLOR_LIGHT: "rgba(232, 232, 232, 0.4)",
     
+    PRIMARY_BORDER_COLOR_LIGHT:"rgba(61, 61, 61, 0.7)",
+
     PRIMARY_TEXT_COLOR: "#ffffff",
     PRIMARY_TEXT_COLOR_LIGHT: "#f7f7f7",
     SECONDARY_TEXT_COLOR: "#3d3d3d",
@@ -36,15 +38,19 @@ export const base = {
     SECONDARY_TEXT_BACKGROUND_COLOR: "#ffffff"
   };
   export const lightTheme = {
-    PRIMARY_BACKGROUND_COLOR: "#fff",
+    PRIMARY_BACKGROUND_COLOR: "rgba(232, 232, 232, 0.1)",
     PRIMARY_BACKGROUND_COLOR_LIGHT: "#f7f7f7",
   
     PRIMARY_BORDER_COLOR: "rgba(232, 232, 232, 1)",
     PRIMARY_BORDER_COLOR_LIGHT: "rgba(232, 232, 232, 0.4)",
 
-    SECONDARY_BACKGROUND_COLOR: "#3d3d3d",
+    SECONDARY_BACKGROUND_COLOR: "rgba(252, 252, 252, 1)",
     SECONDARY_BACKGROUND_COLOR_LIGHT: "#797979",
   
+    PRIMARY_CARD_BACKGROUND_COLOR: '#fbf5ff',
+
+    SELECTED_ITEM_COLOR: '#000',
+
     PRIMARY_TEXT_COLOR: "rgba(100,100,100,1)",
     PRIMARY_TEXT_COLOR_LIGHT: "#797979",
     SECONDARY_TEXT_COLOR: "#ffffff",
@@ -86,7 +92,7 @@ export const base = {
       PRIMARY_COLOR_LIGHT: "#4DB6AC",
       PRIMARY_COLOR: "#009688",
       PRIMARY_COLOR_BOLD: "#00695C",
-      PRIMARY_FOREGROUND_COLOR: "#ffffff"
+      PRIMARY_FOREGROUND_COLOR: "#ffffff",
     },
     gray: {
       PRIMARY_COLOR_FAINT: "#FAFAFA",
