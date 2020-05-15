@@ -3,6 +3,7 @@ import {
     IS_NAVIGATION_BAR_TITLE_ENABLED,
     IS_NAVIGATION_BAR_FILTERS_ENABLED,
     TOGGLE_DRAWER,
+    TOGGLE_NOTIFICATION_DRAWER,
     SET_APP_CONFIG,
     SET_APP_CONFIG_ERROR
 } from "../../types/dashboard/navigation.types.js";
@@ -40,6 +41,20 @@ export const openNavigationDrawer = () => {
 export const closeNavigationDrawer = () => {
     return {
         type: TOGGLE_DRAWER,
+        payload: false
+    }
+}
+
+export const openNotificationDrawer = () => {
+    return {
+        type: TOGGLE_NOTIFICATION_DRAWER,
+        payload: true
+    }
+}
+
+export const closeNotificationDrawer = () => {
+    return {
+        type: TOGGLE_NOTIFICATION_DRAWER,
         payload: false
     }
 }
@@ -90,7 +105,6 @@ export const fetchAppConfig = () => {
                 
                 try {
                     dispatch(appConfigFailure(body.message));
-                    console.log(body.message);
                     
                 } catch (e) {
                     

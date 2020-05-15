@@ -14,7 +14,7 @@ class Main extends Component<{}> {
     return (
       <ThemeProvider theme={this.props.theme}>
         <SafeAreaView style={styles.container}>
-          <Routes isLoggedIn={loggedin} />
+          <Routes isLoggedIn={loggedin} tab={""}/>
         </SafeAreaView>
       </ThemeProvider>
     )

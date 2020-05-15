@@ -5,8 +5,10 @@ import {
   View,
   Text,
   TouchableOpacity,
-  Platform
+  Platform,
+  
 } from 'react-native';
+import {ActivityIndicator} from 'react-native-paper';
 import HTML_FILE from '../../../resources/html/index.html';
 import TableView from '../assets/TableView'
 import WebView from 'react-native-webview'
@@ -14,7 +16,11 @@ import NavigationBar from '../dashboards/NavigationBar';
 import { connect } from 'react-redux';
 import { ThemeProvider } from 'styled-components';
 import { fetchAppConfig } from '../../redux/actions/dashboard/navigation.actions'
+import { fetchWidgetConfig, widgetRequest } from '../../redux/actions/dashboard/main.actions'
 import NavBar from '../assets/NavBar';
+import { Actions } from 'react-native-router-flux';
+import { GetWidgets } from './GetWidgets';
+
 const leftDummyData = require('../../../data/leftTableDummyData.json')
 const rightDummyData = require('../../../data/rightTableDummyData.json')
 const isAndroid = Platform.OS === 'android';
@@ -27,15 +33,29 @@ class Demo extends Component {
       items: leftDummyData,
       rightItem: rightDummyData
     },
-    appConfig: {}
+    appConfig: {},
+    widgetConfig: {}
   }
 
   async componentDidMount() {
     const response = await this.props.fetchAppConfig()
 
-    this.setState({
-      appConfig: response.body
-    })
+    if(response.success) {
+      this.setState({
+        appConfig: response.body
+      });
+
+      this.props.widgetRequest();
+
+      const widgetConfigResponse = await this.props.fetchWidgetConfig()
+
+      if(widgetConfigResponse.success) {
+        this.setState({
+          widgetConfig: widgetConfigResponse.body
+        })        
+      }
+    }
+    
   }
 
   render() {
@@ -46,57 +66,20 @@ class Demo extends Component {
     return (
       <>
         <ThemeProvider theme={this.props.theme}>
-          <NavBar theme={this.props.theme}/>
-          <ScrollView>
-            <View style={styles.container}>
-              <View style={styles.keyStats}>
-                <Text style={styles.keyHeading}>568.80</Text>
-                <Text style={styles.keySubHeading}>Closed, 15:59 03/13 IST</Text>
-              </View>
-              <View style={styles.statsContainer}>
-                <View style={styles.statDetails}>
-                  <TouchableOpacity>
-                    <Text style={styles.statHeading}>OPEN</Text>
-                    <Text style={styles.statSubHeading}>516.95</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity>
-                    <Text style={styles.statHeading}>PREV CLOSE</Text>
-                    <Text style={styles.statSubHeading}>543.25</Text>
-                  </TouchableOpacity>
-                </View>
-                <View style={styles.statDetails}>
-                  <Text style={styles.statHeading}>DAY'S RANGE</Text>
-                  <Text style={styles.statSubHeading}>451.10-585.65</Text>
+          <NavBar theme={this.props.theme} title={"Pipeline"} subtitle={"Private Equity"}/>
+          <View style={{flex:1}} >
+            {
+              Object.keys(this.state.widgetConfig).length > 0 ?
+                this.state.widgetConfig.widgets.map( config => {
+                    return <GetWidgets key={config.id} wConfig={config} theme={this.props.theme} />
+                })
+              :
+                <ActivityIndicator style={{flex:1, justifyContent: 'center', alignSelf: 'center', alignItems: 'center'}}>
 
-                  <Text style={styles.statHeading}>MARKET CAP</Text>
-                  <Text style={styles.statSubHeading}>1.60T</Text>
-                </View>
-                <View style={styles.statDetails}>
-                  <Text style={styles.statHeadingLast}>VOLUME</Text>
-                  <Text style={styles.statSubHeadingLast}>25.60M</Text>
-
-
-                  <Text style={styles.statHeadingLast}>AVG VOL (3M)</Text>
-                  <Text style={styles.statSubHeadingLast}>9.27M</Text>
-                </View>
-              </View>
-              <View style={styles.chartConfig}>
-                <WebView
-                  source={isAndroid ? { uri: uri } : HTML_FILE}
-                  injectedJavaScript={'Drawchart()'}
-                  style={{ flex: null, height: 395 }}
-                  originWhitelist={['*']}
-                  domStorageEnabled={true}
-                  javaScriptEnabled={true}
-                  mixedContentMode={'compatibility'}
-                />
-              </View>
-              <View>
-                <TableView data={this.state.data} />
-              </View>
-            </View>
-          </ScrollView>
-          <NavigationBar config={this.state.appConfig.menubar} theme={this.props.theme}/>
+                </ActivityIndicator>
+            }
+          </View>
+          <NavigationBar config={this.state.appConfig.menubar} theme={this.props.theme} />
         </ThemeProvider>
       </>
     );
@@ -113,8 +96,8 @@ const styles = StyleSheet.create({
   },
   keyHeading: {
     fontSize: 52,
-    color: '#05ad6a',
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    color: '#009e5a'
   },
   keySubHeading: {
     fontSize: 15,
@@ -167,7 +150,6 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
   return {
-    config: state.navigationDetails,
     theme: state.themeDetails
   }
 }
@@ -175,6 +157,8 @@ const mapStateToProps = (state) => {
 const dispatchStateToProps = (dispatch) => {
   return {
     fetchAppConfig: () => dispatch(fetchAppConfig()),
+    fetchWidgetConfig: () => dispatch(fetchWidgetConfig()),
+    widgetRequest: () => dispatch(widgetRequest())
   }
 }
 

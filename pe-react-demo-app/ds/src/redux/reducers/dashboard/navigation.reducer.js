@@ -1,6 +1,7 @@
 import {
     UPDATE_NAVIGATION_BAR_TITLE,
     TOGGLE_DRAWER,
+    TOGGLE_NOTIFICATION_DRAWER,
     SET_APP_CONFIG_ERROR,
     SET_APP_CONFIG,
     IS_NAVIGATION_BAR_TITLE_ENABLED,
@@ -12,6 +13,7 @@ const initialState = {
     isTitleEnabled: false,
     isFilterEnabled: false,
     isDrawerOpen: false,
+    isNotificationDrawerOpen: false,
     error: '',
     appConfig: {}
 };
@@ -39,13 +41,18 @@ export const navigationReducer = (state = initialState, action) => {
                 ...state,
                 isDrawerOpen: action.payload
             }
+        case TOGGLE_NOTIFICATION_DRAWER:
+            return {
+                ...state,
+                isNotificationDrawerOpen: action.payload
+            }
         case SET_APP_CONFIG_ERROR:
             return {
                 ...state,
                 appConfig: {},
                 error: action.payload
             }
-        case SET_APP_CONFIG: 
+        case SET_APP_CONFIG:
             return {
                 ...state,
                 error: '',

@@ -24,7 +24,7 @@ export const api = async (url, method, body = null, headers = {}, isBaseUrlAbsen
         const timeOutPromise = new Promise((resolve, reject) => {
             setTimeout(() => {
                 reject(`{ "statusCode": "408", "message" : "Please check your internet connection" }`);
-            }, 10000);
+            }, 100000);
         });
 
         const response = await Promise.race([fetchPromise, timeOutPromise]);
@@ -48,8 +48,6 @@ export const fetchApi = async (url, method, body, statusCode, token = null, base
         }
 
         const response = await api(url, method, body, headers);
-
-        console.log(response);
 
         if (response.status === statusCode) {
             result.success = true;
@@ -82,8 +80,6 @@ export const fetchApi = async (url, method, body, statusCode, token = null, base
         }
 
         result.responseBody = errorBody;
-
-        console.log(result);
 
         throw result;
     } catch (error) {

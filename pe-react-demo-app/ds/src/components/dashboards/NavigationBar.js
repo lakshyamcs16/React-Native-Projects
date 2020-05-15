@@ -9,6 +9,7 @@ import { connect } from 'react-redux';
 import { getIcon } from '../../utilities/Utilities';
 import { NormalText, BottomBar } from '../../themes/styling';
 import { ThemeProvider } from 'styled-components';
+import { Actions } from 'react-native-router-flux';
 
 class NavigationBar extends PureComponent {
 
@@ -40,12 +41,13 @@ class NavigationBar extends PureComponent {
                         style={styles.navBarItemContainer}>
                         {getIcon(item, this.props.theme)}
                         <NormalText
-                            style={styles.navBarItem}>
+                            style={[styles.navBarItem, { fontWeight: item.active? 'bold': 'normal'}]}>
                             {item.title}</NormalText>
                     </TouchableOpacity>);
             } else if (item.type === "module") {
                 return (
                     <TouchableOpacity key={key}
+                        onPress={() => Actions.search()}
                         style={styles.navBarItemContainer}>
                         {getIcon(item, this.props.theme)}
                         <NormalText
