@@ -19,4 +19,4 @@ Possible errors:-
     1. unlinked libraries: If an error related to unlinked libraries appear, please try the command "react-native link"
     
     2. errors related to vector icons:- 
-        please follow this [guide on how to setup react native vector library](https://www.npmjs.com/package/react-native-vector-icons)?
+        please follow this https://www.npmjs.com/package/react-native-vector-icons
