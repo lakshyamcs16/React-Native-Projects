@@ -38,13 +38,12 @@ class DashboardMain extends Component<{}> {
                     onCloseStart={() => this.props.closeNavigationDrawer()}
                     tweenDuration={300}
                     acceptTap={this.props.isDrawerOpen}
-                    captureGestures="closed"
                     tweenHandler={(ratio) => {
                         return {
                             mainOverlay: { opacity: ratio / 1.5, backgroundColor: '#000' }
                         }
                     }}
-                    styles={{ shadowColor: '#000000', shadowOpacity: 1, shadowRadius: 300 }}
+                    styles={{ shadowColor: '#000000', shadowOpacity: 1, shadowRadius: 300}}
                     content={<Filter />}
                 >
                     <Drawer

@@ -60,23 +60,44 @@ export var getIcon = (item, props) => {
     )
 }
 
-export const nFormatter = (num, digits) => {
-    var si = [
-      { value: 1, symbol: "" },
-      { value: 1E3, symbol: "k" },
-      { value: 1E6, symbol: "m" },
-      { value: 1E9, symbol: "g" },
-      { value: 1E12, symbol: "t" },
-      { value: 1E15, symbol: "p" },
-      { value: 1E18, symbol: "e" }
-    ];
+export const nFormatter = (num, precision = "", digits = 0) => {
     var rx = /\.0+$|(\.[0-9]*[1-9])0+$/;
-    var i;
-    for (i = si.length - 1; i > 0; i--) {
-      if (num >= si[i].value) {
-        break;
-      }
-    }
+    var i = 0;
+    if(precision === "auto") {
+        var si = [
+            { value: 1, symbol: "" },
+            { value: 1E3, symbol: "k" },
+            { value: 1E6, symbol: "m" },
+            { value: 1E9, symbol: "g" },
+            { value: 1E12, symbol: "t" },
+            { value: 1E15, symbol: "p" },
+            { value: 1E18, symbol: "e" }
+          ];
+
+          for (i = si.length - 1; i > 0; i--) {
+            if (num >= si[i].value) {
+              break;
+            }
+          }
+    }else{
+        var si = [];
+        switch (precision) {
+            case "k":
+                si.push({ value: 1E3, symbol: "k" }); break;
+            case "m":
+                si.push({ value: 1E6, symbol: "m" }); break;
+            case "g":
+                si.push({ value: 1E9, symbol: "g" }); break;
+            case "t":
+                si.push({ value: 1E12, symbol: "t" }); break;
+            case "p":
+                si.push({ value: 1E15, symbol: "p" }); break;
+            case "e":
+                si.push({ value: 1E18, symbol: "e" }); break;
+            default:
+                si.push({ value: 1, symbol: ""}); break;
+        }
+    }    
     return (num / si[i].value).toFixed(digits).replace(rx, "$1") + si[i].symbol;
   }
 

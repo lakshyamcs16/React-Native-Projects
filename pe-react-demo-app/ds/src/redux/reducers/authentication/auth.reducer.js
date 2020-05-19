@@ -6,7 +6,7 @@ import {
 } from "../../types/authentication/auth.types.js";
 
 const initialState = {
-    loggedin: true,
+    loggedin: false,
     loading: false,
     user_details: {},
     error: ''

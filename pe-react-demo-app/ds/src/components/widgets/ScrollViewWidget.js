@@ -3,88 +3,73 @@ import {
     Text,
     View,
     StyleSheet,
+    Alert
 } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { base } from '../../themes/theme';
 import { nFormatter } from '../../utilities/Utilities';
-import { StyledIonicons } from '../../themes/styling';
+import { fetchWidgetData, dataRequest } from '../../redux/actions/dashboard/main.actions';
+import { GENERIC_DATA_ERROR } from '../../utilities/Constants';
+import { connect } from 'react-redux';
+import { SwipeListView } from 'react-native-swipe-list-view';
+var hash = require('object-hash');
 
-export class ScrollViewWidget extends Component<{}> {
+class ScrollViewWidget extends Component<{}> {
 
     constructor(props) {
         super(props);
-        console.log(props.theme.theme.PRIMARY_TEXT_COLOR);
-
         this.state = {
-            data: [
-                {
-                    _id: "1",
-                    countOfDeals: 16,
-                    stageName: 'Due Diligence',
-                    faceValueNumeric: 218000000,
-                    faceValueText: 'Face Value',
-                    equityNumeric: 86900000,
-                    equityText: 'Equity',
-                    stageColor: '#4c00a8'
-                },
-                {
-                    _id: "2",
-                    countOfDeals: 3,
-                    stageName: 'Pending Close',
-                    faceValueNumeric: 25300000,
-                    faceValueText: 'Face Value',
-                    equityNumeric: 17500000,
-                    equityText: 'Equity',
-                    stageColor: '#6b432e'
-                },
-                {
-                    _id: "3",
-                    countOfDeals: 5,
-                    stageName: 'Active',
-                    faceValueNumeric: 104600000,
-                    faceValueText: 'Face Value',
-                    equityNumeric: 45500000,
-                    equityText: 'Equity',
-                    stageColor: '#00ccb4'
-                },
-                {
-                    _id: "4",
-                    countOfDeals: 18,
-                    stageName: 'Initial Review',
-                    faceValueNumeric: 453300000,
-                    faceValueText: 'Face Value',
-                    equityNumeric: 161000000,
-                    equityText: 'Equity',
-                    stageColor: '#b587d4'
-                },
-                {
-                    _id: "5",
-                    countOfDeals: 3,
-                    stageName: 'Dead',
-                    faceValueNumeric: 4800000,
-                    faceValueText: 'Face Value',
-                    equityNumeric: 1200000,
-                    equityText: 'Equity',
-                    stageColor: '#cf6132'
-                },
-                {
-                    _id: "6",
-                    countOfDeals: 12,
-                    stageName: 'Initial Review',
-                    faceValueNumeric: 863300000,
-                    faceValueText: 'Face Value',
-                    equityNumeric: 231000000,
-                    equityText: 'Equity',
-                    stageColor: '#b587d4'
-                },
-                
-            ]
+            data: []
         }
     }
 
-    componentDidMount() {
-        //make data service request
+    async componentDidMount() {
 
+        const headers = {
+            "Authorization": "Basic amFzc2luZ2hAaXZwLmluOnBhc3N3b3Jk",
+        };
+
+        const body = {
+            "Select": {
+                "'Entity State'": 1,
+                "Probability": "sum(Probability)",
+                "Amount": "sum(Amount)",
+                "ExpectedRevenue": "sum(ExpectedRevenue)"
+            },
+            "GroupBy": {
+                "'Entity State'": 1
+            }
+        };
+
+        var params = {
+            headers: headers,
+            body: body,
+            token: this.props.token
+        };
+
+        const response = await this.props.fetchWidgetData(params);
+
+        try {
+            if (!response.success) {
+                throw response;
+            } else {
+                this.setState({
+                    data: response.body
+                });
+            }
+        } catch (error) {
+            Alert.alert(
+                'Data error',
+                GENERIC_DATA_ERROR,
+                [
+                    {
+                        text: 'Okay',
+                        onPress: () => console.log('Okay Pressed'),
+                        style: 'cancel',
+                    },
+                ]
+            );
+        }
     }
 
     getFontSize = (col, key) => {
@@ -100,13 +85,11 @@ export class ScrollViewWidget extends Component<{}> {
         }
     }
 
-    getFormattedNumber = (number, prec) => {
-        switch (prec) {
-            case "M":
-                return nFormatter(number, 1)
-            default:
-                break;
-        }
+    getFormattedNumber = (number, prec = "", dPrec = 0) => {
+        if(isNaN(number)) {
+            return 0.0;
+        }        
+        return nFormatter(number, prec, dPrec);
     }
 
     getText = (item, col) => {
@@ -116,18 +99,36 @@ export class ScrollViewWidget extends Component<{}> {
                     <Text style={[
                         {
                             color: this.props.theme.theme.PRIMARY_TEXT_COLOR,
-                            fontSize: this.getFontSize(col, col.layout.value.size)
+                            fontSize: this.getFontSize(col, col.layout.value.size),
+                            textAlign: 'center'
                         },
-                        styles.keyStyle]}>
+                        styles.keyStyle]}
+                        numberOfLines={1}>
                         {
                             col.layout.value.type === "number" ?
-                                this.getFormattedNumber(item[col.keyField], "M") :
+                                this.getFormattedNumber(item[col.keyField], col.layout.value.numberFormat, col.layout.value.decimalPrecision) :
                                 item[col.keyField]
                         }
                     </Text>)
 
             default:
                 break;
+        }
+    }
+
+    formatText = (text, col) => {
+        if(col.layout && col.layout.value && col.layout.value.from) {
+            
+            switch (col.layout.value.from) {
+                case "config":                    
+                    return col.valueField;
+                case "data": 
+                    return text[col.valueField];            
+                default:
+                    break;
+            }
+        }else{
+            return text[col.valueField];
         }
     }
 
@@ -138,10 +139,12 @@ export class ScrollViewWidget extends Component<{}> {
                     <Text style={[
                         {
                             color: this.props.theme.theme.PRIMARY_TEXT_COLOR_LIGHT,
-                            fontSize: this.getFontSize(col, col.layout.label.size)
+                            fontSize: this.getFontSize(col, col.layout.label.size),
+                            textAlign: 'center'
                         },
-                        styles.keyStyle]}>
-                        {item[col.valueField]}
+                        styles.keyStyle]}
+                        numberOfLines={2}>
+                        {this.formatText(item, col)}
                     </Text>)
 
             default:
@@ -152,7 +155,7 @@ export class ScrollViewWidget extends Component<{}> {
     getCardViews = (item) => {
         return this.props.wConfig.columns.map((col, id) => {
             return (
-                <View key={id} style={[{ flex: col.width || 1 }, styles.columnStyle]}>
+                <View key={id} style={[{ flex: col.width || 1, paddingLeft: 5 }, styles.columnStyle]}>
                     {this.getText(item, col)}
                     {this.getSubText(item, col)}
                 </View>
@@ -160,40 +163,64 @@ export class ScrollViewWidget extends Component<{}> {
         })
     }
 
-    getCards = () => {
-        return this.state.data.map(item => {
-            return (<View key={item._id} style={[
-                { 
-                    flexDirection: 'row',
-                    backgroundColor: this.props.theme.theme.PRIMARY_BORDER_COLOR_LIGHT,
-                    borderRadius: 5,
-                    borderLeftWidth: 5,
-                    borderLeftColor: item.stageColor
-                }, 
-                styles.cardContainer]}>
-                {this.getCardViews(item)}
-                <TouchableOpacity><StyledIonicons
-                        size={30}
-                        name="ios-arrow-forward"
-                        style={styles.forwardArrow}
-                        /></TouchableOpacity>
-            </View>)
-        })
+    getColorForColumns = (data, config) => {        
+        if(config.colorOnField) {
+            return config.colorsToDataMap[data[config.colorOnField]] || "#000";
+        }else{
+            return this.props.theme.theme.PRIMARY_BORDER_COLOR || "#000";
+        }
+    }
+
+    async getKeyHash(key) {
+        if(typeof key !== "object") {
+            return key;
+        }     
+        return hash(key);
+    }
+
+    getCards = (item) => {
+
+        return (<View key={this.getKeyHash(item._id)} style={[
+            {
+                flexDirection: 'row',
+                backgroundColor: this.props.theme.theme.PRIMARY_BORDER_COLOR_LIGHT,
+                borderRadius: 5,
+                borderLeftWidth: 5,
+                borderLeftColor: this.getColorForColumns(item, this.props.wConfig),
+            },
+            styles.cardContainer]}>
+            {this.getCardViews(item)}
+        </View>)
+
     }
 
     render() {
         return (
-            <ScrollView style={[styles.container]}>
-                {
-                    this.getCards()
-                }
-            </ScrollView>
+            this.state.data.length > 0 &&
+            <SwipeListView style={[styles.container]}
+                data={this.state.data}
+                renderItem={(data, rowMap) => (
+                    this.getCards(data.item)
+                )}
+                keyExtractor={(data, index) => index}
+                renderHiddenItem={(data, rowMap) => (
+                    <View style={styles.rowBack} key={this.getKeyHash(data.item._id)}>
+
+                        <Text>Left </Text>
+                        <Text>Right </Text>
+                    </View>
+                )}
+                leftOpenValue={75}
+                rightOpenValue={-75}
+            />
+
+
         );
     }
 }
 
 const styles = StyleSheet.create({
-    container:{
+    container: {
         margin: 5
     },
     cardContainer: {
@@ -209,8 +236,33 @@ const styles = StyleSheet.create({
     keyStyle: {
         alignItems: 'baseline',
     },
-    forwardArrow:{ 
+    forwardArrow: {
         marginRight: 20,
         marginTop: 30
+    },
+    rowBack: {
+        alignItems: 'center',
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingLeft: 15,
+        margin: 1,
+        borderRadius: 5
     }
-})
+});
+
+const mapStateToProps = (state) => {
+    return {
+        data: state.dataDetails.data,
+        token: state.authenticationDetails.user_details.token
+    }
+}
+
+const dispatchStateToProps = (dispatch) => {
+    return {
+        fetchWidgetData: (params) => dispatch(fetchWidgetData(params)),
+        dataRequest: () => dispatch(dataRequest())
+    }
+}
+
+export default connect(mapStateToProps, dispatchStateToProps)(ScrollViewWidget);

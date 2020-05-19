@@ -1,4 +1,4 @@
-const BASE_URL = "https://ivpcloud.com:8421";
+const BASE_URL = "http://ds.ivp.in:9000";
 
 export const api = async (url, method, body = null, headers = {}, isBaseUrlAbsent = true) => {    
     try {
@@ -24,7 +24,7 @@ export const api = async (url, method, body = null, headers = {}, isBaseUrlAbsen
         const timeOutPromise = new Promise((resolve, reject) => {
             setTimeout(() => {
                 reject(`{ "statusCode": "408", "message" : "Please check your internet connection" }`);
-            }, 100000);
+            }, 10000);
         });
 
         const response = await Promise.race([fetchPromise, timeOutPromise]);
