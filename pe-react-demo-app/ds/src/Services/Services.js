@@ -1,4 +1,5 @@
-const BASE_URL = "http://ds.ivp.in:9000";
+import { BASE_URL } from 'react-native-dotenv'
+
 
 export const api = async (url, method, body = null, headers = {}, isBaseUrlAbsent = true) => {    
     try {

@@ -8,6 +8,7 @@ import base64 from 'react-native-base64';
 import { api } from '../../../services/Services';
 import { isJson } from '../../../utilities/Utilities';
 import { ERROR_MESSAGE_401, GENERIC_LOGIN_ERROR } from '../../../utilities/Constants';
+import { MASTER_KEY } from 'react-native-dotenv'
 
 export const saveUserCreds = () => {
     return {
@@ -41,7 +42,7 @@ export const authenticateUser = (params) => {
             "Authorization": `Basic ${base64.encode(params.username + ':' + params.password)}`
         };
         var raw = {};
-        const response = await api("/auth?access_token=IU3E1613AGbTHG872iBkkO0xDmjblFkW", "POST", raw, headers);
+        const response = await api(`/auth?access_token=${MASTER_KEY}`, "POST", raw, headers);
         try {
             var result = {
                 success: false

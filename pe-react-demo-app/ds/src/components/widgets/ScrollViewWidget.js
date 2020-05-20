@@ -59,7 +59,7 @@ class ScrollViewWidget extends Component<{}> {
             }
         } catch (error) {
             Alert.alert(
-                'Data error',
+                'Data Error',
                 GENERIC_DATA_ERROR,
                 [
                     {
@@ -180,7 +180,7 @@ class ScrollViewWidget extends Component<{}> {
 
     getCards = (item) => {
 
-        return (<View key={this.getKeyHash(item._id)} style={[
+        return (<TouchableOpacity><View key={this.getKeyHash(item._id)} style={[
             {
                 flexDirection: 'row',
                 backgroundColor: this.props.theme.theme.PRIMARY_BORDER_COLOR_LIGHT,
@@ -190,7 +190,7 @@ class ScrollViewWidget extends Component<{}> {
             },
             styles.cardContainer]}>
             {this.getCardViews(item)}
-        </View>)
+        </View></TouchableOpacity>)
 
     }
 
@@ -203,15 +203,15 @@ class ScrollViewWidget extends Component<{}> {
                     this.getCards(data.item)
                 )}
                 keyExtractor={(data, index) => index}
-                renderHiddenItem={(data, rowMap) => (
-                    <View style={styles.rowBack} key={this.getKeyHash(data.item._id)}>
+                // renderHiddenItem={(data, rowMap) => (
+                //     <View style={styles.rowBack} key={this.getKeyHash(data.item._id)}>
 
-                        <Text>Left </Text>
-                        <Text>Right </Text>
-                    </View>
-                )}
-                leftOpenValue={75}
-                rightOpenValue={-75}
+                //         <Text></Text>
+                //         <Text></Text>
+                //     </View>
+                // )}
+                // leftOpenValue={1}
+                // rightOpenValue={-1}
             />
 
 

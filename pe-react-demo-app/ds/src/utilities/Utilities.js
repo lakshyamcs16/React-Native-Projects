@@ -11,19 +11,19 @@ import {
 import { ThemeProvider } from 'styled-components';
 
 export function isJson(str) {
-    try {        
+    try {
         JSON.parse(str);
-    } catch (e) {        
+    } catch (e) {
         return false;
     }
     return true;
 }
 
-export var getIcon = (item, props) => {    
+export var getIcon = (item, props) => {
     let icon;
 
     getSelectedIcon = (item) => {
-        return item.active? styles.navBarIconSelected: styles.navBarIcon;
+        return item.active ? styles.navBarIconSelected : styles.navBarIcon;
     }
 
     switch (item.iconSource) {
@@ -63,7 +63,7 @@ export var getIcon = (item, props) => {
 export const nFormatter = (num, precision = "", digits = 0) => {
     var rx = /\.0+$|(\.[0-9]*[1-9])0+$/;
     var i = 0;
-    if(precision === "auto") {
+    if (precision === "auto") {
         var si = [
             { value: 1, symbol: "" },
             { value: 1E3, symbol: "k" },
@@ -72,14 +72,14 @@ export const nFormatter = (num, precision = "", digits = 0) => {
             { value: 1E12, symbol: "t" },
             { value: 1E15, symbol: "p" },
             { value: 1E18, symbol: "e" }
-          ];
+        ];
 
-          for (i = si.length - 1; i > 0; i--) {
+        for (i = si.length - 1; i > 0; i--) {
             if (num >= si[i].value) {
-              break;
+                break;
             }
-          }
-    }else{
+        }
+    } else {
         var si = [];
         switch (precision) {
             case "k":
@@ -95,11 +95,11 @@ export const nFormatter = (num, precision = "", digits = 0) => {
             case "e":
                 si.push({ value: 1E18, symbol: "e" }); break;
             default:
-                si.push({ value: 1, symbol: ""}); break;
+                si.push({ value: 1, symbol: "" }); break;
         }
-    }    
+    }
     return (num / si[i].value).toFixed(digits).replace(rx, "$1") + si[i].symbol;
-  }
+}
 
 const styles = StyleSheet.create({
     navBarIcon: {
