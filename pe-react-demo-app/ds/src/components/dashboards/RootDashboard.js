@@ -12,7 +12,7 @@ import {ActivityIndicator} from 'react-native-paper';
 import HTML_FILE from '../../../resources/html/index.html';
 import TableView from '../assets/TableView'
 import WebView from 'react-native-webview'
-import NavigationBar from '../dashboards/NavigationBar';
+import NavigationBar from './NavigationBar';
 import { connect } from 'react-redux';
 import { ThemeProvider } from 'styled-components';
 import { fetchAppConfig } from '../../redux/actions/dashboard/navigation.actions'
@@ -27,7 +27,7 @@ const isAndroid = Platform.OS === 'android';
 
 let uri = '';
 
-class Demo extends Component {
+class RootDashboard extends Component {
   state = {
     data: {
       items: leftDummyData,
@@ -46,8 +46,16 @@ class Demo extends Component {
       });
 
       this.props.widgetRequest();
+      var params = {
+        id: response.body.home.dashboardId,
+        url: "https://private-5268ee-parsers.apiary-mock.com/rester/widgetconfig",
+        method: "GET",
+        body: null, 
+        header: null,
+        isBaseUrlAbsent: false
+      };
 
-      const widgetConfigResponse = await this.props.fetchWidgetConfig()
+      const widgetConfigResponse = await this.props.fetchWidgetConfig(params)
 
       if(widgetConfigResponse.success) {
         this.setState({
@@ -157,9 +165,9 @@ const mapStateToProps = (state) => {
 const dispatchStateToProps = (dispatch) => {
   return {
     fetchAppConfig: () => dispatch(fetchAppConfig()),
-    fetchWidgetConfig: () => dispatch(fetchWidgetConfig()),
+    fetchWidgetConfig: (params) => dispatch(fetchWidgetConfig(params)),
     widgetRequest: () => dispatch(widgetRequest())
   }
 }
 
-export default connect(mapStateToProps, dispatchStateToProps)(Demo);
+export default connect(mapStateToProps, dispatchStateToProps)(RootDashboard);

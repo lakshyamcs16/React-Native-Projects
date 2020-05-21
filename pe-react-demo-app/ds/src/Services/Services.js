@@ -21,6 +21,7 @@ export const api = async (url, method, body = null, headers = {}, isBaseUrlAbsen
             fetchParams.body = reqBody;
         }
         
+        
         const fetchPromise = fetch(endPoint, fetchParams);
         const timeOutPromise = new Promise((resolve, reject) => {
             setTimeout(() => {

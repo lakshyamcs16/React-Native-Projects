@@ -4,15 +4,17 @@ import {
     WIDGET_CONFIG_SUCCESS,
     DATA_CONFIG_SUCCESS,
     DATA_CONFIG_FAILURE,
-    FETCH_DATA_REQUEST
+    FETCH_DATA_REQUEST,
+    FETCH_DASHBOARD_DATA_REQUEST,
+    DATA_DASHBOARD_SUCCESS,
+    DATA_DASHBOARD_FAILURE
 } from "../../types/dashboard/main.types.js";
-import {combineReducers} from 'redux';
 
 
 const initialWidgetState = {
     loading: false,
     error: '',
-    widgetConfig: {}
+    widgetConfig: {},
 };
 
 const initialDataState = {
@@ -20,6 +22,13 @@ const initialDataState = {
     error: '',
     data: []
 };
+
+const initialDashboardState = {
+    loading: false,
+    error: '',
+    dashboardConfig: {}
+}
+
 export const widgetReducer = (state = initialWidgetState, action) => {
     switch (action.type) {
         case FETCH_WIDGET_CONFIG:
@@ -34,8 +43,9 @@ export const widgetReducer = (state = initialWidgetState, action) => {
                 loading: false
             }
         case WIDGET_CONFIG_SUCCESS:
+            state.widgetConfig[action.id] = action.payload;
             return {
-                widgetConfig: action.payload,
+                ...state,
                 loading: false,
                 error: ''
             }
@@ -62,6 +72,31 @@ export const dataReducer = (state = initialDataState, action) => {
                 data: action.payload,
                 loading: false,
                 error: ''
+            }
+        default:
+            return state;
+    }
+}
+
+export const dashboardReducer = (state = initialDashboardState, action) => {
+    switch (action.type) {
+        case FETCH_DASHBOARD_DATA_REQUEST:
+            return {
+                ...state,
+                loading: true
+            }
+        case DATA_DASHBOARD_SUCCESS:
+            state.dashboardConfig[action.id] = action.payload;
+            return {
+                ...state,
+                error: '',
+                loading: false
+            }
+        case DATA_DASHBOARD_FAILURE:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload
             }
         default:
             return state;

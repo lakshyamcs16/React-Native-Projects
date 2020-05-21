@@ -12,7 +12,11 @@ import { fetchWidgetData, dataRequest } from '../../redux/actions/dashboard/main
 import { GENERIC_DATA_ERROR } from '../../utilities/Constants';
 import { connect } from 'react-redux';
 import { SwipeListView } from 'react-native-swipe-list-view';
+import { Actions } from 'react-native-router-flux';
 var hash = require('object-hash');
+var mustache = require("mustache");
+const Entities = require('html-entities').XmlEntities;
+const entities = new Entities();
 
 class ScrollViewWidget extends Component<{}> {
 
@@ -24,10 +28,6 @@ class ScrollViewWidget extends Component<{}> {
     }
 
     async componentDidMount() {
-
-        const headers = {
-            "Authorization": "Basic amFzc2luZ2hAaXZwLmluOnBhc3N3b3Jk",
-        };
 
         const body = {
             "Select": {
@@ -41,12 +41,15 @@ class ScrollViewWidget extends Component<{}> {
             }
         };
 
+        console.log("********************************************************");
+                
+        console.log("********************************************************");
+
         var params = {
-            headers: headers,
-            body: body,
+            body: this.props.service || body,
             token: this.props.token
         };
-
+        
         const response = await this.props.fetchWidgetData(params);
 
         try {
@@ -171,16 +174,47 @@ class ScrollViewWidget extends Component<{}> {
         }
     }
 
-    async getKeyHash(key) {
+    getKeyHash(key) {
         if(typeof key !== "object") {
             return key;
         }     
         return hash(key);
     }
 
+    navigateScreen = (params) => {
+        
+        var f = this.state.data.filter(d => {            
+            return this.getKeyHash(d._id) == params.params.dataId
+        })   
+        var st = mustache.render(params.params.filter, f[0]);
+        console.log(entities.decode(st));
+        
+        params.dashboardConfigId = params.params.dashboardId;
+        params.token = this.props.token;
+        params.service = {
+            body: {
+                "Where": JSON.parse(entities.decode(st))
+            }
+        };
+        
+        Actions.canvas(params);
+    }
+
     getCards = (item) => {
 
-        return (<TouchableOpacity><View key={this.getKeyHash(item._id)} style={[
+        return (<TouchableOpacity
+            onPress={ () => this.navigateScreen({
+                params: { 
+                    dashboardId: 'needs-analysis-dash', 
+                    filter: `{ 
+                        "'Entity State'": "{{Entity State}}"
+                    }`,
+                    dataId: this.getKeyHash(item._id)
+                }
+            })}
+        ><View 
+            key={this.getKeyHash(item._id)}
+            style={[
             {
                 flexDirection: 'row',
                 backgroundColor: this.props.theme.theme.PRIMARY_BORDER_COLOR_LIGHT,

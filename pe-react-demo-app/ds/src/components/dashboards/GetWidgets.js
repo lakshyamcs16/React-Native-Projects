@@ -9,9 +9,8 @@ export const GetWidgets = (props) => {
 
     if (Object.keys(props.wConfig).length > 0) {
         switch (props.wConfig.type) {
-            case WIDGET_TYPE_SCROLLVIEW:                
-                return <ScrollViewWidget wConfig={props.wConfig} theme={props.theme} />
-                break;
+            case WIDGET_TYPE_SCROLLVIEW:                   
+                return <ScrollViewWidget wConfig={props.wConfig} theme={props.theme} service={props.service}/>
             default:
                 break;
         }

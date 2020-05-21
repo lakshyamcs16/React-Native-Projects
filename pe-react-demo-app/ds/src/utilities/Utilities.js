@@ -101,6 +101,20 @@ export const nFormatter = (num, precision = "", digits = 0) => {
     return (num / si[i].value).toFixed(digits).replace(rx, "$1") + si[i].symbol;
 }
 
+export const getFilledObject = (obj, config) => {
+    if(obj.Where && config.Where) {
+        switch (config.Where) {
+            case "props":
+                config.Where = obj.Where;
+                return config;
+            default:
+                return config;
+        }
+    }
+
+    return config;
+}
+
 const styles = StyleSheet.create({
     navBarIcon: {
         justifyContent: 'center',
