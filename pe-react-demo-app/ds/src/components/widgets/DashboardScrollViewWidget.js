@@ -22,20 +22,6 @@ class DashboardScrollViewWidget extends Component<{}> {
 
     async componentDidMount() {
 
-        const body = {
-            "Select": {
-                "'Entity State'": 1,
-                "Probability": "sum(Probability)",
-                "Amount": "sum(Amount)",
-                "ExpectedRevenue": "sum(ExpectedRevenue)"
-            },
-            "GroupBy": {
-                "'Entity State'": 1
-            }
-        };
-
-        console.log("********************************************************");
-                
         console.log("********************************************************");
 
         var params = {
