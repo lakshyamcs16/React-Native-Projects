@@ -1,13 +1,8 @@
 import React, { Component } from 'react';
 import {
-    Text,
-    View,
     StyleSheet,
     Alert
 } from 'react-native';
-import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
-import { base } from '../../themes/theme';
-import { nFormatter } from '../../utilities/Utilities';
 import { fetchWidgetData, dataRequest } from '../../redux/actions/dashboard/main.actions';
 import { GENERIC_DATA_ERROR } from '../../utilities/Constants';
 import { connect } from 'react-redux';
@@ -17,12 +12,10 @@ import {
     getCards,
     getKeyHash
 } from '../assets/scrollview/ScrollViewAssets';
-
 var hash = require('object-hash');
 var mustache = require("mustache");
 const Entities = require('html-entities').XmlEntities;
 const entities = new Entities();
-
 
 class ScrollViewWidget extends Component<{}> {
 

@@ -130,7 +130,8 @@ export const getCards = (item, props, data, params) => {
 
     
     return (<TouchableOpacity
-        onPress={params.onPressHandler ? () => params.onPressHandler(item) : () => null}
+        onPress={params.onPressHandler ? () => params.onPressHandler(item) : () => false}
+        disabled={params.onPressHandler? false: true}
     ><View 
         key={getKeyHash(item._id)}
         style={[
