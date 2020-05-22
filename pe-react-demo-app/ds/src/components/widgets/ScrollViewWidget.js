@@ -13,10 +13,16 @@ import { GENERIC_DATA_ERROR } from '../../utilities/Constants';
 import { connect } from 'react-redux';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import { Actions } from 'react-native-router-flux';
+import {
+    getCards,
+    getKeyHash
+} from '../assets/scrollview/ScrollViewAssets';
+
 var hash = require('object-hash');
 var mustache = require("mustache");
 const Entities = require('html-entities').XmlEntities;
 const entities = new Entities();
+
 
 class ScrollViewWidget extends Component<{}> {
 
@@ -42,14 +48,14 @@ class ScrollViewWidget extends Component<{}> {
         };
 
         console.log("********************************************************");
-                
+
         console.log("********************************************************");
 
         var params = {
             body: this.props.service || body,
             token: this.props.token
         };
-        
+
         const response = await this.props.fetchWidgetData(params);
 
         try {
@@ -75,177 +81,57 @@ class ScrollViewWidget extends Component<{}> {
         }
     }
 
-    getFontSize = (col, key) => {
-        switch (key) {
-            case "large":
-                return base.FONT_SIZE_GIANT;
-            case "small":
-                return base.FONT_SIZE_EXTRA_LARGE;
-            case "very small":
-                return base.FONT_SIZE_MEDIUM;
-            default:
-                return base.FONT_SIZE_SMALL;
-        }
-    }
+    navigateScreen = (item) => {
 
-    getFormattedNumber = (number, prec = "", dPrec = 0) => {
-        if(isNaN(number)) {
-            return 0.0;
-        }        
-        return nFormatter(number, prec, dPrec);
-    }
-
-    getText = (item, col) => {
-        switch (col.renderer) {
-            case "basic":
-                return (
-                    <Text style={[
-                        {
-                            color: this.props.theme.theme.PRIMARY_TEXT_COLOR,
-                            fontSize: this.getFontSize(col, col.layout.value.size),
-                            textAlign: 'center'
-                        },
-                        styles.keyStyle]}
-                        numberOfLines={1}>
-                        {
-                            col.layout.value.type === "number" ?
-                                this.getFormattedNumber(item[col.keyField], col.layout.value.numberFormat, col.layout.value.decimalPrecision) :
-                                item[col.keyField]
-                        }
-                    </Text>)
-
-            default:
-                break;
-        }
-    }
-
-    formatText = (text, col) => {
-        if(col.layout && col.layout.value && col.layout.value.from) {
-            
-            switch (col.layout.value.from) {
-                case "config":                    
-                    return col.valueField;
-                case "data": 
-                    return text[col.valueField];            
-                default:
-                    break;
+        var params = {
+            params: {
+                dashboardId: 'needs-analysis-dash',
+                filter: `{ 
+                "'Entity State'": "{{Entity State}}"
+            }`,
+                dataId: getKeyHash(item._id)
             }
-        }else{
-            return text[col.valueField];
         }
-    }
 
-    getSubText = (item, col) => {
-        switch (col.renderer) {
-            case "basic":
-                return (
-                    <Text style={[
-                        {
-                            color: this.props.theme.theme.PRIMARY_TEXT_COLOR_LIGHT,
-                            fontSize: this.getFontSize(col, col.layout.label.size),
-                            textAlign: 'center'
-                        },
-                        styles.keyStyle]}
-                        numberOfLines={2}>
-                        {this.formatText(item, col)}
-                    </Text>)
-
-            default:
-                break;
-        }
-    }
-
-    getCardViews = (item) => {
-        return this.props.wConfig.columns.map((col, id) => {
-            return (
-                <View key={id} style={[{ flex: col.width || 1, paddingLeft: 5 }, styles.columnStyle]}>
-                    {this.getText(item, col)}
-                    {this.getSubText(item, col)}
-                </View>
-            )
+        var f = this.state.data.filter(d => {
+            return getKeyHash(d._id) == params.params.dataId
         })
-    }
-
-    getColorForColumns = (data, config) => {        
-        if(config.colorOnField) {
-            return config.colorsToDataMap[data[config.colorOnField]] || "#000";
-        }else{
-            return this.props.theme.theme.PRIMARY_BORDER_COLOR || "#000";
-        }
-    }
-
-    getKeyHash(key) {
-        if(typeof key !== "object") {
-            return key;
-        }     
-        return hash(key);
-    }
-
-    navigateScreen = (params) => {
-        
-        var f = this.state.data.filter(d => {            
-            return this.getKeyHash(d._id) == params.params.dataId
-        })   
         var st = mustache.render(params.params.filter, f[0]);
         console.log(entities.decode(st));
-        
+
         params.dashboardConfigId = params.params.dashboardId;
-        params.token = this.props.token;
+        params.token = props.token;
         params.service = {
             body: {
                 "Where": JSON.parse(entities.decode(st))
             }
         };
-        
+
         Actions.canvas(params);
     }
 
-    getCards = (item) => {
-
-        return (<TouchableOpacity
-            onPress={ () => this.navigateScreen({
-                params: { 
-                    dashboardId: 'needs-analysis-dash', 
-                    filter: `{ 
-                        "'Entity State'": "{{Entity State}}"
-                    }`,
-                    dataId: this.getKeyHash(item._id)
-                }
-            })}
-        ><View 
-            key={this.getKeyHash(item._id)}
-            style={[
-            {
-                flexDirection: 'row',
-                backgroundColor: this.props.theme.theme.PRIMARY_BORDER_COLOR_LIGHT,
-                borderRadius: 5,
-                borderLeftWidth: 5,
-                borderLeftColor: this.getColorForColumns(item, this.props.wConfig),
-            },
-            styles.cardContainer]}>
-            {this.getCardViews(item)}
-        </View></TouchableOpacity>)
-
-    }
-
     render() {
+        var params = {};
+        params.onPressHandler = this.navigateScreen;
+        params.styles = viewStyles;
+
         return (
             this.state.data.length > 0 &&
             <SwipeListView style={[styles.container]}
                 data={this.state.data}
                 renderItem={(data, rowMap) => (
-                    this.getCards(data.item)
+                    getCards(data.item, this.props, this.state.data, params)
                 )}
                 keyExtractor={(data, index) => index}
-                // renderHiddenItem={(data, rowMap) => (
-                //     <View style={styles.rowBack} key={this.getKeyHash(data.item._id)}>
+            // renderHiddenItem={(data, rowMap) => (
+            //     <View style={styles.rowBack} key={this.getKeyHash(data.item._id)}>
 
-                //         <Text></Text>
-                //         <Text></Text>
-                //     </View>
-                // )}
-                // leftOpenValue={1}
-                // rightOpenValue={-1}
+            //         <Text></Text>
+            //         <Text></Text>
+            //     </View>
+            // )}
+            // leftOpenValue={1}
+            // rightOpenValue={-1}
             />
 
 
@@ -253,7 +139,7 @@ class ScrollViewWidget extends Component<{}> {
     }
 }
 
-const styles = StyleSheet.create({
+const viewStyles = {
     container: {
         margin: 5
     },
@@ -283,7 +169,9 @@ const styles = StyleSheet.create({
         margin: 1,
         borderRadius: 5
     }
-});
+};
+
+const styles = StyleSheet.create(viewStyles);
 
 const mapStateToProps = (state) => {
     return {
