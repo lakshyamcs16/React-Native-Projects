@@ -138,7 +138,7 @@ const viewStyles = {
     },
     cardContainer: {
         margin: 1,
-        paddingVertical: 20
+        paddingVertical: 15
     },
     columnStyle: {
         flexDirection: 'column',

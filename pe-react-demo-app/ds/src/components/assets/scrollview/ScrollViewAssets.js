@@ -16,10 +16,12 @@ var props, params, data;
 
 export const getFontSize = (col, key) => {
     switch (key) {
-        case "large":
+        case "very large":
             return base.FONT_SIZE_GIANT;
+        case "large":
+            return base.FONT_SIZE_SUPER;
         case "medium":
-            return base.FONT_SIZE_MASSIVE;
+            return base.FONT_SIZE_EXTRA_LARGE;
         case "small":
             return base.FONT_SIZE_EXTRA_LARGE;
         case "very small":
@@ -112,7 +114,8 @@ export const getSubText = (item, col) => {
                     {
                         color: this.props.theme.theme.PRIMARY_TEXT_COLOR,
                         fontSize: getFontSize(col, col.layout.label.size),
-                        textAlign: 'center'
+                        textAlign: 'center',
+                        fontWeight: 'bold'
                     },
                     this.params.styles.keyStyle]}
                     numberOfLines={2}>
@@ -169,11 +172,11 @@ export const getCardViewWithInitials = (item, initials) => {
                 { getText(item, initials) }
             </View>
         </View>
-        <View style={{ flex: 2}}>
-            <View style={{ flex: 1, width: 200, alignSelf: 'center'}}>
+        <View style={{ flex: 3, justifyContent: 'center', alignItems: 'center',alignSelf: 'center'}}>
+            <View style={{ flex: 1, marginBottom: 5}}>
                 {getSubText(item, initials)}
             </View>
-            <View style={{ flex: 1, flexDirection: 'row' }}>
+            <View style={{ flex: 1, flexDirection: 'row'}}>
             {getCardViews(item, cols)}
             </View>
         </View>
@@ -206,8 +209,10 @@ export const getCards = (item, props, data, params) => {
                 {
                     flexDirection: 'row',
                     backgroundColor: props.theme.theme.PRIMARY_BORDER_COLOR_LIGHT,
-                    borderRadius: 5,
-                    borderLeftWidth: 5,
+                    //borderRadius: 5,
+                    borderLeftWidth: 15,
+                    borderBottomWidth: 1,
+                    borderBottomColor: props.theme.theme.PRIMARY_BORDER_COLOR_LIGHT,
                     borderLeftColor: getColorForColumns(item, this.props.wConfig),
                 },
                 params.styles.cardContainer]}>

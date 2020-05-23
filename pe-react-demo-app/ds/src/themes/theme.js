@@ -5,8 +5,8 @@ export const base = {
     FONT_SIZE_LARGE: 18,
     FONT_SIZE_EXTRA_LARGE: 24,
     FONT_SIZE_MASSIVE: 34,
-    FONT_SIZE_SUPER: 44,
-    FONT_SIZE_GIANT: 54,
+    FONT_SIZE_SUPER: 54,
+    FONT_SIZE_GIANT: 50,
 
     FONT_WEIGHT_LIGHT: "200",
     FONT_WEIGHT_MEDIUM: "600",
@@ -20,17 +20,18 @@ export const base = {
   };
   
   export const darkTheme = {
+    ROOT_BACKGROUND_COLOR: "rgba(31, 31, 31, 1)",
     PRIMARY_BACKGROUND_COLOR: "rgba(61, 61, 61, 1)",
     PRIMARY_BACKGROUND_COLOR_LIGHT: "#797979",
   
     SECONDARY_BACKGROUND_COLOR: "#ffffff",
     SECONDARY_BACKGROUND_COLOR_LIGHT: "#f7f7f7",
   
-    PRIMARY_BORDER_COLOR: "rgba(31, 31, 31, 1)",
-    PRIMARY_BORDER_COLOR_LIGHT: "rgba(232, 232, 232, 0.4)",
-    
-    PRIMARY_BORDER_COLOR_LIGHT:"rgba(61, 61, 61, 0.7)",
+    PRIMARY_BORDER_COLOR: "rgba(31, 31, 31, 1)",    
+    PRIMARY_BORDER_COLOR_LIGHT:"rgba(61, 61, 61, 1)",
 
+    PRIMARY_CARD_BACKGROUND_COLOR: '#000',
+    SELECTED_ITEM_COLOR: '#fff',
     PRIMARY_TEXT_COLOR: "#ffffff",
     PRIMARY_TEXT_COLOR_LIGHT: "#f7f7f7",
     SECONDARY_TEXT_COLOR: "#3d3d3d",
@@ -38,6 +39,7 @@ export const base = {
     SECONDARY_TEXT_BACKGROUND_COLOR: "#ffffff"
   };
   export const lightTheme = {
+    ROOT_BACKGROUND_COLOR: "#fff",
     PRIMARY_BACKGROUND_COLOR: "rgba(232, 232, 232, 0.1)",
     PRIMARY_BACKGROUND_COLOR_LIGHT: "#f7f7f7",
   

@@ -75,7 +75,7 @@ class RootDashboard extends Component {
       <>
         <ThemeProvider theme={this.props.theme}>
           <NavBar theme={this.props.theme} title={"Pipeline"} subtitle={"Private Equity"}/>
-          <View style={{flex:1}} >
+          <View style={{flex:1, backgroundColor: this.props.theme.theme.ROOT_BACKGROUND_COLOR}} >
             {
               Object.keys(this.state.widgetConfig).length > 0 ?
                 this.state.widgetConfig.widgets.map( config => {
