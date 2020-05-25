@@ -77,7 +77,7 @@ export const dashboardDataFailure = error => {
 export const fetchWidgetConfig = (params) => {
     return async (dispatch) => {
 
-        console.log(JSON.stringify(params));
+        console.log(JSON.stringify(params, null, 2));
         
         const response = await api(params.url, params.method, params.body, params.header, params.isBaseUrlAbsent);
 
@@ -125,7 +125,9 @@ export const fetchWidgetData = (params) => {
 
     return async (dispatch) => {
 
-        console.log("------------------------------------------------------");        
+        console.log("------------------------------------------------------");      
+        console.log(JSON.stringify(params, null, 2));
+  
         const response = await api(`/DataQueries/c/ms/p/PrivateEquity/scan?datapoint=Objects.'29757046-2abb-4edc-a793-bc8e9885c9ca'&mode=Stream&access_token=${params.token}`, "POST", params.body);
                 
         try {
@@ -173,6 +175,8 @@ export const fetchDashboardData = (params) => {
     return async (dispatch) => {
 
         console.log("--------------------------DASHBOARD DATA----------------------------");        
+        console.log(JSON.stringify(params, null, 2));
+
         const response = await api(`/DataQueries/c/ms/p/PrivateEquity/scan?datapoint=Objects.'29757046-2abb-4edc-a793-bc8e9885c9ca'&mode=Stream&access_token=${params.token}`, "POST", params.body, params.headers);
         
         try {

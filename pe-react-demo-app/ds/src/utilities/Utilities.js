@@ -9,6 +9,19 @@ import {
     StyledIonicons
 } from '../themes/styling';
 import { ThemeProvider } from 'styled-components';
+import { Actions } from 'react-native-router-flux';
+
+var hash = require('object-hash');
+var mustache = require("mustache");
+const Entities = require('html-entities').XmlEntities;
+const entities = new Entities();
+
+export const getKeyHash = (key) => {
+    if (typeof key !== "object") {
+        return key;
+    }
+    return hash(key);
+}
 
 export function isJson(str) {
     try {
@@ -102,7 +115,7 @@ export const nFormatter = (num, precision = "", digits = 0) => {
 }
 
 export const getFilledObject = (obj, config) => {
-    if(obj.Where && config.Where) {
+    if (obj.Where && config.Where) {
         switch (config.Where) {
             case "props":
                 config.Where = obj.Where;
@@ -113,6 +126,68 @@ export const getFilledObject = (obj, config) => {
     }
 
     return config;
+}
+
+export const getAction = (config, id, data, token, parameters) => {
+
+    var paramsToReturn = {
+        token: token
+    };
+
+    if (config.click) {
+        bindAction(config.click);
+    }
+
+    if (config.swipeLeft) {
+
+    }
+
+    if (config.swipeRight) {
+
+    }
+
+    function bindAction(action) {
+
+        switch (action.type) {
+
+            case "navigate":
+                performNavigationAction(action.params);
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    function performNavigationAction(typeParams) {        
+        if (typeParams.type === "dashboard") {
+            var body = {}, st;
+            const { dashboardId } =  typeParams ;
+            paramsToReturn['dashboardId'] = dashboardId;
+            let { params } = typeParams ;
+            
+            if (params.filter) {
+                const filteredData = data.filter(d => {
+                    return getKeyHash(d._id) == id
+                });
+                
+                if (filteredData && filteredData.length > 0) {                    
+                    st = mustache.render(JSON.stringify(params.filter), filteredData[0]);
+                }
+
+            }
+
+            body = {
+                "body": JSON.parse(entities.decode(st))
+            }
+
+            paramsToReturn.service = body;
+            parameters.navigate(paramsToReturn);
+           
+
+        }
+        
+    }
 }
 
 const styles = StyleSheet.create({

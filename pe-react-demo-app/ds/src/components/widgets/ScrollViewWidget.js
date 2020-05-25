@@ -9,9 +9,9 @@ import { connect } from 'react-redux';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import { Actions } from 'react-native-router-flux';
 import {
-    getCards,
-    getKeyHash
+    getCards
 } from '../assets/scrollview/ScrollViewAssets';
+import { getAction, getKeyHash } from '../../utilities/Utilities';
 var hash = require('object-hash');
 var mustache = require("mustache");
 const Entities = require('html-entities').XmlEntities;
@@ -77,30 +77,9 @@ class ScrollViewWidget extends Component<{}> {
     navigateScreen = (item) => {
 
         var params = {
-            params: {
-                dashboardId: 'needs-analysis-dash',
-                filter: `{ 
-                "'Entity State'": "{{Entity State}}"
-            }`,
-                dataId: getKeyHash(item._id)
-            }
+            navigate:  Actions.canvas
         }
-
-        var f = this.state.data.filter(d => {
-            return getKeyHash(d._id) == params.params.dataId
-        })
-        var st = mustache.render(params.params.filter, f[0]);
-        console.log(entities.decode(st));
-
-        params.dashboardConfigId = params.params.dashboardId;
-        params.token = props.token;
-        params.service = {
-            body: {
-                "Where": JSON.parse(entities.decode(st))
-            }
-        };
-
-        Actions.canvas(params);
+        getAction(this.props.wConfig.actions, getKeyHash(item._id), this.state.data, props.token, params);
     }
 
     render() {

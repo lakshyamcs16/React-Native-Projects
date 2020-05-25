@@ -31,9 +31,14 @@ class CanvasDashboard extends Component {
 
     async componentDidMount() {
         
+        console.log("*********************");
+        
+        console.log(JSON.stringify(this.props));
+        
+
         var params = {
-            id: this.props.params.dashboardId,
-            url: `https://private-5268ee-parsers.apiary-mock.com/rester/${this.props.params.dashboardId}`,
+            id: this.props.dashboardId,
+            url: `https://private-5268ee-parsers.apiary-mock.com/rester/${this.props.dashboardId}`,
             method: "GET",
             body: null,
             header: null,

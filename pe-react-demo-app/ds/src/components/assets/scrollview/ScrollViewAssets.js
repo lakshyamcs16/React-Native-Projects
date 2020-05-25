@@ -7,10 +7,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { base } from '../../../themes/theme';
 import { nFormatter } from '../../../utilities/Utilities';
 import { Actions } from 'react-native-router-flux';
-var hash = require('object-hash');
-var mustache = require("mustache");
-const Entities = require('html-entities').XmlEntities;
-const entities = new Entities();
+import { getKeyHash } from  '../../../utilities/Utilities';
 
 var props, params, data;
 
@@ -145,13 +142,6 @@ export const getColorForColumns = (data, config, t) => {
     } else {
         return this.props.theme.theme.PRIMARY_BORDER_COLOR || "#000";
     }
-}
-
-export const getKeyHash = (key) => {
-    if (typeof key !== "object") {
-        return key;
-    }
-    return hash(key);
 }
 
 export const getCardViewWithInitials = (item, initials) => {
