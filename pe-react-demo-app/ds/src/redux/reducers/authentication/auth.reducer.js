@@ -6,7 +6,7 @@ import {
 } from "../../types/authentication/auth.types.js";
 
 const initialState = {
-    loggedin: true,
+    loggedin: false,
     loading: false,
     user_details: {
         token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlYjQxMjQ1NWM3ZDUwMjY0NGI5M2UzMSIsImlhdCI6MTU5MDA3MzA1NX0.eH4yaTo1qbxpmBRtl52F1yBO6u2Ih1VWOfeb7vN22Xg"

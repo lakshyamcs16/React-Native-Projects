@@ -20,19 +20,12 @@ import { fetchWidgetConfig, widgetRequest } from '../../redux/actions/dashboard/
 import NavBar from '../assets/NavBar';
 import { Actions } from 'react-native-router-flux';
 import { GetWidgets } from './GetWidgets';
-
-const leftDummyData = require('../../../data/leftTableDummyData.json')
-const rightDummyData = require('../../../data/rightTableDummyData.json')
 const isAndroid = Platform.OS === 'android';
 
 let uri = '';
 
 class RootDashboard extends Component {
   state = {
-    data: {
-      items: leftDummyData,
-      rightItem: rightDummyData
-    },
     appConfig: {},
     widgetConfig: {}
   }
