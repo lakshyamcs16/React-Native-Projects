@@ -16,6 +16,41 @@ var mustache = require("mustache");
 const Entities = require('html-entities').XmlEntities;
 const entities = new Entities();
 
+
+export const buildDataRequest = (dataConfig) => {
+    let url = fetchUrl(dataConfig);
+    url = addUrlParams(url, dataConfig.urlparams);
+
+    return {
+        url: url,
+        body: dataConfig.params.body,
+        method: "POST",
+        isBaseUrlAbsent: false
+    };
+}
+
+export const addUrlParams = (url, config) => {
+    if (config) {
+        url += '?';
+
+        for (var key in config) {
+            url += `${key}=${config[key]}&`
+        }
+
+        url = url.slice(0, -1);
+    }
+
+    return url;
+}
+
+export const fetchUrl = (config) => {
+    if (config.baseurl) {
+        return `${config.baseurl}/${config.datapoint}`
+    }
+
+    return config.datapoint;
+}
+
 export const getKeyHash = (key) => {
     if (typeof key !== "object") {
         return key;
@@ -114,18 +149,22 @@ export const nFormatter = (num, precision = "", digits = 0) => {
     return (num / si[i].value).toFixed(digits).replace(rx, "$1") + si[i].symbol;
 }
 
-export const getFilledObject = (obj, config) => {
-    if (obj.Where && config.Where) {
-        switch (config.Where) {
-            case "props":
-                config.Where = obj.Where;
-                return config;
-            default:
-                return config;
-        }
+export const getFilledObject = (id, data, body) => {
+    
+    const filteredData = data.filter(d => {
+        return getKeyHash(d._id) == id
+    });
+
+    if (filteredData && filteredData.length > 0) {
+        body = mustache.render(JSON.stringify(body), filteredData[0]);
     }
 
-    return config;
+    if(typeof body === "string") {
+        body = JSON.parse(entities.decode(body));
+    }
+
+    return body;
+
 }
 
 export const getAction = (config, id, data, token, parameters) => {
@@ -159,34 +198,18 @@ export const getAction = (config, id, data, token, parameters) => {
         }
     }
 
-    function performNavigationAction(typeParams) {        
+    function performNavigationAction(typeParams) {
         if (typeParams.type === "dashboard") {
             var body = {}, st;
-            const { dashboardId } =  typeParams ;
+            const { dashboardId } = typeParams;
             paramsToReturn['dashboardId'] = dashboardId;
-            let { params } = typeParams ;
-            
-            if (params.filter) {
-                const filteredData = data.filter(d => {
-                    return getKeyHash(d._id) == id
-                });
-                
-                if (filteredData && filteredData.length > 0) {                    
-                    st = mustache.render(JSON.stringify(params.filter), filteredData[0]);
-                }
-
-            }
-
-            body = {
-                "body": JSON.parse(entities.decode(st))
-            }
-
-            paramsToReturn.service = body;
+            paramsToReturn['data'] = data;
+            paramsToReturn['id'] = id;
             parameters.navigate(paramsToReturn);
-           
+
 
         }
-        
+
     }
 }
 

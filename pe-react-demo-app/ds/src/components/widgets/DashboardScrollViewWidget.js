@@ -10,6 +10,7 @@ import { SwipeListView } from 'react-native-swipe-list-view';
 import {
     getCards
 } from '../assets/scrollview/ScrollViewAssets';
+import {getFilledObject, buildDataRequest} from '../../utilities/Utilities';
 
 class DashboardScrollViewWidget extends Component<{}> {
 
@@ -21,14 +22,10 @@ class DashboardScrollViewWidget extends Component<{}> {
     }
 
     async componentDidMount() {
-
-        console.log("********************************************************");
-
-        var params = {
-            body: this.props.service || body,
-            token: this.props.token
-        };
-        
+        const dataConfig = this.props.wConfig.dataConfig;        
+        dataConfig.params.body = getFilledObject(this.props.id, this.props.prevData, dataConfig.params.body);
+        console.log(JSON.stringify(dataConfig.params.body, null, 2));
+        var params = buildDataRequest(dataConfig);
         const response = await this.props.fetchWidgetData(params);
 
         try {

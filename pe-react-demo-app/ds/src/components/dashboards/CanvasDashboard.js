@@ -16,8 +16,9 @@ import { fetchAppConfig } from '../../redux/actions/dashboard/navigation.actions
 import { fetchWidgetConfig, widgetRequest } from '../../redux/actions/dashboard/main.actions'
 import InnerNavBar from '../assets/InnerNavBar';
 import { GetWidgets } from './GetWidgets';
-import { GENERIC_APP_CONFIG_ERROR } from '../../utilities/Constants';
+import { GENERIC_APP_CONFIG_ERROR, DASHBOARD_CONFIG_URL } from '../../utilities/Constants';
 import { getFilledObject } from '../../utilities/Utilities';
+import { BASE_URL } from 'react-native-dotenv'
 
 let uri = '';
 
@@ -31,21 +32,16 @@ class CanvasDashboard extends Component {
 
     async componentDidMount() {
         
-        console.log("*********************");
+        console.log("***********C A N V A S**********");
         
-        console.log(JSON.stringify(this.props));
-        
-
+                
         var params = {
-            id: this.props.dashboardId,
-            url: `https://private-5268ee-parsers.apiary-mock.com/rester/${this.props.dashboardId}`,
-            method: "GET",
-            body: null,
-            header: null,
-            isBaseUrlAbsent: false
+            url: `${BASE_URL}/${DASHBOARD_CONFIG_URL}/${this.props.dashboardId}?access_token=${this.props.token}`,
+            method: 'GET'
         };
 
         const response = await this.props.fetchWidgetConfig(params);
+        
         try {
             if (!response.success) {
                 throw response;
@@ -82,8 +78,7 @@ class CanvasDashboard extends Component {
                         {
                             Object.keys(this.state.config).length > 0 ?
                                 this.state.config.widgets.map(config => {
-                                    const serviceData = getFilledObject(this.props.service.body, config.services.body);                                    
-                                    return <GetWidgets key={config.id} wConfig={config} theme={this.props.theme} service={serviceData}/>
+                                    return <GetWidgets key={config.id} wConfig={config} theme={this.props.theme} id={this.props.id} data={this.props.data}/>
                                 })
                                 :
                                 <ActivityIndicator style={{ flex: 1, justifyContent: 'center', alignSelf: 'center', alignItems: 'center' }}>

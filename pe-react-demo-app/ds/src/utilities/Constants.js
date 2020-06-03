@@ -4,3 +4,5 @@ export const GENERIC_APP_CONFIG_ERROR = "There was a problem in getting app conf
 export const WIDGET_TYPE_SCROLLVIEW = "scrollview"; 
 export const DASHBOARD_TYPE_SCROLLVIEW = "dash-scrollview"; 
 export const GENERIC_DATA_ERROR = "There was a problem in fetching data. \n Please make sure that you are connected to the VPN.";
+export const APP_CONFIG_URL = "AppConfig";
+export const DASHBOARD_CONFIG_URL = "DashboardConfigs";

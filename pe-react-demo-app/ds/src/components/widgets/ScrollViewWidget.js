@@ -11,7 +11,7 @@ import { Actions } from 'react-native-router-flux';
 import {
     getCards
 } from '../assets/scrollview/ScrollViewAssets';
-import { getAction, getKeyHash } from '../../utilities/Utilities';
+import { getAction, getKeyHash, buildDataRequest } from '../../utilities/Utilities';
 var hash = require('object-hash');
 var mustache = require("mustache");
 const Entities = require('html-entities').XmlEntities;
@@ -28,27 +28,11 @@ class ScrollViewWidget extends Component<{}> {
 
     async componentDidMount() {
 
-        const body = {
-            "Select": {
-                "'Entity State'": 1,
-                "Probability": "sum(Probability)",
-                "Amount": "sum(Amount)",
-                "ExpectedRevenue": "sum(ExpectedRevenue)"
-            },
-            "GroupBy": {
-                "'Entity State'": 1
-            }
-        };
 
         console.log("********************************************************");
 
-        console.log("********************************************************");
-
-        var params = {
-            body: this.props.service || body,
-            token: this.props.token
-        };
-
+        const dataConfig = this.props.wConfig.dataConfig;
+        var params = buildDataRequest(dataConfig);
         const response = await this.props.fetchWidgetData(params);
 
         try {
@@ -79,6 +63,8 @@ class ScrollViewWidget extends Component<{}> {
         var params = {
             navigate:  Actions.canvas
         }
+        
+        
         getAction(this.props.wConfig.actions, getKeyHash(item._id), this.state.data, props.token, params);
     }
 

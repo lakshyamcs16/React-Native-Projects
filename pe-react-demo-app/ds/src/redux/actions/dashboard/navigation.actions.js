@@ -8,7 +8,9 @@ import {
     SET_APP_CONFIG_ERROR
 } from "../../types/dashboard/navigation.types.js";
 import { ERROR_MESSAGE_401, GENERIC_APP_CONFIG_ERROR } from '../../../utilities/Constants';
+import { isJson } from '../../../utilities/Utilities';
 import { api } from '../../../services/Services';
+import { loginFailed } from '../authentication/auth.actions';
 
 export const isNavigationBarTitleEnabled = enabled => {
     return {
@@ -73,10 +75,10 @@ export const appConfigFailure = (error) => {
     }
 }
 
-export const fetchAppConfig = () => {
+export const fetchAppConfig = (params) => {
     return async (dispatch) => {
 
-        const response = await api("https://private-5268ee-parsers.apiary-mock.com/rester/appconfig", "GET", null, null, false);
+        const response = await api(params.url, params.method, params.body || null, params.headers || null, params.isBaseUrlAbsent || false);
         try {
             var result = {
                 success: false
@@ -85,12 +87,14 @@ export const fetchAppConfig = () => {
             if (response.status >= 200 && response.status < 300) {                
                 const responseJson = await response.json();                
                 result.success = true;
+                
                 dispatch(setAppConfig(responseJson));
                 dispatch(isNavigationBarTitleEnabled(responseJson.title.enabled));
                 dispatch(isNavigationBarFiltersEnabled(responseJson.filters.enabled));
                 result.body = responseJson;
                 return result;
             } else {
+                
                 let body = {};
                 let tempBody = response;
                 if(isJson(tempBody)) {
@@ -104,7 +108,10 @@ export const fetchAppConfig = () => {
                 }
                 
                 try {
-                    dispatch(appConfigFailure(body.message));
+                    if(!result.success) {
+                        dispatch(loginFailed());
+                        dispatch(appConfigFailure(body.message));
+                    }
                     
                 } catch (e) {
                     

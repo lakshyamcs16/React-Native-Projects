@@ -2,7 +2,8 @@ import {
     AUTHENTICATE_FAILURE,
     AUTHENTICATE_SUCCESS,
     AUTHENTICATE_USER_REQUEST,
-    SAVE_USER_LOGIN_CREDS
+    SAVE_USER_LOGIN_CREDS,
+    LOGIN_FAILED
 } from "../../types/authentication/auth.types.js";
 import base64 from 'react-native-base64';
 import { api } from '../../../services/Services';
@@ -36,6 +37,12 @@ export const authenticateFailure = error => {
     }
 }
 
+export const loginFailed = () => {
+    return {
+        type: LOGIN_FAILED
+    }
+}
+
 export const authenticateUser = (params) => {
     return async (dispatch) => {
         var headers = {
@@ -48,30 +55,30 @@ export const authenticateUser = (params) => {
                 success: false
             };
 
-            if (response.status >= 200 && response.status < 300) {                
+            if (response.status >= 200 && response.status < 300) {
                 const responseJson = await response.json();
 
-                result.success = true;                
-                dispatch(authenticateSuccess(responseJson));                
+                result.success = true;
+                dispatch(authenticateSuccess(responseJson));
                 result.body = responseJson;
                 return result;
             } else {
                 let body = {};
                 let tempBody = response;
-                if(isJson(tempBody)) {
+                if (isJson(tempBody)) {
                     body = response;
                     body = JSON.parse(body);
-                }else if(response.status === 401) {
+                } else if (response.status === 401) {
                     body.message = ERROR_MESSAGE_401;
-                }else{
+                } else {
                     const responseJson = await response.json();
                     body = responseJson;
                 }
-                
+
                 try {
-                    dispatch(authenticateFailure(body.message));                    
+                    dispatch(authenticateFailure(body.message));
                 } catch (e) {
-                    
+
                 }
                 result.body = body;
                 return result;
