@@ -126,9 +126,6 @@ export const fetchWidgetData = (params) => {
 
     return async (dispatch) => {
 
-        console.log("--------------------------DATA CONFIG---------------------------");      
-        console.log(JSON.stringify(params, null, 2));
-  
         const response = await api(`${params.url}&access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlYjQxMjQ1NWM3ZDUwMjY0NGI5M2UzMSIsImlhdCI6MTU5MTE4ODM5Nn0.fBuHR9AFwvyadA8qgPEw4O-J7A3Ygo-CKiPryqt9vD8`, params.method, params.body, params.headers, params.isBaseUrlAbsent);
                 
         try {

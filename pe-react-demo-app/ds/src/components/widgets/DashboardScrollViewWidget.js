@@ -62,7 +62,7 @@ class DashboardScrollViewWidget extends Component<{}> {
                 renderItem={(data, rowMap) => (
                     getCards(data.item, this.props, this.state.data, params)
                 )}
-                keyExtractor={(data, index) => index}
+                keyExtractor={(data, index) => index.toString()}
 
             />
 

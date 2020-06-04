@@ -80,7 +80,7 @@ class ScrollViewWidget extends Component<{}> {
                 renderItem={(data, rowMap) => (
                     getCards(data.item, this.props, this.state.data, params)
                 )}
-                keyExtractor={(data, index) => index}
+                keyExtractor={(data, index) => index.toString()}
             // renderHiddenItem={(data, rowMap) => (
             //     <View style={styles.rowBack} key={this.getKeyHash(data.item._id)}>
 

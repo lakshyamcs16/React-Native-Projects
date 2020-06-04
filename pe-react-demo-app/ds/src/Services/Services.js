@@ -21,7 +21,6 @@ export const api = async (url, method, body = null, headers = {}, isBaseUrlAbsen
             fetchParams.body = reqBody;
         }
         
-        console.log(fetchParams);
         
         const fetchPromise = fetch(endPoint, fetchParams);
         const timeOutPromise = new Promise((resolve, reject) => {
@@ -31,7 +30,8 @@ export const api = async (url, method, body = null, headers = {}, isBaseUrlAbsen
         });
 
         const response = await Promise.race([fetchPromise, timeOutPromise]);
-        
+        console.log(response.status);
+
         return response;
     } catch (e) {
         return e;
