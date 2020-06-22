@@ -3,6 +3,7 @@ import {
     StyleSheet,
     Alert
 } from 'react-native';
+import { ActivityIndicator } from 'react-native-paper';
 import { fetchWidgetData, dataRequest } from '../../redux/actions/dashboard/main.actions';
 import { GENERIC_DATA_ERROR } from '../../utilities/Constants';
 import { connect } from 'react-redux';
@@ -10,19 +11,20 @@ import { SwipeListView } from 'react-native-swipe-list-view';
 import {
     getCards
 } from '../assets/scrollview/ScrollViewAssets';
-import {getFilledObject, buildDataRequest} from '../../utilities/Utilities';
+import { getFilledObject, buildDataRequest } from '../../utilities/Utilities';
 
 class DashboardScrollViewWidget extends Component<{}> {
 
     constructor(props) {
         super(props);
         this.state = {
-            data: []
+            data: [],
+            isDataFetched: false
         }
     }
 
     async componentDidMount() {
-        const dataConfig = this.props.wConfig.dataConfig;        
+        const dataConfig = this.props.wConfig.dataConfig;
         dataConfig.params.body = getFilledObject(this.props.id, this.props.prevData, dataConfig.params.body);
         console.log(JSON.stringify(dataConfig.params.body, null, 2));
         var params = buildDataRequest(dataConfig);
@@ -33,7 +35,8 @@ class DashboardScrollViewWidget extends Component<{}> {
                 throw response;
             } else {
                 this.setState({
-                    data: response.body
+                    data: response.body,
+                    isDataFetched: true
                 });
             }
         } catch (error) {
@@ -56,15 +59,28 @@ class DashboardScrollViewWidget extends Component<{}> {
         params.styles = viewStyles;
 
         return (
-            this.state.data.length > 0 &&
-            <SwipeListView style={[styles.container]}
-                data={this.state.data}
-                renderItem={(data, rowMap) => (
-                    getCards(data.item, this.props, this.state.data, params)
-                )}
-                keyExtractor={(data, index) => index.toString()}
+            (this.state.data.length > 0 ?
+                <SwipeListView style={[styles.container]}
+                    data={this.state.data}
+                    renderItem={(data, rowMap) => (
+                        getCards(data.item, this.props, this.state.data, params)
+                    )}
+                    keyExtractor={(data, index) => index.toString()}
 
-            />
+                /> : !this.state.isDataFetched ?
+                    <ActivityIndicator style={{ flex: 1, justifyContent: 'center', alignSelf: 'center', alignItems: 'center' }}>
+
+                    </ActivityIndicator> :  <>{Alert.alert(
+                        'No Data',
+                        'There is no data present',
+                        [
+                            {
+                                text: 'Okay',
+                                onPress: () => console.log('Okay Pressed'),
+                                style: 'cancel',
+                            },
+                        ]
+                    )}</>)
 
 
         );

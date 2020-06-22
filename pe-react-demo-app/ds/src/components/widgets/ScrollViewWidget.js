@@ -31,7 +31,7 @@ class ScrollViewWidget extends Component<{}> {
 
         console.log("********************************************************");
 
-        const dataConfig = this.props.wConfig.dataConfig;
+        const dataConfig = this.props.wConfig.dataConfig;        
         var params = buildDataRequest(dataConfig);
         const response = await this.props.fetchWidgetData(params);
 
