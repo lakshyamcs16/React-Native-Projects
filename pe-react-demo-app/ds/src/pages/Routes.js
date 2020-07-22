@@ -5,6 +5,7 @@ import SignUp from '../pages/authentication/SignUp';
 import DashboardMain from '../pages/dashboards/DashboardMain';
 import NavBar from '../components/assets/NavBar';
 import InnerNavBar from '../components/assets/InnerNavBar';
+import CanvasDashboard from '../components/dashboards/CanvasDashboard';
 
 export default class Routes extends Component<{}> {
     render() {
@@ -19,6 +20,7 @@ export default class Routes extends Component<{}> {
                     <Scene key="app" initial={this.props.isLoggedIn} hideNavBar={true}>
                         <Scene key="home" component={DashboardMain} title="Summary" />
                         <Scene key="open" component={Login} title="Open"/>
+                        <Scene key="canvas" component={CanvasDashboard} />
                     </Scene>
                     <Scene key="search" initial={this.props.tab === "search"} hideNavBar={true}>
                         <Scene key="log" component={Login} title="Search" />

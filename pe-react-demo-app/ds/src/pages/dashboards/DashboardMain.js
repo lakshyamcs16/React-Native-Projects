@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Demo from '../../components/dashboards/Demo';
+import RootDashboard from '../../components/dashboards/RootDashboard';
 import Drawer from 'react-native-drawer'
 import Login from '../../pages/authentication/Login';
 
@@ -38,13 +38,12 @@ class DashboardMain extends Component<{}> {
                     onCloseStart={() => this.props.closeNavigationDrawer()}
                     tweenDuration={300}
                     acceptTap={this.props.isDrawerOpen}
-                    captureGestures="closed"
                     tweenHandler={(ratio) => {
                         return {
                             mainOverlay: { opacity: ratio / 1.5, backgroundColor: '#000' }
                         }
                     }}
-                    styles={{ shadowColor: '#000000', shadowOpacity: 1, shadowRadius: 300 }}
+                    styles={{ shadowColor: '#000000', shadowOpacity: 1, shadowRadius: 300}}
                     content={<Filter />}
                 >
                     <Drawer
@@ -63,7 +62,7 @@ class DashboardMain extends Component<{}> {
                         styles={{ shadowColor: '#000000', shadowOpacity: 1, shadowRadius: 300 }}
                         content={<Notification />}
                     >
-                        { this.props.title === "Open"? <Login /> : <Demo />}
+                        { this.props.title === "Open"? <Login /> : <RootDashboard />}
                     </Drawer>
                 </Drawer>
             </>

@@ -1,4 +1,5 @@
-const BASE_URL = "https://ivpcloud.com:8421";
+import { BASE_URL } from 'react-native-dotenv'
+
 
 export const api = async (url, method, body = null, headers = {}, isBaseUrlAbsent = true) => {    
     try {
@@ -20,15 +21,16 @@ export const api = async (url, method, body = null, headers = {}, isBaseUrlAbsen
             fetchParams.body = reqBody;
         }
         
+        
         const fetchPromise = fetch(endPoint, fetchParams);
         const timeOutPromise = new Promise((resolve, reject) => {
             setTimeout(() => {
                 reject(`{ "statusCode": "408", "message" : "Please check your internet connection" }`);
-            }, 100000);
+            }, 10000);
         });
 
         const response = await Promise.race([fetchPromise, timeOutPromise]);
-        
+
         return response;
     } catch (e) {
         return e;

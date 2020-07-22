@@ -10,6 +10,7 @@ import { getIcon } from '../../utilities/Utilities';
 import { NormalText, BottomBar } from '../../themes/styling';
 import { ThemeProvider } from 'styled-components';
 import { Actions } from 'react-native-router-flux';
+// import { Placeholders } from '../../utilities/Placeholders';
 
 class NavigationBar extends PureComponent {
 
@@ -34,6 +35,19 @@ class NavigationBar extends PureComponent {
 
         let { items } = this.state;
 
+        // if (!items || items.length < 1) {
+        //     var placeholders = [];
+        //     for (var i = 0; i < 4; i++) {
+        //         placeholders.push(
+        //         <View key={i}
+        //             style={styles.navBarItemContainer}>
+        //                 <Placeholders type="cir-media-col-text" />
+        //         </View>)
+        //     }
+
+        //     return placeholders;
+        // }
+
         items = items.map((item, key) => {
             if (item.type === "dashboard") {
                 return (
@@ -41,7 +55,7 @@ class NavigationBar extends PureComponent {
                         style={styles.navBarItemContainer}>
                         {getIcon(item, this.props.theme)}
                         <NormalText
-                            style={[styles.navBarItem, { fontWeight: item.active? 'bold': 'normal'}]}>
+                            style={[styles.navBarItem, { fontWeight: item.active ? 'bold' : 'normal' }]}>
                             {item.title}</NormalText>
                     </TouchableOpacity>);
             } else if (item.type === "module") {
@@ -60,11 +74,11 @@ class NavigationBar extends PureComponent {
         return items;
     }
 
-    render() {        
+    render() {
         return (
             <ThemeProvider theme={this.props.theme.theme}>
                 <BottomBar style={styles.navBar}>
-                    {this.state.items.length > 1 && this.renderNavBar()}
+                    {this.state.items.length > 0 && this.renderNavBar()}
                 </BottomBar>
             </ThemeProvider>
         );

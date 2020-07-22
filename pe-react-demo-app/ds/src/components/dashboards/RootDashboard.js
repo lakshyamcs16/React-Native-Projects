@@ -1,61 +1,56 @@
 import React, { Component } from 'react';
 import {
   StyleSheet,
-  ScrollView,
   View,
-  Text,
-  TouchableOpacity,
   Platform,
-  
 } from 'react-native';
-import {ActivityIndicator} from 'react-native-paper';
-import HTML_FILE from '../../../resources/html/index.html';
-import TableView from '../assets/TableView'
-import WebView from 'react-native-webview'
-import NavigationBar from '../dashboards/NavigationBar';
+import { ActivityIndicator } from 'react-native-paper';
+import NavigationBar from './NavigationBar';
 import { connect } from 'react-redux';
 import { ThemeProvider } from 'styled-components';
 import { fetchAppConfig } from '../../redux/actions/dashboard/navigation.actions'
 import { fetchWidgetConfig, widgetRequest } from '../../redux/actions/dashboard/main.actions'
 import NavBar from '../assets/NavBar';
-import { Actions } from 'react-native-router-flux';
 import { GetWidgets } from './GetWidgets';
+import { BASE_URL, APP_CONFIG_ID } from 'react-native-dotenv'
+import { APP_CONFIG_URL, DASHBOARD_CONFIG_URL } from '../../utilities/Constants';
 
-const leftDummyData = require('../../../data/leftTableDummyData.json')
-const rightDummyData = require('../../../data/rightTableDummyData.json')
 const isAndroid = Platform.OS === 'android';
 
 let uri = '';
 
-class Demo extends Component {
+class RootDashboard extends Component {
   state = {
-    data: {
-      items: leftDummyData,
-      rightItem: rightDummyData
-    },
     appConfig: {},
     widgetConfig: {}
   }
 
   async componentDidMount() {
-    const response = await this.props.fetchAppConfig()
+    var params = {
+      url: `${BASE_URL}/${APP_CONFIG_URL}/${APP_CONFIG_ID}?access_token=${this.props.token}`,
+      method: 'GET'
+    };
 
-    if(response.success) {
+    const response = await this.props.fetchAppConfig(params);
+
+    if (response.success) {
       this.setState({
         appConfig: response.body
       });
-
       this.props.widgetRequest();
+      var params = {
+        url: `${BASE_URL}/${DASHBOARD_CONFIG_URL}/${response.body.home.dashboardId}?access_token=${this.props.token}`,
+        method: "GET"
+      };
 
-      const widgetConfigResponse = await this.props.fetchWidgetConfig()
-
-      if(widgetConfigResponse.success) {
+      const widgetConfigResponse = await this.props.fetchWidgetConfig(params)
+      if (widgetConfigResponse.success) {
         this.setState({
           widgetConfig: widgetConfigResponse.body
-        })        
+        })
       }
     }
-    
+
   }
 
   render() {
@@ -66,15 +61,15 @@ class Demo extends Component {
     return (
       <>
         <ThemeProvider theme={this.props.theme}>
-          <NavBar theme={this.props.theme} title={"Pipeline"} subtitle={"Private Equity"}/>
-          <View style={{flex:1}} >
+          <NavBar theme={this.props.theme} title={"Pipeline"} subtitle={"Private Equity"} />
+          <View style={{ flex: 1, backgroundColor: this.props.theme.theme.ROOT_BACKGROUND_COLOR }} >
             {
               Object.keys(this.state.widgetConfig).length > 0 ?
-                this.state.widgetConfig.widgets.map( config => {
-                    return <GetWidgets key={config.id} wConfig={config} theme={this.props.theme} />
+                this.state.widgetConfig.widgets.map(config => {
+                  return <GetWidgets key={config.id} wConfig={config} theme={this.props.theme} />
                 })
-              :
-                <ActivityIndicator style={{flex:1, justifyContent: 'center', alignSelf: 'center', alignItems: 'center'}}>
+                :
+                <ActivityIndicator style={{ flex: 1, justifyContent: 'center', alignSelf: 'center', alignItems: 'center' }}>
 
                 </ActivityIndicator>
             }
@@ -150,16 +145,17 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
   return {
-    theme: state.themeDetails
+    theme: state.themeDetails,
+    token: state.authenticationDetails.user_details.token
   }
 }
 
 const dispatchStateToProps = (dispatch) => {
   return {
-    fetchAppConfig: () => dispatch(fetchAppConfig()),
-    fetchWidgetConfig: () => dispatch(fetchWidgetConfig()),
+    fetchAppConfig: (params) => dispatch(fetchAppConfig(params)),
+    fetchWidgetConfig: (params) => dispatch(fetchWidgetConfig(params)),
     widgetRequest: () => dispatch(widgetRequest())
   }
 }
 
-export default connect(mapStateToProps, dispatchStateToProps)(Demo);
+export default connect(mapStateToProps, dispatchStateToProps)(RootDashboard);

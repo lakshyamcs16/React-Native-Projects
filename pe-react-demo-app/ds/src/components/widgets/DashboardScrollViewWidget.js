@@ -3,35 +3,30 @@ import {
     StyleSheet,
     Alert
 } from 'react-native';
+import { ActivityIndicator } from 'react-native-paper';
 import { fetchWidgetData, dataRequest } from '../../redux/actions/dashboard/main.actions';
 import { GENERIC_DATA_ERROR } from '../../utilities/Constants';
 import { connect } from 'react-redux';
 import { SwipeListView } from 'react-native-swipe-list-view';
-import { Actions } from 'react-native-router-flux';
 import {
     getCards
 } from '../assets/scrollview/ScrollViewAssets';
-import { getAction, getKeyHash, buildDataRequest } from '../../utilities/Utilities';
-var hash = require('object-hash');
-var mustache = require("mustache");
-const Entities = require('html-entities').XmlEntities;
-const entities = new Entities();
+import { getAction, getKeyHash, getFilledObject, buildDataRequest } from '../../utilities/Utilities';
+import { Actions } from 'react-native-router-flux';
 
-class ScrollViewWidget extends Component<{}> {
+class DashboardScrollViewWidget extends Component<{}> {
 
     constructor(props) {
         super(props);
         this.state = {
-            data: []
+            data: [],
+            isDataFetched: false
         }
     }
 
     async componentDidMount() {
-
-
-        console.log("********************************************************");
-
-        const dataConfig = this.props.wConfig.dataConfig;        
+        const dataConfig = this.props.wConfig.dataConfig;
+        dataConfig.params.body = getFilledObject(this.props.id, this.props.prevData, dataConfig.params.body);
         var params = buildDataRequest(dataConfig);
         const response = await this.props.fetchWidgetData(params);
 
@@ -40,7 +35,8 @@ class ScrollViewWidget extends Component<{}> {
                 throw response;
             } else {
                 this.setState({
-                    data: response.body
+                    data: response.body,
+                    isDataFetched: true
                 });
             }
         } catch (error) {
@@ -63,8 +59,6 @@ class ScrollViewWidget extends Component<{}> {
         var params = {
             navigate:  Actions.canvas
         }
-        
-        
         getAction(this.props.wConfig.actions, getKeyHash(item._id), this.state.data, props.token, params);
     }
 
@@ -74,23 +68,28 @@ class ScrollViewWidget extends Component<{}> {
         params.styles = viewStyles;
 
         return (
-            this.state.data.length > 0 &&
-            <SwipeListView style={[styles.container]}
-                data={this.state.data}
-                renderItem={(data, rowMap) => (
-                    getCards(data.item, this.props, this.state.data, params)
-                )}
-                keyExtractor={(data, index) => index.toString()}
-            // renderHiddenItem={(data, rowMap) => (
-            //     <View style={styles.rowBack} key={this.getKeyHash(data.item._id)}>
+            (this.state.data.length > 0 ?
+                <SwipeListView style={[styles.container]}
+                    data={this.state.data}
+                    renderItem={(data, rowMap) => (
+                        getCards(data.item, this.props, this.state.data, params)
+                    )}
+                    keyExtractor={(data, index) => index.toString()}
 
-            //         <Text></Text>
-            //         <Text></Text>
-            //     </View>
-            // )}
-            // leftOpenValue={1}
-            // rightOpenValue={-1}
-            />
+                /> : !this.state.isDataFetched ?
+                    <ActivityIndicator style={{ flex: 1, justifyContent: 'center', alignSelf: 'center', alignItems: 'center' }}>
+
+                    </ActivityIndicator> :  <>{Alert.alert(
+                        'No Data',
+                        'There is no data present',
+                        [
+                            {
+                                text: 'Okay',
+                                onPress: () => console.log('Okay Pressed'),
+                                style: 'cancel',
+                            },
+                        ]
+                    )}</>)
 
 
         );
@@ -103,7 +102,7 @@ const viewStyles = {
     },
     cardContainer: {
         margin: 1,
-        paddingVertical: 15
+        paddingVertical: 20
     },
     columnStyle: {
         flexDirection: 'column',
@@ -145,4 +144,4 @@ const dispatchStateToProps = (dispatch) => {
     }
 }
 
-export default connect(mapStateToProps, dispatchStateToProps)(ScrollViewWidget);
+export default connect(mapStateToProps, dispatchStateToProps)(DashboardScrollViewWidget);

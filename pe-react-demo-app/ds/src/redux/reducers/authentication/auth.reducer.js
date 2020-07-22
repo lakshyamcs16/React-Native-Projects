@@ -2,13 +2,16 @@ import {
     AUTHENTICATE_SUCCESS,
     AUTHENTICATE_FAILURE,
     AUTHENTICATE_USER_REQUEST,
-    SAVE_USER_LOGIN_CREDS
+    SAVE_USER_LOGIN_CREDS,
+    LOGIN_FAILED
 } from "../../types/authentication/auth.types.js";
 
 const initialState = {
-    loggedin: true,
+    loggedin: false,
     loading: false,
-    user_details: {},
+    user_details: {
+        token: ''
+    },
     error: ''
 };
 
@@ -43,7 +46,15 @@ export const authenticationReducer = (state = initialState, action) => {
                 username: '',
                 user_details: {},
                 error: action.payload
-            }    
+            } 
+        case LOGIN_FAILED:
+            return {
+                loggedin: false,
+                loading: false,
+                username: '',
+                user_details: {},
+                error: ''
+            }
         default:
             return state;
     }
