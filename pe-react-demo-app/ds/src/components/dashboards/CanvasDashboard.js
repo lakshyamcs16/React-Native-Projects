@@ -30,11 +30,7 @@ class CanvasDashboard extends Component {
         }
     }
 
-    async componentDidMount() {
-        
-        console.log("***********C A N V A S**********");
-        
-                
+    async componentDidMount() {        
         var params = {
             url: `${BASE_URL}/${DASHBOARD_CONFIG_URL}/${this.props.dashboardId}?access_token=${this.props.token}`,
             method: 'GET'

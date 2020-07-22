@@ -1,21 +1,21 @@
 import React, { Component } from 'react';
 import {
-    StyleSheet,
-    Alert
+    View,
+    Text,
+    Alert,
+    StyleSheet
 } from 'react-native';
 import { ActivityIndicator } from 'react-native-paper';
+import { getFilledObject, buildDataRequest } from '../../utilities/Utilities';
+import { connect } from 'react-redux';
 import { fetchWidgetData, dataRequest } from '../../redux/actions/dashboard/main.actions';
 import { GENERIC_DATA_ERROR } from '../../utilities/Constants';
-import { connect } from 'react-redux';
-import { SwipeListView } from 'react-native-swipe-list-view';
 import {
-    getCards
+    getFormattedNumber
 } from '../assets/scrollview/ScrollViewAssets';
-import { getAction, getKeyHash, getFilledObject, buildDataRequest } from '../../utilities/Utilities';
-import { Actions } from 'react-native-router-flux';
 
-class DashboardScrollViewWidget extends Component<{}> {
-
+class NumberStamp extends Component<{}> {
+    
     constructor(props) {
         super(props);
         this.state = {
@@ -54,29 +54,32 @@ class DashboardScrollViewWidget extends Component<{}> {
         }
     }
 
-    navigateScreen = (item) => {
+    createCard = (config, data) => {
+        let key = config.keyField;
+        let layout = config.layout;
+        let label = '';
 
-        var params = {
-            navigate:  Actions.canvas
+        if(layout.label.enabled) {
+            label = config.labelField;
         }
-        getAction(this.props.wConfig.actions, getKeyHash(item._id), this.state.data, props.token, params);
+
+        return (
+            <View style={styles.keyStats}> 
+                <Text style={styles.keyHeading}>{getFormattedNumber(data[0][key], layout.key.numberFormat, layout.key.decimalPrecision)}</Text>
+                <Text style={styles.keySubHeading}>{data[0][label]}</Text>
+            </View>
+        );
+        
+       
     }
 
     render() {
-        var params = {};
-        params.onPressHandler = this.navigateScreen;
-        params.styles = viewStyles;
-
         return (
-            (this.state.data.length > 0 ?
-                <SwipeListView style={[styles.container]}
-                    data={this.state.data}
-                    renderItem={(data, rowMap) => (
-                        getCards(data.item, this.props, this.state.data, params)
-                    )}
-                    keyExtractor={(data, index) => index.toString()}
-
-                /> : !this.state.isDataFetched ?
+            (this.state.data.length > 0?
+                <View style={styles.container}>
+                    {this.createCard(this.props.wConfig.config, this.state.data)}
+                </View>
+            : !this.state.isDataFetched ?
                     <ActivityIndicator style={{ flex: 1, justifyContent: 'center', alignSelf: 'center', alignItems: 'center' }}>
 
                     </ActivityIndicator> :  <>{Alert.alert(
@@ -90,45 +93,82 @@ class DashboardScrollViewWidget extends Component<{}> {
                             },
                         ]
                     )}</>)
-
-
         );
     }
 }
 
-const viewStyles = {
+const styles = StyleSheet.create({
     container: {
-        margin: 5
+      flex: 1
     },
-    cardContainer: {
-        margin: 1,
-        paddingVertical: 20
+    keyStats: {
+      padding: 20,
+      alignItems: 'flex-start'
     },
-    columnStyle: {
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        alignSelf: 'baseline'
+    keyHeading: {
+      fontSize: 52,
+      color: '#05ad6a',
+      fontWeight: 'bold'
     },
-    keyStyle: {
-        alignItems: 'baseline',
+    keySubHeading: {
+      fontSize: 15,
+      color: '#999999',
+      fontWeight: 'bold',
+      marginTop: -6
     },
-    forwardArrow: {
-        marginRight: 20,
-        marginTop: 30
+    statsContainer: {
+      padding: 20,
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      marginTop: -45,
+      borderBottomColor: '#f2f2f2',
+      borderBottomWidth: 5
     },
-    rowBack: {
-        alignItems: 'center',
-        flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        paddingLeft: 15,
-        margin: 1,
-        borderRadius: 5
+    statDetails: {
+      flexDirection: 'column'
+    },
+    statHeading: {
+      paddingTop: 20,
+      color: '#999999',
+      fontSize: 16,
+      fontWeight: "bold",
+      letterSpacing: -1
+    },
+    statSubHeading: {
+      color: '#555555',
+      fontSize: 20,
+      fontWeight: "bold"
+    },
+    statHeadingLast: {
+      paddingTop: 20,
+      color: '#999999',
+      fontSize: 16,
+      fontWeight: "bold",
+      textAlign: 'right',
+      letterSpacing: -1
+    },
+    statSubHeadingLast: {
+      color: '#555555',
+      fontSize: 20,
+      fontWeight: "bold",
+      textAlign: 'right'
+    },
+    navBar: {
+      flexDirection: 'row',
+      height: 50,
+      paddingTop: 10,
+      justifyContent: 'space-around',
+      borderTopColor: '#999999',
+      borderTopWidth: 0.5
+    },
+    navBarItem: {
+      fontSize: 15
+    },
+    chartConfig: {
+      marginLeft: -4
     }
-};
-
-const styles = StyleSheet.create(viewStyles);
+  
+  });
 
 const mapStateToProps = (state) => {
     return {
@@ -144,4 +184,4 @@ const dispatchStateToProps = (dispatch) => {
     }
 }
 
-export default connect(mapStateToProps, dispatchStateToProps)(DashboardScrollViewWidget);
+export default connect(mapStateToProps, dispatchStateToProps)(NumberStamp);

@@ -57,7 +57,7 @@ export const authenticateUser = (params) => {
 
             if (response.status >= 200 && response.status < 300) {
                 const responseJson = await response.json();
-
+                console.log(responseJson)
                 result.success = true;
                 dispatch(authenticateSuccess(responseJson));
                 result.body = responseJson;
