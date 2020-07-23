@@ -149,6 +149,18 @@ export const nFormatter = (num, precision = "", digits = 0) => {
     return (num / si[i].value).toFixed(digits).replace(rx, "$1") + si[i].symbol;
 }
 
+export const filterDataOnId = (data, id) => {
+    if(data && data[0]) {
+        data = data.filter(v => id === getKeyHash(v._id))
+        if(data && data.length > 0) {
+            return data[0];
+        }
+    }
+
+    return []
+    
+}
+
 export const getFilledObject = (id, data, body) => {
     
     const filteredData = data.filter(d => {

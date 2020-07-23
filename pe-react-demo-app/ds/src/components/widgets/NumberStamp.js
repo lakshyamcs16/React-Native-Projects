@@ -6,7 +6,7 @@ import {
     StyleSheet
 } from 'react-native';
 import { ActivityIndicator } from 'react-native-paper';
-import { getFilledObject, buildDataRequest } from '../../utilities/Utilities';
+import { getFilledObject, buildDataRequest, filterDataOnId } from '../../utilities/Utilities';
 import { connect } from 'react-redux';
 import { fetchWidgetData, dataRequest } from '../../redux/actions/dashboard/main.actions';
 import { GENERIC_DATA_ERROR } from '../../utilities/Constants';
@@ -63,10 +63,11 @@ class NumberStamp extends Component<{}> {
             label = config.labelField;
         }
 
+        data = filterDataOnId(data, this.props.id)
         return (
             <View style={styles.keyStats}> 
-                <Text style={styles.keyHeading}>{getFormattedNumber(data[0][key], layout.key.numberFormat, layout.key.decimalPrecision)}</Text>
-                <Text style={styles.keySubHeading}>{data[0][label]}</Text>
+                <Text style={styles.keyHeading}>{getFormattedNumber(data[key], layout.key.numberFormat, layout.key.decimalPrecision)}</Text>
+                <Text style={styles.keySubHeading}>{data[label]}</Text>
             </View>
         );
         
