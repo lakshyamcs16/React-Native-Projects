@@ -1,6 +1,8 @@
 import React from 'react';
 import {
     StyleSheet,
+    View,
+    Text
 } from 'react-native';
 import {
     StyledMaterialIcon,
@@ -10,6 +12,9 @@ import {
 } from '../themes/styling';
 import { ThemeProvider } from 'styled-components';
 import { Actions } from 'react-native-router-flux';
+import {
+    getFormattedNumber
+} from '../components/assets/scrollview/ScrollViewAssets';
 
 var hash = require('object-hash');
 var mustache = require("mustache");
@@ -161,6 +166,23 @@ export const filterDataOnId = (data, id) => {
     
 }
 
+export const createCard = (config, data) => {
+    let key = config.keyField;
+    let layout = config.layout;
+    let label = '';
+
+    if(layout.label.enabled) {
+        label = config.labelField;
+    }
+
+    return (
+        <View style={styles.keyStats}> 
+            <Text style={styles.keyHeading}>{getFormattedNumber(data[key], layout.key.numberFormat, layout.key.decimalPrecision)}</Text>
+            <Text style={styles.keySubHeading}>{data[label]}</Text>
+        </View>
+    );
+}
+
 export const getFilledObject = (id, data, body) => {
     
     const filteredData = data.filter(d => {
@@ -241,5 +263,20 @@ const styles = StyleSheet.create({
             width: -1,            // These can't both be 0
             height: -1,           // i.e. the shadow has to be offset in some way
         },
-    }
+    },
+    keyStats: {
+        padding: 20,
+        alignItems: 'flex-start'
+      },
+      keyHeading: {
+        fontSize: 52,
+        color: '#05ad6a',
+        fontWeight: 'bold'
+      },
+      keySubHeading: {
+        fontSize: 15,
+        color: '#999999',
+        fontWeight: 'bold',
+        marginTop: -6
+      }
 });

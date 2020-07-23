@@ -5,7 +5,8 @@ import {
 import { WIDGET_TYPE_SCROLLVIEW, DASHBOARD_TYPE_SCROLLVIEW, WIDGET_TYPE_NUMBER_STAMP, WIDGET_TYPE_KEY_INFO } from '../../utilities/Constants';
 import ScrollViewWidget from '../widgets/ScrollViewWidget';
 import DashboardScrollViewWidget from '../widgets/DashboardScrollViewWidget';
-import NumberStamp from '../widgets/NumberStamp';
+import NumberStampWidget from '../widgets/NumberStampWidget';
+import KeyInfoWidget from '../widgets/KeyInfoWidget';
 
 export const GetWidgets = (props) => {
     
@@ -16,9 +17,9 @@ export const GetWidgets = (props) => {
             case DASHBOARD_TYPE_SCROLLVIEW:
                 return <DashboardScrollViewWidget wConfig={props.wConfig} theme={props.theme} id={props.id} prevData={props.data}/>
             case WIDGET_TYPE_NUMBER_STAMP:
-                return <NumberStamp wConfig={props.wConfig} theme={props.theme} id={props.id} prevData={props.data}/>
+                return <NumberStampWidget wConfig={props.wConfig} theme={props.theme} id={props.id} prevData={props.data}/>
             case WIDGET_TYPE_KEY_INFO:
-                return (<Text>Hello, World!</Text>)
+                return <KeyInfoWidget wConfig={props.wConfig} theme={props.theme} id={props.id} prevData={props.data}/>
             default:
                 break;
         }

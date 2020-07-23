@@ -6,15 +6,12 @@ import {
     StyleSheet
 } from 'react-native';
 import { ActivityIndicator } from 'react-native-paper';
-import { getFilledObject, buildDataRequest, filterDataOnId } from '../../utilities/Utilities';
+import { getFilledObject, buildDataRequest, createCard, filterDataOnId } from '../../utilities/Utilities';
 import { connect } from 'react-redux';
 import { fetchWidgetData, dataRequest } from '../../redux/actions/dashboard/main.actions';
 import { GENERIC_DATA_ERROR } from '../../utilities/Constants';
-import {
-    getFormattedNumber
-} from '../assets/scrollview/ScrollViewAssets';
 
-class NumberStamp extends Component<{}> {
+class KeyInfoWidget extends Component<{}> {
     
     constructor(props) {
         super(props);
@@ -54,31 +51,28 @@ class NumberStamp extends Component<{}> {
         }
     }
 
-    createCard = (config, data) => {
-        let key = config.keyField;
-        let layout = config.layout;
-        let label = '';
-
-        if(layout.label.enabled) {
-            label = config.labelField;
-        }
-
-        data = filterDataOnId(data, this.props.id)
-        return (
-            <View style={styles.keyStats}> 
-                <Text style={styles.keyHeading}>{getFormattedNumber(data[key], layout.key.numberFormat, layout.key.decimalPrecision)}</Text>
-                <Text style={styles.keySubHeading}>{data[label]}</Text>
-            </View>
-        );
+    createKeyInfoCard = (config, data) => {
+        let rows = config.rows;
         
-       
+        return (<View>
+            {
+                rows.map(row => {
+                    let columns = row.columns;
+                    return (<View>{
+                                columns.map(column => {
+                                    return createCard(column, data)
+                                })
+                            }
+                            </View>)
+                })
+            }</View>);        
     }
 
     render() {
         return (
             (this.state.data.length > 0?
                 <View style={styles.container}>
-                    {this.createCard(this.props.wConfig.config, this.state.data)}
+                    {this.createKeyInfoCard(this.props.wConfig.config, filterDataOnId(this.state.data, this.props.id))}
                 </View>
             : !this.state.isDataFetched ?
                     <ActivityIndicator style={{ flex: 1, justifyContent: 'center', alignSelf: 'center', alignItems: 'center' }}>
@@ -101,21 +95,6 @@ class NumberStamp extends Component<{}> {
 const styles = StyleSheet.create({
     container: {
       flex: 1
-    },
-    keyStats: {
-      padding: 20,
-      alignItems: 'flex-start'
-    },
-    keyHeading: {
-      fontSize: 52,
-      color: '#05ad6a',
-      fontWeight: 'bold'
-    },
-    keySubHeading: {
-      fontSize: 15,
-      color: '#999999',
-      fontWeight: 'bold',
-      marginTop: -6
     },
     statsContainer: {
       padding: 20,
@@ -185,4 +164,4 @@ const dispatchStateToProps = (dispatch) => {
     }
 }
 
-export default connect(mapStateToProps, dispatchStateToProps)(NumberStamp);
+export default connect(mapStateToProps, dispatchStateToProps)(KeyInfoWidget);
