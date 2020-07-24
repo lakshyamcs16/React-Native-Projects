@@ -166,7 +166,7 @@ export const filterDataOnId = (data, id) => {
     
 }
 
-export const createCard = (config, data) => {
+export const createCard = (config, data, styles, renderKey) => {
     let key = config.keyField;
     let layout = config.layout;
     let label = '';
@@ -176,7 +176,7 @@ export const createCard = (config, data) => {
     }
 
     return (
-        <View style={styles.keyStats}> 
+        <View key={renderKey} style={styles.keyStats}> 
             <Text style={styles.keyHeading}>{getFormattedNumber(data[key], layout.key.numberFormat, layout.key.decimalPrecision)}</Text>
             <Text style={styles.keySubHeading}>{data[label]}</Text>
         </View>
@@ -263,20 +263,5 @@ const styles = StyleSheet.create({
             width: -1,            // These can't both be 0
             height: -1,           // i.e. the shadow has to be offset in some way
         },
-    },
-    keyStats: {
-        padding: 20,
-        alignItems: 'flex-start'
-      },
-      keyHeading: {
-        fontSize: 52,
-        color: '#05ad6a',
-        fontWeight: 'bold'
-      },
-      keySubHeading: {
-        fontSize: 15,
-        color: '#999999',
-        fontWeight: 'bold',
-        marginTop: -6
-      }
+    }
 });

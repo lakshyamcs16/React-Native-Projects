@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
 import {
     View,
-    Text,
     Alert,
     StyleSheet
 } from 'react-native';
-import { ActivityIndicator } from 'react-native-paper';
+import { Card } from 'react-native-paper';
 import { getFilledObject, buildDataRequest, createCard, filterDataOnId } from '../../utilities/Utilities';
+import {WIDGET_TYPE_KEY_INFO} from '../../utilities/Constants';
 import { connect } from 'react-redux';
 import { fetchWidgetData, dataRequest } from '../../redux/actions/dashboard/main.actions';
 import { GENERIC_DATA_ERROR } from '../../utilities/Constants';
+import {Placeholders} from '../../utilities/Placeholders';
 
 class KeyInfoWidget extends Component<{}> {
     
@@ -54,18 +55,21 @@ class KeyInfoWidget extends Component<{}> {
     createKeyInfoCard = (config, data) => {
         let rows = config.rows;
         
-        return (<View>
+        return (<Card
+                    elevation={5}
+                    style={{margin: 10}}
+                >
             {
-                rows.map(row => {
+                rows.map((row, key) => {
                     let columns = row.columns;
-                    return (<View>{
-                                columns.map(column => {
-                                    return createCard(column, data)
+                    return (<View key={key} style={{flex: 3, flexDirection: 'row'}}>{
+                                columns.map((column, key) => {
+                                    return createCard(column, data, keyStyles, key)
                                 })
                             }
                             </View>)
                 })
-            }</View>);        
+            }</Card>);        
     }
 
     render() {
@@ -75,9 +79,13 @@ class KeyInfoWidget extends Component<{}> {
                     {this.createKeyInfoCard(this.props.wConfig.config, filterDataOnId(this.state.data, this.props.id))}
                 </View>
             : !this.state.isDataFetched ?
-                    <ActivityIndicator style={{ flex: 1, justifyContent: 'center', alignSelf: 'center', alignItems: 'center' }}>
+                    // <ActivityIndicator style={{ flex: 1, justifyContent: 'center', alignSelf: 'center', alignItems: 'center' }}>
 
-                    </ActivityIndicator> :  <>{Alert.alert(
+                    // </ActivityIndicator> 
+
+                                        <Card style={[styles.container]} elevation={10}>{Placeholders({type: WIDGET_TYPE_KEY_INFO, keyStyles})}</Card>
+
+                    :  <>{Alert.alert(
                         'No Data',
                         'There is no data present',
                         [
@@ -91,6 +99,26 @@ class KeyInfoWidget extends Component<{}> {
         );
     }
 }
+
+const keyStyles = StyleSheet.create({
+    keyStats: {
+        flex: 1,
+        padding: 20,
+        alignItems: 'flex-start'
+      },
+      keyHeading: {
+        fontSize: 15,
+        color: '#b2b2b2',
+        fontWeight: 'bold',
+        paddingVertical: 5
+      },
+      keySubHeading: {
+        fontSize: 12,
+        color: '#999999',
+        fontWeight: 'bold',
+        marginTop: -6
+      }
+});
 
 const styles = StyleSheet.create({
     container: {

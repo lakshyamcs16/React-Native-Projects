@@ -6,7 +6,8 @@ import {
     Text,
     TouchableOpacity,
     Platform,
-    Alert
+    Alert,
+    SafeAreaView
 } from 'react-native';
 import { ActivityIndicator } from 'react-native-paper';
 import NavigationBar from './NavigationBar';
@@ -16,7 +17,7 @@ import { fetchAppConfig } from '../../redux/actions/dashboard/navigation.actions
 import { fetchWidgetConfig, widgetRequest } from '../../redux/actions/dashboard/main.actions'
 import InnerNavBar from '../assets/InnerNavBar';
 import { GetWidgets } from './GetWidgets';
-import { GENERIC_APP_CONFIG_ERROR, DASHBOARD_CONFIG_URL } from '../../utilities/Constants';
+import { GENERIC_APP_CONFIG_ERROR, DASHBOARD_CONFIG_URL, DASHBOARD_TYPE_SCROLLVIEW, WIDGET_TYPE_SCROLLVIEW } from '../../utilities/Constants';
 import { getFilledObject } from '../../utilities/Utilities';
 import { BASE_URL } from 'react-native-dotenv'
 
@@ -70,18 +71,28 @@ class CanvasDashboard extends Component {
             <>
                 <ThemeProvider theme={this.props.theme}>
                     <InnerNavBar theme={this.props.theme} title={"Pipeline"} subtitle={"Private Equity"} />
-                    <ScrollView style={{ flex: 1,  backgroundColor: this.props.theme.theme.ROOT_BACKGROUND_COLOR }} >
+                    <SafeAreaView style={{ flex: 1,  backgroundColor: this.props.theme.theme.ROOT_BACKGROUND_COLOR }} >
                         {
                             Object.keys(this.state.config).length > 0 ?
-                                this.state.config.widgets.map(config => {
-                                    return <GetWidgets key={config.id} wConfig={config} theme={this.props.theme} id={this.props.id} data={this.props.data}/>
-                                })
-                                :
+
+                                this.state.config.widgets.length>1?
+                                        <ScrollView>{
+                                                this.state.config.widgets.map(config => {
+                                                    return <GetWidgets key={config.id} wConfig={config} theme={this.props.theme} id={this.props.id} data={this.props.data}/>
+                                                })
+                                            }
+                                        </ScrollView>
+                                    :
+                                        
+                                        this.state.config.widgets.map(config => {
+                                            return <GetWidgets key={config.id} wConfig={config} theme={this.props.theme} id={this.props.id} data={this.props.data}/>
+                                        })
+                            :
                                 <ActivityIndicator style={{ flex: 1, justifyContent: 'center', alignSelf: 'center', alignItems: 'center' }}>
 
                                 </ActivityIndicator>
                         }
-                    </ScrollView>
+                    </SafeAreaView>
                 </ThemeProvider>
             </>
         );

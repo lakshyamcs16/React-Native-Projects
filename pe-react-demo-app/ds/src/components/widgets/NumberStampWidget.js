@@ -1,15 +1,18 @@
 import React, { Component } from 'react';
 import {
-    View,
-    Text,
     Alert,
     StyleSheet
 } from 'react-native';
-import { ActivityIndicator } from 'react-native-paper';
+import { Card } from 'react-native-paper';
 import { getFilledObject, buildDataRequest, filterDataOnId, createCard } from '../../utilities/Utilities';
 import { connect } from 'react-redux';
 import { fetchWidgetData, dataRequest } from '../../redux/actions/dashboard/main.actions';
 import { GENERIC_DATA_ERROR } from '../../utilities/Constants';
+import {
+    Placeholder,
+    PlaceholderLine,
+    Fade
+} from "rn-placeholder";
 
 class NumberStampWidget extends Component<{}> {
     
@@ -55,13 +58,22 @@ class NumberStampWidget extends Component<{}> {
     render() {
         return (
             (this.state.data.length > 0?
-                <View style={styles.container}>
-                    {createCard(this.props.wConfig.config, filterDataOnId(this.state.data, this.props.id))}
-                </View>
+                <Card style={[styles.container]} elevation={10}>
+                    {createCard(this.props.wConfig.config, filterDataOnId(this.state.data, this.props.id), stampStyles, 0)}
+                </Card>
             : !this.state.isDataFetched ?
-                    <ActivityIndicator style={{ flex: 1, justifyContent: 'center', alignSelf: 'center', alignItems: 'center' }}>
+                    // <ActivityIndicator style={{ flex: 1, justifyContent: 'center', alignSelf: 'center', alignItems: 'center' }}>
 
-                    </ActivityIndicator> :  <>{Alert.alert(
+                    // </ActivityIndicator> 
+                    <Card style={[styles.container]} elevation={10}>
+                        <Placeholder
+                        Animation={Fade}
+                        style={stampStyles.keyStats}>
+                            <PlaceholderLine width={15} height={25} styles={stampStyles.keyHeading}/>
+                            <PlaceholderLine width={40} style={stampStyles.keySubHeading}/>
+                        </Placeholder>
+                    </Card>
+                    :  <>{Alert.alert(
                         'No Data',
                         'There is no data present',
                         [
@@ -75,10 +87,32 @@ class NumberStampWidget extends Component<{}> {
         );
     }
 }
+const stampStyles = StyleSheet.create({
+    keyStats: {
+        flex: 1,
+        padding: 20,
+        paddingBottom: 0,
+        alignItems: 'flex-start'
+      },
+      keyHeading: {
+        fontSize: 40,
+        color: '#05ad6a',
+        fontWeight: 'bold',
+        paddingBottom: 10
+      },
+      keySubHeading: {
+        fontSize: 15,
+        color: '#999999',
+        fontWeight: 'bold',
+        marginTop: -6
+      }
+});
 
 const styles = StyleSheet.create({
     container: {
-      flex: 1
+      flex: 1,
+      margin:10,
+      paddingBottom: 20
     },
     statsContainer: {
       padding: 20,
