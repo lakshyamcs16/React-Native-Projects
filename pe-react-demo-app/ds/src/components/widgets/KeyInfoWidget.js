@@ -4,13 +4,16 @@ import {
     Alert,
     StyleSheet
 } from 'react-native';
-import { Card } from 'react-native-paper';
-import { getFilledObject, buildDataRequest, createCard, filterDataOnId } from '../../utilities/Utilities';
+import { Card, Divider } from 'react-native-paper';
+import { getFilledObject, buildDataRequest, createCard, filterDataOnId, getTitle } from '../../utilities/Utilities';
+import { getFontSize } from '../../components/assets/scrollview/ScrollViewAssets';
 import {WIDGET_TYPE_KEY_INFO} from '../../utilities/Constants';
 import { connect } from 'react-redux';
 import { fetchWidgetData, dataRequest } from '../../redux/actions/dashboard/main.actions';
 import { GENERIC_DATA_ERROR } from '../../utilities/Constants';
 import {Placeholders} from '../../utilities/Placeholders';
+
+let keyStyles;
 
 class KeyInfoWidget extends Component<{}> {
     
@@ -20,6 +23,23 @@ class KeyInfoWidget extends Component<{}> {
             data: [],
             isDataFetched: false
         }
+        keyStyles = StyleSheet.create({
+            keyStats: {
+                flex: 1,
+                padding: 15,
+                alignItems: "flex-start"
+              },
+              keyHeading: {
+                color: this.props.theme.theme.PRIMARY_TEXT_COLOR,
+                fontWeight: 'bold',
+                paddingVertical: 5
+              },
+              keySubHeading: {
+                color: this.props.theme.theme.PRIMARY_TEXT_COLOR,
+                fontWeight: 'bold',
+                marginTop: -6
+              }
+        });
     }
 
     async componentDidMount() {
@@ -55,35 +75,64 @@ class KeyInfoWidget extends Component<{}> {
     createKeyInfoCard = (config, data) => {
         let rows = config.rows;
         
-        return (<Card
-                    elevation={5}
-                    style={{margin: 10}}
-                >
-            {
+        return (
+            
                 rows.map((row, key) => {
                     let columns = row.columns;
                     return (<View key={key} style={{flex: 3, flexDirection: 'row'}}>{
                                 columns.map((column, key) => {
+                                    keyStyles = this.createStyleSheet(column);
                                     return createCard(column, data, keyStyles, key)
                                 })
                             }
                             </View>)
                 })
-            }</Card>);        
+            );        
+    }
+
+    createStyleSheet = (config) => {
+        keyStyles = StyleSheet.create({
+            keyStats: {
+                flex: 1,
+                padding: 5,
+                alignItems: config.layout.label.position || "flex-start"
+              },
+              keyHeading: {
+                fontSize: getFontSize(null, config.layout.key.size),
+                color: config.layout.key.color || this.props.theme.theme.PRIMARY_TEXT_COLOR,
+                fontWeight: config.layout.key.weight || '500',
+                paddingVertical: 5
+              },
+              keySubHeading: {
+                fontSize: getFontSize(null, config.layout.label.size),
+                color: config.layout.label.color || this.props.theme.theme.PRIMARY_TEXT_COLOR,
+                fontWeight: config.layout.label.weight || '400',
+                marginTop: -6,
+                textAlign: 'left'
+              }
+        });
+
+        return keyStyles;
     }
 
     render() {
         return (
             (this.state.data.length > 0?
-                <View style={styles.container}>
-                    {this.createKeyInfoCard(this.props.wConfig.config, filterDataOnId(this.state.data, this.props.id))}
-                </View>
+                    <Card
+                        elevation={5}
+                        style={[styles.container, {backgroundColor: this.props.theme.theme.PRIMARY_BORDER_COLOR_LIGHT}]} 
+                    >
+                    {getTitle(this.props.wConfig, this.props.theme.theme)}
+                        <Card.Content>
+                            {this.createKeyInfoCard(this.props.wConfig.config, filterDataOnId(this.state.data, this.props.id))}
+                        </Card.Content>
+                    </Card>
             : !this.state.isDataFetched ?
                     // <ActivityIndicator style={{ flex: 1, justifyContent: 'center', alignSelf: 'center', alignItems: 'center' }}>
 
                     // </ActivityIndicator> 
 
-                                        <Card style={[styles.container]} elevation={10}>{Placeholders({type: WIDGET_TYPE_KEY_INFO, keyStyles})}</Card>
+                    <Card style={[styles.container, {backgroundColor: this.props.theme.theme.PRIMARY_BORDER_COLOR_LIGHT}]}  elevation={10}>{Placeholders({type: WIDGET_TYPE_KEY_INFO, keyStyles})}</Card>
 
                     :  <>{Alert.alert(
                         'No Data',
@@ -100,29 +149,12 @@ class KeyInfoWidget extends Component<{}> {
     }
 }
 
-const keyStyles = StyleSheet.create({
-    keyStats: {
-        flex: 1,
-        padding: 20,
-        alignItems: 'flex-start'
-      },
-      keyHeading: {
-        fontSize: 15,
-        color: '#b2b2b2',
-        fontWeight: 'bold',
-        paddingVertical: 5
-      },
-      keySubHeading: {
-        fontSize: 12,
-        color: '#999999',
-        fontWeight: 'bold',
-        marginTop: -6
-      }
-});
+
 
 const styles = StyleSheet.create({
     container: {
-      flex: 1
+      flex: 1,
+      marginHorizontal: 10
     },
     statsContainer: {
       padding: 20,

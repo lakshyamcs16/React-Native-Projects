@@ -27,6 +27,8 @@ export const base = {
     SECONDARY_BACKGROUND_COLOR: "#ffffff",
     SECONDARY_BACKGROUND_COLOR_LIGHT: "#f7f7f7",
   
+    PRIMARY_TITLE_COLOR: "#e0e0e0",
+    
     PRIMARY_BORDER_COLOR: "rgba(31, 31, 31, 1)",    
     PRIMARY_BORDER_COLOR_LIGHT:"rgba(61, 61, 61, 1)",
 
@@ -43,6 +45,8 @@ export const base = {
     PRIMARY_BACKGROUND_COLOR: "rgba(232, 232, 232, 0.1)",
     PRIMARY_BACKGROUND_COLOR_LIGHT: "#f7f7f7",
   
+    PRIMARY_TITLE_COLOR: "#878787",
+
     PRIMARY_BORDER_COLOR: "rgba(232, 232, 232, 1)",
     PRIMARY_BORDER_COLOR_LIGHT: "#f4f4f4",
 

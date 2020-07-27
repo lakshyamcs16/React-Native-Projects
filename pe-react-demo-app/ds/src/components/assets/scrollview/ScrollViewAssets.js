@@ -20,7 +20,7 @@ export const getFontSize = (col, key) => {
         case "medium":
             return base.FONT_SIZE_EXTRA_LARGE;
         case "small":
-            return base.FONT_SIZE_EXTRA_LARGE;
+            return base.FONT_SIZE_LARGE;
         case "very small":
             return base.FONT_SIZE_MEDIUM;
         default:

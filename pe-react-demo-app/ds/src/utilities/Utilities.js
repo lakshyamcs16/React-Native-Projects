@@ -15,6 +15,7 @@ import { Actions } from 'react-native-router-flux';
 import {
     getFormattedNumber
 } from '../components/assets/scrollview/ScrollViewAssets';
+import { Card, Divider } from 'react-native-paper';
 
 var hash = require('object-hash');
 var mustache = require("mustache");
@@ -114,6 +115,11 @@ export var getIcon = (item, props) => {
 }
 
 export const nFormatter = (num, precision = "", digits = 0) => {
+    
+    function numberWithCommas(x) {
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
     var rx = /\.0+$|(\.[0-9]*[1-9])0+$/;
     var i = 0;
     if (precision === "auto") {
@@ -148,7 +154,7 @@ export const nFormatter = (num, precision = "", digits = 0) => {
             case "e":
                 si.push({ value: 1E18, symbol: "e" }); break;
             default:
-                si.push({ value: 1, symbol: "" }); break;
+                return numberWithCommas(num);
         }
     }
     return (num / si[i].value).toFixed(digits).replace(rx, "$1") + si[i].symbol;
@@ -178,7 +184,7 @@ export const createCard = (config, data, styles, renderKey) => {
     return (
         <View key={renderKey} style={styles.keyStats}> 
             <Text style={styles.keyHeading}>{getFormattedNumber(data[key], layout.key.numberFormat, layout.key.decimalPrecision)}</Text>
-            <Text style={styles.keySubHeading}>{data[label]}</Text>
+            <Text style={styles.keySubHeading}>{label}</Text>
         </View>
     );
 }
@@ -247,6 +253,15 @@ export const getAction = (config, id, data, token, parameters) => {
     }
 }
 
+export const getTitle = (config, theme) => {
+    return (
+        config.title && config.title.length>0?
+            [<Card.Title title={config.title} key={config.title} titleStyle={{color: theme.PRIMARY_TEXT_COLOR}}/>,
+            <Divider></Divider>]
+        :
+            null    
+    );
+}
 const styles = StyleSheet.create({
     navBarIcon: {
         justifyContent: 'center',

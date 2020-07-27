@@ -45,16 +45,17 @@ export const loginFailed = () => {
 
 export const authenticateUser = (params) => {
     return async (dispatch) => {
+        
         var headers = {
             "Authorization": `Basic ${base64.encode(params.username + ':' + params.password)}`
         };
         var raw = {};
         const response = await api(`/auth?access_token=${MASTER_KEY}`, "POST", raw, headers);
+        console.log(response);
         try {
             var result = {
                 success: false
             };
-
             if (response.status >= 200 && response.status < 300) {
                 const responseJson = await response.json();
                 console.log(responseJson)
