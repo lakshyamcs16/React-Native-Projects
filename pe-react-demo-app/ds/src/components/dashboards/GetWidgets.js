@@ -2,11 +2,12 @@ import React, { Component } from 'react';
 import {
     ActivityIndicator, Text
 } from 'react-native-paper';
-import { WIDGET_TYPE_SCROLLVIEW, DASHBOARD_TYPE_SCROLLVIEW, WIDGET_TYPE_NUMBER_STAMP, WIDGET_TYPE_KEY_INFO } from '../../utilities/Constants';
+import { WIDGET_TYPE_SCROLLVIEW, DASHBOARD_TYPE_SCROLLVIEW, WIDGET_TYPE_NUMBER_STAMP, WIDGET_TYPE_KEY_INFO, WIDGET_TYPE_TOP_BOTTOM } from '../../utilities/Constants';
 import ScrollViewWidget from '../widgets/ScrollViewWidget';
 import DashboardScrollViewWidget from '../widgets/DashboardScrollViewWidget';
 import NumberStampWidget from '../widgets/NumberStampWidget';
 import KeyInfoWidget from '../widgets/KeyInfoWidget';
+import TopBottom from '../widgets/TopBottom';
 
 export const GetWidgets = (props) => {
     
@@ -20,6 +21,8 @@ export const GetWidgets = (props) => {
                 return <NumberStampWidget wConfig={props.wConfig} theme={props.theme} id={props.id} prevData={props.data}/>
             case WIDGET_TYPE_KEY_INFO:
                 return <KeyInfoWidget wConfig={props.wConfig} theme={props.theme} id={props.id} prevData={props.data}/>
+            case WIDGET_TYPE_TOP_BOTTOM:
+                return <TopBottom wConfig={props.wConfig} theme={props.theme} id={props.id} prevData={props.data}/>
             default:
                 break;
         }

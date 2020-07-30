@@ -136,6 +136,7 @@ export const fetchWidgetData = (params) => {
             
             if (response.status >= 200 && response.status < 300) {
                 const responseJson = await response.json();
+                console.log(JSON.stringify(responseJson, null, 2));
                 result.success = true;
                 dispatch(dataSuccess(responseJson));
                 result.body = responseJson;
@@ -143,6 +144,7 @@ export const fetchWidgetData = (params) => {
             } else {
                 let body = {};
                 let tempBody = response;
+                console.log(JSON.stringify(response, null, 2));
                 if (isJson(tempBody)) {
                     body = response;
                     body = JSON.parse(body);

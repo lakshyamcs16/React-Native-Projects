@@ -1,6 +1,5 @@
 import { BASE_URL } from 'react-native-dotenv'
 
-
 export const api = async (url, method, body = null, headers = {}, isBaseUrlAbsent = true) => {    
     try {
         let endPoint = url;
@@ -22,12 +21,14 @@ export const api = async (url, method, body = null, headers = {}, isBaseUrlAbsen
         }
                 
         const fetchPromise = fetch(endPoint, fetchParams);
+        console.log(endPoint);
         const timeOutPromise = new Promise((resolve, reject) => {
             setTimeout(() => {
                 reject(`{ "statusCode": "408", "message" : "Please check your internet connection" }`);
             }, 10000);
         });
         const response = await Promise.race([fetchPromise, timeOutPromise]);
+        
         return response;
     } catch (e) {
         return e;
