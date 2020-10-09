@@ -3,6 +3,7 @@ import {
   StyleSheet,
   View,
   Platform,
+  Text
 } from 'react-native';
 import { ActivityIndicator } from 'react-native-paper';
 import NavigationBar from './NavigationBar';
@@ -14,6 +15,9 @@ import NavBar from '../assets/NavBar';
 import { GetWidgets } from './GetWidgets';
 import { BASE_URL, APP_CONFIG_ID } from 'react-native-dotenv'
 import { APP_CONFIG_URL, DASHBOARD_CONFIG_URL } from '../../utilities/Constants';
+import AddDeal from '../../AddDeal';
+import {ModalCtx} from '../../Contexts';
+import {Modalize} from 'react-native-modalize';
 
 const isAndroid = Platform.OS === 'android';
 
@@ -24,6 +28,8 @@ class RootDashboard extends Component {
     appConfig: {},
     widgetConfig: {}
   }
+
+  modal = React.createRef();
 
   async componentDidMount() {
     var params = {
@@ -60,22 +66,26 @@ class RootDashboard extends Component {
 
     return (
       <>
-        <ThemeProvider theme={this.props.theme}>
-          <NavBar theme={this.props.theme} title={"Pipeline"} subtitle={"Private Equity"} />
-          <View style={{ flex: 1, backgroundColor: this.props.theme.theme.ROOT_BACKGROUND_COLOR }} >
-            {
-              Object.keys(this.state.widgetConfig).length > 0 ?
-                this.state.widgetConfig.widgets.map(config => {
-                  return <GetWidgets key={config.id} wConfig={config} theme={this.props.theme} />
-                })
-                :
-                <ActivityIndicator style={{ flex: 1, justifyContent: 'center', alignSelf: 'center', alignItems: 'center' }}>
+        <ModalCtx.Provider value={{open: this.modal}}>
+          <ThemeProvider theme={this.props.theme}>
+            <NavBar theme={this.props.theme} title={"Pipeline"} subtitle={"Private Equity"} />
+            <View style={{ flex: 1, backgroundColor: this.props.theme.theme.ROOT_BACKGROUND_COLOR }} >
+              {
+                Object.keys(this.state.widgetConfig).length > 0 ?
+                  this.state.widgetConfig.widgets.map(config => {
+                    return <GetWidgets key={config.id} wConfig={config} theme={this.props.theme} />
+                  })
+                  :
+                  <ActivityIndicator style={{ flex: 1, justifyContent: 'center', alignSelf: 'center', alignItems: 'center' }}>
 
-                </ActivityIndicator>
-            }
-          </View>
-          <NavigationBar config={this.state.appConfig.menubar} theme={this.props.theme} />
-        </ThemeProvider>
+                  </ActivityIndicator>
+              }
+            </View>
+            <NavigationBar config={this.state.appConfig.menubar} theme={this.props.theme} />
+            <Modalize ref={this.modal} modalHeight={250}><Text>Content goes here...</Text></Modalize>
+          </ThemeProvider>
+        </ModalCtx.Provider>
+
       </>
     );
   }

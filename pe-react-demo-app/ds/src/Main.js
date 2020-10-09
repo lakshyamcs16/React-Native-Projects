@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import Routes from '../src/pages/Routes';
 import {
@@ -7,16 +7,16 @@ import {
 import { SafeAreaView } from "./themes/styling";
 import { ThemeProvider } from "styled-components";
 
-class Main extends Component<{}> {
+class Main extends PureComponent<{}> {
   render() {
     const loggedin = this.props.loginDetail;
 
     return (
-      <ThemeProvider theme={this.props.theme}>
-        <SafeAreaView style={styles.container}>
-          <Routes isLoggedIn={loggedin} tab={""}/>
-        </SafeAreaView>
-      </ThemeProvider>
+        <ThemeProvider theme={this.props.theme}>
+          <SafeAreaView style={styles.container}>
+            <Routes isLoggedIn={loggedin} tab={""}/>
+          </SafeAreaView>
+        </ThemeProvider>
     )
   }
 };

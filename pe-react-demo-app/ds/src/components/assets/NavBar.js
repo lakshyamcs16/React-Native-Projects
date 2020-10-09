@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {
     StyleSheet,
     Text,
@@ -10,9 +10,9 @@ import { openNavigationDrawer, closeNavigationDrawer, openNotificationDrawer, cl
 import { TopBar, NormalText, StyledMaterialIcon, StyledIonicons } from '../../themes/styling';
 import { Badge } from 'react-native-paper';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import {ModalCtx} from '../../Contexts';
 
 class NavBar extends Component<{}> {
-
     toggleDrawer = () => {
         const isDrawerOpen = this.props.isDrawerOpen;
         if (isDrawerOpen) {
@@ -31,6 +31,14 @@ class NavBar extends Component<{}> {
         }
     }
 
+    addDeal = (value) => {
+        console.log(value);
+        //this.props.modal.current.open();
+        console.log(value);
+        value.open.current?.open();
+        //value.populate(true);
+    }
+
     render() {
         return (
             <TopBar style={this.props.isFilterEnabled ? styles.navBarContainer
@@ -43,11 +51,23 @@ class NavBar extends Component<{}> {
                         style={styles.navBarLeftIcon} />}
                 <NormalText style={this.props.isFilterEnabled ? styles.navBarTitle
                     : styles.navBarTitleWithoutFilter}>{this.props.title}</NormalText>
-                <TopBar style={{ flex: 1, alignItems: 'flex-end', justifyContent: 'flex-end' }}>
+                <TopBar style={{ flex: 1, alignItems: 'flex-end', justifyContent: 'flex-end', flexDirection: 'row', }}>
+                    <ModalCtx.Consumer>
+                        {value => 
+                                
+                                <TouchableOpacity
+                                onPress={() => this.addDeal(value)}>
+                                <Icon
+                                    name="plus"
+                                    size={35} 
+                                    style={{ paddingHorizontal: 10, marginBottom: -6}}/>
+                            </TouchableOpacity>}
+                    </ModalCtx.Consumer>
+                    
                     <TouchableOpacity
                         onPress={this.toggleNotificationDrawer}
                     >
-                        <Badge size={20} style={{ zIndex: 2, marginRight: 5, marginBottom: 7 }}>5</Badge>
+                        <Badge size={20} style={{ zIndex: 2, marginRight: 10, marginBottom: 7 }}>5</Badge>
                         <StyledMaterialIcon
                             name="notifications-none"
                             size={27}
@@ -59,6 +79,8 @@ class NavBar extends Component<{}> {
         );
     }
 }
+
+NavBar.contextType = ModalCtx;
 
 const styles = StyleSheet.create({
     navBarContainer: {
@@ -85,8 +107,8 @@ const styles = StyleSheet.create({
         alignSelf: 'flex-end',
         justifyContent: 'flex-end',
         alignItems: 'flex-end',
-        paddingRight: 3,
-        marginRight: 5,
+        paddingHorizontal: 5,
+        paddingRight: 15,
         marginTop: -20
     },
     navBarTitle: {
