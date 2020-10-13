@@ -3,8 +3,6 @@ import { Router, Stack, Scene } from 'react-native-router-flux';
 import Login from '../pages/authentication/Login';
 import SignUp from '../pages/authentication/SignUp';
 import DashboardMain from '../pages/dashboards/DashboardMain';
-import NavBar from '../components/assets/NavBar';
-import InnerNavBar from '../components/assets/InnerNavBar';
 import CanvasDashboard from '../components/dashboards/CanvasDashboard';
 
 export default class Routes extends Component<{}> {
