@@ -129,7 +129,7 @@ const styles = StyleSheet.create(viewStyles);
 
 const mapStateToProps = (state) => {
     return {
-        data: state.dataDetails.data,
+        storeData: state.dataDetails.data,
         token: state.authenticationDetails.user_details.token
     }
 }

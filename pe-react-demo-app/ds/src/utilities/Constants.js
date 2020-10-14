@@ -14,3 +14,5 @@ export const APP_CONFIG_URL = "AppConfig";
 export const DASHBOARD_CONFIG_URL = "DashboardConfigs";
 
 export const DEFAULT_APP_CTX = 'rester';
+export const COMPONENT = 'component';
+export const PROPS = 'props';

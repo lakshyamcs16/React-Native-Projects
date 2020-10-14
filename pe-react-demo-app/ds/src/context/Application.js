@@ -18,6 +18,10 @@ export default class Application {
     }
 
     getWidget = (widget) => {
+        console.log('----------$%@#$@#$@#$@#$@#$----------------')
+        console.log(this.widgets);
+        console.log('----------$%@#$@#$@#$@#$@#$----------------')
+
         return this.widgets[widget];
     }
 

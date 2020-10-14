@@ -10,6 +10,7 @@ import persist from "./src/redux/config/store";
 import Main from './src/Main';
 import { PersistGate } from 'redux-persist/integration/react'
 import Application from './src/context/Application';
+import registerAllWidgets from './src/context/Register';
 
 const theme = {
   ...DefaultTheme,
@@ -22,6 +23,7 @@ const theme = {
 const persistStore = persist();
 
 export let application = new Application();
+registerAllWidgets(application);
 
 export default class App extends Component<{}> {
   render() {

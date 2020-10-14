@@ -30,7 +30,7 @@ class NumberStampWidget extends Component<{}> {
 
     async componentDidMount() {
         const dataConfig = this.props.wConfig.dataConfig;
-        dataConfig.params.body = getFilledObject(this.props.id, this.props.prevData, dataConfig.params.body);
+        dataConfig.params.body = getFilledObject(this.props.id, this.props.data, dataConfig.params.body);
         var params = buildDataRequest(dataConfig);
         const response = await this.props.fetchWidgetData(params);
 
@@ -183,7 +183,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
     return {
-        data: state.dataDetails.data,
+        storeData: state.dataDetails.data,
         token: state.authenticationDetails.user_details.token
     }
 }
