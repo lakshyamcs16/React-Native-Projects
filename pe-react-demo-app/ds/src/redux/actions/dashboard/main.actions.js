@@ -9,9 +9,9 @@ import {
     DATA_DASHBOARD_FAILURE,
     DATA_DASHBOARD_SUCCESS
 } from '../../types/dashboard/main.types'
-import { ERROR_MESSAGE_401, GENERIC_APP_CONFIG_ERROR } from '../../../utilities/Constants';
-import { api } from '../../../services/Services';
+import { ERROR_MESSAGE_401, GENERIC_APP_CONFIG_ERROR, DEFAULT_APP_CTX } from '../../../utilities/Constants';
 import { isJson } from '../../../utilities/Utilities';
+import { application } from "../../../../App";
 
 export const widgetRequest = () => {
     return {
@@ -79,8 +79,9 @@ export const fetchWidgetConfig = (params) => {
     return async (dispatch) => {
 
         console.log(JSON.stringify(params, null, 2));
-        
-        const response = await api(params.url, params.method, params.body || null, params.header, params.isBaseUrlAbsent || false);
+
+        let services = application.getService(DEFAULT_APP_CTX);
+        const response = await services.setParameters(params).hit(false);
         
         try {
             var result = {
@@ -126,7 +127,10 @@ export const fetchWidgetData = (params) => {
 
     return async (dispatch) => {
 
-        const response = await api(`${params.url}&access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlYjQxMjQ1NWM3ZDUwMjY0NGI5M2UzMSIsImlhdCI6MTU5MTE4ODM5Nn0.fBuHR9AFwvyadA8qgPEw4O-J7A3Ygo-CKiPryqt9vD8`, params.method, params.body, params.headers, params.isBaseUrlAbsent);
+        params.url = `${params.url}&access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlYjQxMjQ1NWM3ZDUwMjY0NGI5M2UzMSIsImlhdCI6MTU5MTE4ODM5Nn0.fBuHR9AFwvyadA8qgPEw4O-J7A3Ygo-CKiPryqt9vD8`;
+        
+        let services = application.getService(DEFAULT_APP_CTX);
+        const response = await services.setParameters(params).hit(false);
                 
         try {
             var result = {
@@ -178,7 +182,10 @@ export const fetchDashboardData = (params) => {
         console.log("--------------------------DASHBOARD DATA----------------------------");        
         console.log(JSON.stringify(params, null, 2));
 
-        const response = await api(`/DataQueries/c/ms/p/PrivateEquity/scan?datapoint=Objects.'29757046-2abb-4edc-a793-bc8e9885c9ca'&mode=Stream&access_token=${params.token}`, "POST", params.body, params.headers);
+        params.url = `/DataQueries/c/ms/p/PrivateEquity/scan?datapoint=Objects.'29757046-2abb-4edc-a793-bc8e9885c9ca'&mode=Stream&access_token=${params.token}`;
+
+        let services = application.getService(DEFAULT_APP_CTX);
+        const response = await services.setParameters().hit(false);
         
         try {
             var result = {

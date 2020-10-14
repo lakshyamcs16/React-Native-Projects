@@ -9,6 +9,7 @@ import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 import persist from "./src/redux/config/store";
 import Main from './src/Main';
 import { PersistGate } from 'redux-persist/integration/react'
+import Application from './src/context/Application';
 
 const theme = {
   ...DefaultTheme,
@@ -20,8 +21,7 @@ const theme = {
 
 const persistStore = persist();
 
-console.log(persistStore.store);
-
+export let application = new Application();
 
 export default class App extends Component<{}> {
   render() {

@@ -7,10 +7,10 @@ import {
     SET_APP_CONFIG,
     SET_APP_CONFIG_ERROR
 } from "../../types/dashboard/navigation.types.js";
-import { ERROR_MESSAGE_401, GENERIC_APP_CONFIG_ERROR } from '../../../utilities/Constants';
+import { ERROR_MESSAGE_401, GENERIC_APP_CONFIG_ERROR, DEFAULT_APP_CTX } from '../../../utilities/Constants';
 import { isJson } from '../../../utilities/Utilities';
-import { api } from '../../../services/Services';
 import { loginFailed } from '../authentication/auth.actions';
+import { application } from '../../../../App';
 
 export const isNavigationBarTitleEnabled = enabled => {
     return {
@@ -78,7 +78,10 @@ export const appConfigFailure = (error) => {
 export const fetchAppConfig = (params) => {
     return async (dispatch) => {
 
-        const response = await api(params.url, params.method, params.body || null, params.headers || null, params.isBaseUrlAbsent || false);
+        let services = application.getService(DEFAULT_APP_CTX);
+        
+        const response = await services.setParameters(params).hit(false);
+        console.log(response);
         try {
             var result = {
                 success: false

@@ -6,10 +6,10 @@ import {
     LOGIN_FAILED
 } from "../../types/authentication/auth.types.js";
 import base64 from 'react-native-base64';
-import { api } from '../../../services/Services';
 import { isJson } from '../../../utilities/Utilities';
-import { ERROR_MESSAGE_401, GENERIC_LOGIN_ERROR } from '../../../utilities/Constants';
+import { ERROR_MESSAGE_401, GENERIC_LOGIN_ERROR, DEFAULT_APP_CTX } from '../../../utilities/Constants';
 import { MASTER_KEY } from 'react-native-dotenv'
+import { application } from '../../../../App';
 
 export const saveUserCreds = () => {
     return {
@@ -46,11 +46,20 @@ export const loginFailed = () => {
 export const authenticateUser = (params) => {
     return async (dispatch) => {
         
+
         var headers = {
             "Authorization": `Basic ${base64.encode(params.username + ':' + params.password)}`
         };
         var raw = {};
-        const response = await api(`/auth?access_token=${MASTER_KEY}`, "POST", raw, headers);
+    
+        let serviceParams = {
+            headers, 
+            body: raw, 
+            url: `/auth?access_token=${MASTER_KEY}`
+        };
+
+        let services = application.getService(DEFAULT_APP_CTX);
+        const response = await services.setParameters(serviceParams).hit();
         console.log(response);
         try {
             var result = {

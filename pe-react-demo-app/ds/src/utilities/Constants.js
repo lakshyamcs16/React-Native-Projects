@@ -12,3 +12,5 @@ export const WIDGET_TYPE_TOP_BOTTOM = "top-bottom";
 export const GENERIC_DATA_ERROR = "There was a problem in fetching data. \n Please make sure that you are connected to the VPN.";
 export const APP_CONFIG_URL = "AppConfig";
 export const DASHBOARD_CONFIG_URL = "DashboardConfigs";
+
+export const DEFAULT_APP_CTX = 'rester';
