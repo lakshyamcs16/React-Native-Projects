@@ -1,6 +1,14 @@
 import { Reducer } from 'react-native-router-flux';
 import Service from '../services/Services';
 import { DEFAULT_APP_CTX } from '../utilities/Constants';
+import React from 'react';
+
+/*
+check type
+create user module
+instantiate all the logins
+*/
+
 
 export default class Application {
     constructor() {
@@ -13,15 +21,14 @@ export default class Application {
     }
 
     registerWidget = (widget, widgetObj) => {
+        if(!React.isValidElement(widgetObj.component)) {
+            throw new Error('Object is not a valid React component')
+        }
         this.widgets[widget] = widgetObj;
         return this;
     }
 
     getWidget = (widget) => {
-        console.log('----------$%@#$@#$@#$@#$@#$----------------')
-        console.log(this.widgets);
-        console.log('----------$%@#$@#$@#$@#$@#$----------------')
-
         return this.widgets[widget];
     }
 

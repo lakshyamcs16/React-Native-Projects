@@ -11,6 +11,7 @@ import Main from './src/Main';
 import { PersistGate } from 'redux-persist/integration/react'
 import Application from './src/context/Application';
 import registerAllWidgets from './src/context/Register';
+import registerApplication from './external_modules/index';
 
 const theme = {
   ...DefaultTheme,
@@ -24,6 +25,7 @@ const persistStore = persist();
 
 export let application = new Application();
 registerAllWidgets(application);
+registerApplication(application);
 
 export default class App extends Component<{}> {
   render() {
