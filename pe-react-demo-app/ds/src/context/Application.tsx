@@ -2,37 +2,38 @@ import { Reducer } from 'react-native-router-flux';
 import Service from '../services/Services';
 import { DEFAULT_APP_CTX } from '../utilities/Constants';
 import React from 'react';
+import Application from '../../contracts/Application';
 
 /*
-check type
-create user module
-instantiate all the logins
+        create user module
+        instantiate all the logins
 */
 
-
-export default class Application {
+export class ResterApplication implements Application {
+    services: object;
+    reducers: Reducer;
+    widgets: object;
+    
     constructor() {
         this.services = {},
         this.reducers = new Reducer(),
         this.widgets = {},
-        this.applicationContext = this;
-
         this.services[DEFAULT_APP_CTX] = new Service()
     }
 
-    registerWidget = (widget, widgetObj) => {
-        if(!React.isValidElement(widgetObj.component)) {
+    registerWidget = (widget: string, widgetObj: object) => {
+        if(!React.isValidElement(widgetObj['component'])) {
             throw new Error('Object is not a valid React component')
         }
         this.widgets[widget] = widgetObj;
         return this;
     }
 
-    getWidget = (widget) => {
+    getWidget = (widget: string) => {
         return this.widgets[widget];
     }
 
-    registerReducers = (reducerObj) => {
+    registerReducers = (reducerObj: Reducer) => {
         this.reducers.setReducer(reducerObj);
         return this;
     }
@@ -41,21 +42,13 @@ export default class Application {
         return this.reducers;
     }
 
-    registerService = (serviceContext = this.services.DEFAULT_APP_CTX, serviceObject) => {
+    registerService = (serviceContext: string = this.services[DEFAULT_APP_CTX], serviceObject: Service) => {
         this.services =  {};
         this.services[serviceContext] = serviceObject;
         return this;
     }
 
-    getService = (serviceContext) => {
+    getService = (serviceContext: string) => {
         return this.services[serviceContext];
-    }
-
-    registerApplication = (applicationContext) => {
-        this.applicationContext = applicationContext;
-    }
-
-    getApplicationContext = () => {
-        return this.applicationContext;
     }
 }

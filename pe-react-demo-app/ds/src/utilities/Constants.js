@@ -4,6 +4,7 @@ export const GENERIC_APP_CONFIG_ERROR = "There was a problem in getting app conf
 
 
 export const WIDGET_TYPE_SCROLLVIEW = "scrollview"; 
+//export const WIDGET_TYPE_SCROLLVIEW = "Snackbar"; 
 export const DASHBOARD_TYPE_SCROLLVIEW = "dash-scrollview"; 
 export const WIDGET_TYPE_NUMBER_STAMP = "number-stamp";
 export const WIDGET_TYPE_KEY_INFO = "key-info";

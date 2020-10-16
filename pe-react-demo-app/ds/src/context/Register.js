@@ -7,8 +7,9 @@ import NumberStampWidget from '../components/widgets/NumberStampWidget';
 import KeyInfoWidget from '../components/widgets/KeyInfoWidget';
 import TopBottom from '../components/widgets/TopBottom';
 
-export default registerAllWidgets = (appCtx) => {
-    appCtx.registerWidget(WIDGET_TYPE_SCROLLVIEW, { [COMPONENT]: <ScrollViewWidget />, [PROPS]: null })
+export default register = (appCtx) => {
+    appCtx
+    .registerWidget(WIDGET_TYPE_SCROLLVIEW, { [COMPONENT]: <ScrollViewWidget />, [PROPS]: null })
     .registerWidget(DASHBOARD_TYPE_SCROLLVIEW, { [COMPONENT]: <DashboardScrollViewWidget />, [PROPS]: null})
     .registerWidget(WIDGET_TYPE_NUMBER_STAMP, { [COMPONENT]: <NumberStampWidget />, [PROPS]: null})
     .registerWidget(WIDGET_TYPE_KEY_INFO, { [COMPONENT]: <KeyInfoWidget />, [PROPS]: null})

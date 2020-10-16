@@ -5,7 +5,7 @@ import {
 } from 'react-native';
 import { Card, Divider } from 'react-native-paper';
 import { getFilledObject, buildDataRequest, filterDataOnId, createCard, getTitle } from '../../utilities/Utilities';
-import { getFontSize } from '../../components/assets/scrollview/ScrollViewAssets';
+import { getFontSize } from '../assets/scrollview/ScrollViewAssets';
 import { connect } from 'react-redux';
 import { fetchWidgetData, dataRequest } from '../../redux/actions/dashboard/main.actions';
 import { GENERIC_DATA_ERROR } from '../../utilities/Constants';

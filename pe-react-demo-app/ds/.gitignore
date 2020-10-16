@@ -6,9 +6,13 @@
 #
 TODO.md
 
+#External Modules
+external_modules/
+
+
 #ENV
-.env 
-.env.production
+# .env 
+# .env.production
 
 # Xcode
 #

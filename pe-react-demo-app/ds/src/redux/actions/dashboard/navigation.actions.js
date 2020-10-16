@@ -10,7 +10,7 @@ import {
 import { ERROR_MESSAGE_401, GENERIC_APP_CONFIG_ERROR, DEFAULT_APP_CTX } from '../../../utilities/Constants';
 import { isJson } from '../../../utilities/Utilities';
 import { loginFailed } from '../authentication/auth.actions';
-import { application } from '../../../../App';
+import { application } from '../../../../index';
 
 export const isNavigationBarTitleEnabled = enabled => {
     return {

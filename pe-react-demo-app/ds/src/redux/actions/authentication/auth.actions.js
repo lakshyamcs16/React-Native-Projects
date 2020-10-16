@@ -9,7 +9,7 @@ import base64 from 'react-native-base64';
 import { isJson } from '../../../utilities/Utilities';
 import { ERROR_MESSAGE_401, GENERIC_LOGIN_ERROR, DEFAULT_APP_CTX } from '../../../utilities/Constants';
 import { MASTER_KEY } from 'react-native-dotenv'
-import { application } from '../../../../App';
+import { application } from '../../../../index';
 
 export const saveUserCreds = () => {
     return {

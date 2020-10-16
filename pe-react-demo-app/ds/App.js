@@ -9,9 +9,9 @@ import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 import persist from "./src/redux/config/store";
 import Main from './src/Main';
 import { PersistGate } from 'redux-persist/integration/react'
-import Application from './src/context/Application';
-import registerAllWidgets from './src/context/Register';
-import registerApplication from './external_modules/index';
+import { ResterApplication as Application } from './src/context/Application.tsx';
+import { EXTERNAL_MODULE } from 'react-native-dotenv';
+import register from './src/context/Register';
 
 const theme = {
   ...DefaultTheme,
@@ -23,11 +23,17 @@ const theme = {
 
 const persistStore = persist();
 
-export let application = new Application();
-registerAllWidgets(application);
-registerApplication(application);
-
 export default class App extends Component<{}> {
+
+  componentDidMount() {
+
+    if(EXTERNAL_MODULE) {
+      import(`./external_modules/${EXTERNAL_MODULE}/index`)
+      .then(module => register(application)); 
+    }
+
+  }
+
   render() {
     return (
       <Provider store={persistStore.store}>

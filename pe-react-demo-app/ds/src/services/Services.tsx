@@ -1,9 +1,13 @@
-import { BASE_URL } from 'react-native-dotenv'
+import { BASE_URL } from 'react-native-dotenv';
+import Service from '../../contracts/Service';
 
-export default class Service {
+export default class ResterService implements Service{
+    url: string;
+    headers: object;
+    body: object;
+    method: string;
 
-
-    constructor(params = {}) {
+    constructor(params: object = {}) {
         this.url = params.url || '';
         this.headers = params.headers || {};
         this.body = params.body || null;

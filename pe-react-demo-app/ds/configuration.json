@@ -1,0 +1,4 @@
+{
+    "Application": "src/context/Application",
+    "ApplicationClass": "ResterApplication"
+}

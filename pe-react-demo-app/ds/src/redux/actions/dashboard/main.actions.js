@@ -11,7 +11,7 @@ import {
 } from '../../types/dashboard/main.types'
 import { ERROR_MESSAGE_401, GENERIC_APP_CONFIG_ERROR, DEFAULT_APP_CTX } from '../../../utilities/Constants';
 import { isJson } from '../../../utilities/Utilities';
-import { application } from "../../../../App";
+import { application } from "../../../../index";
 
 export const widgetRequest = () => {
     return {
