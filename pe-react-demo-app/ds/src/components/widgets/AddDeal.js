@@ -5,6 +5,7 @@ import {
 import { connect } from 'react-redux';
 import { List, Divider } from 'react-native-paper';
 import { NormalText } from '../../themes/styling';
+import * as Animitable from 'react-native-animatable';
 
 class AddDeal extends Component<{}> {
 
@@ -19,14 +20,17 @@ class AddDeal extends Component<{}> {
             item = attributes[item];
             listView.push(
                 <>
-                <View style={{ flexDirection: 'row', paddingVertical: 10, backgroundColor: index++%2 === 1? '#fcfcfc': this.props.theme.theme.BACKGROUND_COLOR, marginHorizontal: 10 }}>
+                <Animitable.View
+                 animation="fadeIn"
+                 delay={200 + index*30}
+                 style={{ flexDirection: 'row', paddingVertical: 10, backgroundColor: index++%2 === 1? '#fcfcfc': this.props.theme.theme.BACKGROUND_COLOR, marginHorizontal: 10 }}>
                     <View style={{ alignItems: 'flex-start', flex: 1,  borderRightColor: 'lightgray' }}>
                         <NormalText>{item['Display Name']}</NormalText>
                     </View>
                     <View style={{ alignItems: 'flex-end', flex: 1}}>
                         <NormalText>{item['type']}</NormalText>
                     </View>
-                </View>
+                </Animitable.View>
                     <Divider style={{ marginHorizontal: 10 }} /></>
 
             )

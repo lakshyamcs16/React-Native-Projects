@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import {
     StyleSheet,
-    Alert
+    Alert,
+    Text,
+    View,
+    Animated
 } from 'react-native';
 import { fetchWidgetData, dataRequest } from '../../redux/actions/dashboard/main.actions';
 import { GENERIC_DATA_ERROR } from '../../utilities/Constants';
@@ -12,11 +15,13 @@ import {
     getCards
 } from '../assets/scrollview/ScrollViewAssets';
 import { getAction, getKeyHash, buildDataRequest } from '../../utilities/Utilities';
+
 var hash = require('object-hash');
 var mustache = require("mustache");
 const Entities = require('html-entities').XmlEntities;
 const entities = new Entities();
 
+const AnimatedSwipeListView = Animated.createAnimatedComponent(SwipeListView);
 class ScrollViewWidget extends Component<{}> {
 
     constructor(props) {
@@ -68,24 +73,26 @@ class ScrollViewWidget extends Component<{}> {
         var params = {};
         params.onPressHandler = this.navigateScreen;
         params.styles = viewStyles;
-
+        params.index = 0;
         return (
             this.state.data.length > 0 &&
-            <SwipeListView style={[styles.container]}
+            <AnimatedSwipeListView style={[styles.container]}
+                previewFirstRow={true}
                 data={this.state.data}
-                renderItem={(data, rowMap) => (
-                    getCards(data.item, this.props, this.state.data, params)
-                )}
-                keyExtractor={(data, index) => index.toString()}
-            // renderHiddenItem={(data, rowMap) => (
-            //     <View style={styles.rowBack} key={this.getKeyHash(data.item._id)}>
+                renderItem={(data, rowMap) => {
+                    params.index++;
+                    return getCards(data.item, this.props, this.state.data, params)
+                }}
+                // keyExtractor={(data, index) => index.toString()}
+                // renderHiddenItem={(data, rowMap) => (
+                //     <View style={styles.rowBack} key={getKeyHash(data.item._id)}>
 
-            //         <Text></Text>
-            //         <Text></Text>
-            //     </View>
-            // )}
-            // leftOpenValue={1}
-            // rightOpenValue={-1}
+                //         <Text></Text>
+                //         <Text></Text>
+                //     </View>
+                // )}
+                // leftOpenValue={100}
+                // rightOpenValue={-100}
             />
 
 

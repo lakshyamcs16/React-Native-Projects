@@ -2,14 +2,17 @@ import React from 'react';
 import {
     Text,
     View,
+    Animated
 } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { base } from '../../../themes/theme';
 import { nFormatter } from '../../../utilities/Utilities';
 import { Actions } from 'react-native-router-flux';
 import { getKeyHash } from  '../../../utilities/Utilities';
+import * as Animatable from 'react-native-animatable';
 
 var props, params, data;
+const DURATION = 200;
 
 export const getFontSize = (col, key) => {
     switch (key) {
@@ -126,11 +129,14 @@ export const getSubText = (item, col) => {
 export const getCardViews = (item, columns) => {
     return columns.map((col, id) => {
         return (
-            <View key={id} style={[{ flex: col.width || 1, paddingLeft: 5 }, this.params.styles.columnStyle]}>
+            <Animatable.View key={id}             
+            animation="bounceIn"
+            delay={DURATION + id*100} 
+            style={[{ flex: col.width || 1, paddingLeft: 5 }, this.params.styles.columnStyle]}>
                 {col.layout.label.position === "top" && getSubText(item, col)}
                 {getText(item, col)}
                 {col.layout.label.position === "bottom" && getSubText(item, col)}
-            </View>
+            </Animatable.View>
         )
 
     })
@@ -193,7 +199,9 @@ export const getCards = (item, props, data, params) => {
         disabled={params.onPressHandler ? false : true}
     >
 
-        <View
+        <Animatable.View
+            animation='bounceInDown'
+            delay={DURATION + params.index++*30}
             key={getKeyHash(item._id)}
             style={[
                 {
@@ -207,7 +215,7 @@ export const getCards = (item, props, data, params) => {
                 },
                 params.styles.cardContainer]}>
             {getInnerView(item)}
-        </View>
+        </Animatable.View>
     </TouchableOpacity>)
 
 }
