@@ -5,7 +5,7 @@ import {
   Platform,
   Text
 } from 'react-native';
-import { ActivityIndicator } from 'react-native-paper';
+import { ActivityIndicator, Button, Divider } from 'react-native-paper';
 import NavigationBar from './NavigationBar';
 import { connect } from 'react-redux';
 import { ThemeProvider } from 'styled-components';
@@ -15,7 +15,7 @@ import NavBar from '../assets/NavBar';
 import { GetWidgets } from './GetWidgets';
 import { BASE_URL, APP_CONFIG_ID } from 'react-native-dotenv'
 import { APP_CONFIG_URL, DASHBOARD_CONFIG_URL } from '../../utilities/Constants';
-import AddDeal from '../../AddDeal';
+import AddDeal from '../widgets/AddDeal';
 import {ModalCtx} from '../../Contexts';
 import {Modalize} from 'react-native-modalize';
 
@@ -26,14 +26,15 @@ let uri = '';
 class RootDashboard extends Component {
   state = {
     appConfig: {},
-    widgetConfig: {}
+    widgetConfig: {},
+    modalData: null
   }
 
   modal = React.createRef();
 
   async componentDidMount() {
     var params = {
-      url: `${BASE_URL}/${APP_CONFIG_URL}/${APP_CONFIG_ID}?access_token=${this.props.token}`,
+      url: `${BASE_URL}/${APP_CONFIG_URL}/${APP_CONFIG_ID}`,
       method: 'GET'
     };
 
@@ -45,7 +46,7 @@ class RootDashboard extends Component {
       });
       this.props.widgetRequest();
       var params = {
-        url: `${BASE_URL}/${DASHBOARD_CONFIG_URL}/${response.body.home.dashboardId}?access_token=${this.props.token}`,
+        url: `${BASE_URL}/${DASHBOARD_CONFIG_URL}/${response.body.home.dashboardId}`,
         method: "GET"
       };
 
@@ -59,6 +60,37 @@ class RootDashboard extends Component {
 
   }
 
+  populate = (schemaData) => {
+    this.setState({
+      modalData: schemaData
+    })
+  }
+
+  cancel = () => {
+    this.modal.current?.close()
+  }
+
+  saveDeal = () => {
+      this.modal.current?.close()
+  }
+
+
+
+  createButtons = () => (
+    <>
+        <Button
+            compact={true}
+            icon="cancel"
+            style={styles.buttonStyles}
+            onPress={this.cancel}>Cancel</Button>
+        <Button
+            compact={true}
+            style={styles.buttonStyles}
+            icon="content-save"
+            onPress={this.saveDeal}>Save</Button>
+    </>
+)
+
   render() {
     if (isAndroid) {
       uri = 'file:///android_asset/html/index.html';
@@ -66,9 +98,9 @@ class RootDashboard extends Component {
 
     return (
       <>
-        <ModalCtx.Provider value={{open: this.modal}}>
+        <ModalCtx.Provider value={{open: this.modal, populate: this.populate}}>
           <ThemeProvider theme={this.props.theme}>
-            <NavBar theme={this.props.theme} title={"Pipeline"} subtitle={"Private Equity"} />
+            <NavBar theme={this.props.theme} subtitle={"Private Equity"} dropdown={true}/>
             <View style={{ flex: 1, backgroundColor: this.props.theme.theme.ROOT_BACKGROUND_COLOR }} >
               {
                 Object.keys(this.state.widgetConfig).length > 0 ?
@@ -82,7 +114,13 @@ class RootDashboard extends Component {
               }
             </View>
             <NavigationBar config={this.state.appConfig.menubar} theme={this.props.theme} />
-            <Modalize ref={this.modal} modalHeight={250}><Text>Content goes here...</Text></Modalize>
+            <Modalize 
+            ref={this.modal} 
+            HeaderComponent={
+              <><View style={styles.navBarContainerWithoutFilter} children={this.createButtons()}></View>
+              <Divider /></>
+            }
+            modalHeight={800}><AddDeal data={this.state.modalData} theme={this.props.theme} modalMethods={this.modal}/></Modalize>
           </ThemeProvider>
         </ModalCtx.Provider>
 
@@ -95,6 +133,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1
   },
+
+    navBarContainerWithoutFilter: {
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+        backgroundColor: 'transparent',
+        marginHorizontal: 10,
+        paddingVertical: 10
+    },
+    buttonStyles: {
+        marginHorizontal: 10
+    },
   keyStats: {
     padding: 20,
     alignItems: 'flex-start'

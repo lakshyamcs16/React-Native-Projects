@@ -1,7 +1,8 @@
 import { BASE_URL } from 'react-native-dotenv';
 import Service from '../../contracts/Service';
+import { application } from '../../index';
 
-export default class ResterService implements Service{
+export default class ResterService implements Service {
     url: string;
     headers: object;
     body: object;
@@ -28,7 +29,7 @@ export default class ResterService implements Service{
     }
 
     setHeaders = (headers = {}) => {
-        this.headers = {...this.headers, headers};
+        this.headers = { ...this.headers, headers };
         return this;
     }
 
@@ -37,7 +38,7 @@ export default class ResterService implements Service{
     }
 
     setBody = (body = null) => {
-        this.headers = {...this.body, body};
+        this.headers = { ...this.body, body };
         return this;
     }
 
@@ -63,9 +64,24 @@ export default class ResterService implements Service{
         callback.apply(this, next);
     }
 
+    appendToken = (url) => {
+        let user = application.getCurrentUser();
+        let { userObject } = user;
+
+        if (!url.includes('access_token')) {
+            if (url.includes('?')) {
+                url += `&access_token=${userObject.token}`
+            } else {
+                url += `?access_token=${userObject.token}`
+            }
+        }
+
+        return url;
+    }
+
     hit = async (isBaseUrlAbsent = true) => {
         try {
-            let endPoint = this.url;
+            let endPoint = this.appendToken(this.url);
 
             if (isBaseUrlAbsent)
                 endPoint = BASE_URL.concat(this.url);

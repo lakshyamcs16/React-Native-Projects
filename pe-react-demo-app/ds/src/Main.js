@@ -6,8 +6,27 @@ import {
 } from 'react-native';
 import { SafeAreaView } from "./themes/styling";
 import { ThemeProvider } from "styled-components";
+import store from './redux/config/store';
+import {application} from '../index';
 
 class Main extends PureComponent<{}> {
+   
+
+  constructor(props) {
+    super(props);
+    this.store = store().persistor;
+    this.checkLogin();
+  }
+
+  checkLogin = () => {
+    const {userDetails} = this.props;
+    console.log(userDetails);
+    if(userDetails.token) {
+        let user = application.getCurrentUser();
+        user.setUser(userDetails);
+    }
+  }
+
   render() {
     const loggedin = this.props.loginDetail;
 
@@ -22,6 +41,7 @@ class Main extends PureComponent<{}> {
 };
 
 mapStateToProps = state => ({
+  userDetails: state.authenticationDetails.user_details,
   loginDetail: state.authenticationDetails.loggedin,
   theme: state.themeDetails
 })

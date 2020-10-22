@@ -55,7 +55,7 @@ class NavigationBar extends PureComponent {
                         style={styles.navBarItemContainer}>
                         {getIcon(item, this.props.theme)}
                         <NormalText
-                            style={[styles.navBarItem, { fontWeight: item.active ? 'bold' : 'normal' }]}>
+                            style={[styles.navBarItem, {color: item.active ? '#0062cc' : ''},{ fontWeight: item.active ? 'bold' : 'normal' }]}>
                             {item.title}</NormalText>
                     </TouchableOpacity>);
             } else if (item.type === "module") {

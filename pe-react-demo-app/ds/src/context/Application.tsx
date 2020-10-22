@@ -3,6 +3,7 @@ import Service from '../services/Services';
 import { DEFAULT_APP_CTX } from '../utilities/Constants';
 import React from 'react';
 import Application from '../../contracts/Application';
+import User from './User';
 
 /*
         create user module
@@ -13,12 +14,15 @@ export class ResterApplication implements Application {
     services: object;
     reducers: Reducer;
     widgets: object;
-    
+    user: User;
+
     constructor() {
         this.services = {},
         this.reducers = new Reducer(),
         this.widgets = {},
-        this.services[DEFAULT_APP_CTX] = new Service()
+        this.services[DEFAULT_APP_CTX] = new Service(),
+        this.user = new User();
+
     }
 
     registerWidget = (widget: string, widgetObj: object) => {
@@ -50,5 +54,14 @@ export class ResterApplication implements Application {
 
     getService = (serviceContext: string) => {
         return this.services[serviceContext];
+    }
+
+    getCurrentUser = (): User => {
+        return this.user;
+    }
+
+    setCurrentUser = (user: User) => {
+        this.user = user;
+        return this;
     }
 }

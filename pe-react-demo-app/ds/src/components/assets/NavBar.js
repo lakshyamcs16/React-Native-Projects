@@ -11,6 +11,23 @@ import { TopBar, NormalText, StyledMaterialIcon, StyledIonicons } from '../../th
 import { Badge } from 'react-native-paper';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import {ModalCtx} from '../../Contexts';
+import DropDown from './DropDown';
+
+const config = {
+            
+                    "key" : "by",
+                    "type" : "dropdown",
+                    "values" : [ 
+                        {
+                            
+                            "value" : "Name"
+                        }
+                    ]
+                
+}
+
+const data = require('../../workflows.json');
+const schemaData = require('../../workflowschema.json');
 
 class NavBar extends Component<{}> {
     toggleDrawer = () => {
@@ -36,7 +53,7 @@ class NavBar extends Component<{}> {
         //this.props.modal.current.open();
         console.log(value);
         value.open.current?.open();
-        //value.populate(true);
+        value.populate(schemaData);
     }
 
     render() {
@@ -51,6 +68,23 @@ class NavBar extends Component<{}> {
                         style={styles.navBarLeftIcon} />}
                 <NormalText style={this.props.isFilterEnabled ? styles.navBarTitle
                     : styles.navBarTitleWithoutFilter}>{this.props.title}</NormalText>
+                {this.props.dropdown && 
+                <DropDown 
+                config={config} 
+                data={data} 
+                searchable={true}
+                searchablePlaceholder="Search for an item"
+                inputContainerStyle={{
+                    borderBottomWidth: 0,  
+                    paddingVertical: 0
+                }}
+                containerStyle={{
+                    width: 150,
+                    marginHorizontal: 15,
+                    justifyContent: 'center', 
+                    height: 20
+                }}/>}
+
                 <TopBar style={{ flex: 1, alignItems: 'flex-end', justifyContent: 'flex-end', flexDirection: 'row', }}>
                     <ModalCtx.Consumer>
                         {value => 

@@ -270,7 +270,8 @@ const styles = StyleSheet.create({
     navBarIconSelected: {
         justifyContent: 'center',
         alignItems: 'center',
-        shadowColor: 'black',
+        shadowColor: '#0055b3',
+        color: '#0062cc',
         shadowOpacity: 1,
         shadowRadius: 0,
         // iOS

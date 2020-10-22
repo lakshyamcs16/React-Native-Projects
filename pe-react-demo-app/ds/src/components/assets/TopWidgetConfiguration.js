@@ -16,7 +16,14 @@ export default class TopWidgetConfiguration extends Component{
                 config.map(item => {
                     switch (item.type) {
                         case "dropdown":
-                            return <DropDown data={data} config={item}/>
+                            return <DropDown 
+                            data={data} 
+                            config={item}
+                            containerStyle={{
+                                width: 150,
+                                marginHorizontal: 15, 
+                                justifyContent: 'flex-end'
+                            }}/>
                         case "value":
                             return <Value data={data} config={item}/>
                             case "toggle":

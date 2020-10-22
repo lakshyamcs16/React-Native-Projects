@@ -3,11 +3,6 @@ import { connect } from 'react-redux';
 import RootDashboard from '../../components/dashboards/RootDashboard';
 import Drawer from 'react-native-drawer'
 import Login from '../../pages/authentication/Login';
-
-import {
-    View,
-    Text,
-} from 'react-native';
 import Filter from '../../components/assets/sidebar/Filter'
 import Notification from '../../components/assets/sidebar/Notification'
 import {

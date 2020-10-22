@@ -5,10 +5,8 @@ import {
     SAVE_USER_LOGIN_CREDS,
     LOGIN_FAILED
 } from "../../types/authentication/auth.types.js";
-import base64 from 'react-native-base64';
 import { isJson } from '../../../utilities/Utilities';
 import { ERROR_MESSAGE_401, GENERIC_LOGIN_ERROR, DEFAULT_APP_CTX } from '../../../utilities/Constants';
-import { MASTER_KEY } from 'react-native-dotenv'
 import { application } from '../../../../index';
 
 export const saveUserCreds = () => {
@@ -46,27 +44,16 @@ export const loginFailed = () => {
 export const authenticateUser = (params) => {
     return async (dispatch) => {
         
+        let user = await application.getCurrentUser().login(params);
+        let { response, userObject } = user;
+        application.setCurrentUser(user);
 
-        var headers = {
-            "Authorization": `Basic ${base64.encode(params.username + ':' + params.password)}`
-        };
-        var raw = {};
-    
-        let serviceParams = {
-            headers, 
-            body: raw, 
-            url: `/auth?access_token=${MASTER_KEY}`
-        };
-
-        let services = application.getService(DEFAULT_APP_CTX);
-        const response = await services.setParameters(serviceParams).hit();
-        console.log(response);
         try {
             var result = {
                 success: false
             };
             if (response.status >= 200 && response.status < 300) {
-                const responseJson = await response.json();
+                const responseJson = userObject;
                 console.log(responseJson)
                 result.success = true;
                 dispatch(authenticateSuccess(responseJson));
@@ -81,7 +68,7 @@ export const authenticateUser = (params) => {
                 } else if (response.status === 401) {
                     body.message = ERROR_MESSAGE_401;
                 } else {
-                    const responseJson = await response.json();
+                    const responseJson = userObject;
                     body = responseJson;
                 }
 

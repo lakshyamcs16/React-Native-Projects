@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { Dropdown } from 'react-native-material-dropdown';
 import {
-  StyleSheet,
   View,
 } from 'react-native';
 
 export default class DropDown extends Component{ 
     createDropDown = () => {
         const { config, data } = this.props;
+        console.log(data);
         const { values } = config;
         if(values && Array.isArray(values)) {
             let dropDowns = values.map(val => {
@@ -21,7 +21,15 @@ export default class DropDown extends Component{
                         set.add(data[i][val.value]);
                     }
                 }
-                return <Dropdown label={val.label} data={dropdownData} useNativeDriver={true} containerStyle={{ width: 150, marginHorizontal: 15, justifyContent: 'flex-end'}}/>
+                console.log(this.props);
+                return <Dropdown 
+                label={val.label || ""} 
+                data={dropdownData} 
+                useNativeDriver={true} 
+                pickerStyle={{borderBottom: 0}}
+                inputContainerStyle={this.props.inputContainerStyle}
+                value={data[0][val.value]}
+                containerStyle={this.props.containerStyle}/>
             })
 
             return dropDowns;
@@ -32,7 +40,7 @@ export default class DropDown extends Component{
 
     render() {
         return (
-            <View>{this.createDropDown()}</View>
+            this.createDropDown()
             
         );
     }
